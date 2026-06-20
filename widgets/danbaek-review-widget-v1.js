@@ -4,6 +4,7 @@
 
   var config = window.YD_DANBAEK_REVIEW_WIDGET_CONFIG || {};
   var feedUrl = config.feedUrl || 'https://2019yundiet-cloud.github.io/yundiet-review-widget-preview/feeds/danbaekbap-review-feed.json';
+  var placementVariant = normalizeVariant(config.variant || queryValue('yd_review_variant') || queryValue('review_variant') || 'a2d');
   if (location.href.indexOf('/admin') !== -1 || location.href.indexOf('/_/') !== -1) return;
 
   function isProductPage(){
@@ -14,6 +15,21 @@
   function ready(fn){
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
     else fn();
+  }
+  function queryValue(key){
+    var match = new RegExp('[?&]'+key+'=([^&]*)').exec(location.search);
+    return match ? decodeURIComponent(match[1].replace(/\+/g, ' ')) : '';
+  }
+  function normalizeVariant(value){
+    value = String(value || '').toLowerCase();
+    if (value === 'control' || value === 'base' || value === 'baseline') return 'control';
+    if (value === 'a2' || value === 'top' || value === 'prime') return 'a2';
+    if (value === 'd' || value === 'bottom' || value === 'cta') return 'd';
+    return 'a2d';
+  }
+  function variantHas(part){
+    if (placementVariant === 'a2d') return part === 'a2' || part === 'd';
+    return placementVariant === part;
   }
   function escapeHtml(s){
     return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
@@ -238,13 +254,13 @@
     waitFor(function(){
       return document.querySelector('#prod_goods_form header h1') || document.querySelector('#prod_goods_form .view_tit') || document.querySelector('#prod_goods_form .pay_detail.full-width');
     }, function(anchor){
-      if (!document.getElementById('yd-prime-review-link')) {
+      if (variantHas('a2') && !document.getElementById('yd-prime-review-link')) {
         anchor.insertAdjacentElement('afterend', makePrimeReviewLink(feed));
       }
-      enhanceMobileBottomCta(feed);
+      if (variantHas('d')) enhanceMobileBottomCta(feed);
     });
     waitFor(function(){
-      return window.matchMedia && window.matchMedia('(max-width: 640px)').matches && document.querySelector('.buy_btns.mobile .cart_btn a.btn.defualt-cart');
+      return variantHas('d') && window.matchMedia && window.matchMedia('(max-width: 640px)').matches && document.querySelector('.buy_btns.mobile .cart_btn a.btn.defualt-cart');
     }, function(){
       enhanceMobileBottomCta(feed);
     });
