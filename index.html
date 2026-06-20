@@ -1,0 +1,1666 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>윤식단 자사몰 리뷰 위젯 미리보기</title>
+  <meta name="theme-color" content="#2a341e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232a341e'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-size='30' font-family='Arial' font-weight='700' fill='white'%3EY%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      --brand: #2a341e;
+      --brand-strong: #1c2714;
+      --brand-soft: #edf2e7;
+      --ink: #252821;
+      --muted: #6b7165;
+      --line: #e6e8e1;
+      --paper: #ffffff;
+      --wash: #f7f8f4;
+      --accent: #ff4b38;
+      --blue: #2377c9;
+      --shadow: 0 18px 44px rgba(27, 35, 19, 0.12);
+      --radius: 8px;
+      color-scheme: light;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #f3f4ef;
+      font-family: "Pretendard English", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      line-height: 1.45;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .preview-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      min-height: 100vh;
+    }
+
+    .preview-stage {
+      min-width: 0;
+      padding: 24px;
+    }
+
+    .settings {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      border-left: 1px solid #dde1d6;
+      background: #fbfcf8;
+      padding: 20px;
+    }
+
+    .settings h1,
+    .settings h2,
+    .settings h3,
+    .store h1,
+    .store h2,
+    .store h3,
+    .store p {
+      margin: 0;
+    }
+
+    .settings-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .settings-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .status-pill {
+      flex: 0 0 auto;
+      border: 1px solid #cad4bf;
+      background: #eef4e8;
+      color: var(--brand-strong);
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .settings-sub {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .control-group {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .control-title {
+      margin-bottom: 10px;
+      color: #3a3e34;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .segmented {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .segmented button,
+    .chip-row button,
+    .outline-button {
+      min-height: 36px;
+      border: 1px solid #d8ddd1;
+      border-radius: var(--radius);
+      background: #fff;
+      color: #34382f;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .segmented button.active,
+    .chip-row button.active {
+      border-color: var(--brand);
+      background: var(--brand);
+      color: #fff;
+      box-shadow: 0 8px 22px rgba(42, 52, 30, 0.18);
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .swatch {
+      min-height: 42px;
+      border: 2px solid #fff;
+      border-radius: var(--radius);
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .swatch.active {
+      outline: 3px solid rgba(42, 52, 30, 0.22);
+    }
+
+    .form-row {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .form-row label,
+    .toggle-row {
+      color: #3c4037;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .range-line {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    input[type="range"] {
+      accent-color: var(--brand);
+      width: 100%;
+    }
+
+    select {
+      width: 100%;
+      border: 1px solid #d8ddd1;
+      border-radius: var(--radius);
+      background: #fff;
+      color: #262a22;
+      min-height: 38px;
+      padding: 0 10px;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .toggle-row input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--brand);
+    }
+
+    .setting-note {
+      margin-top: 10px;
+      border: 1px solid #e0dfd4;
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 10px;
+      color: #62675d;
+      font-size: 12px;
+    }
+
+    .code-box {
+      overflow: auto;
+      max-height: 230px;
+      border: 1px solid #dfe4d8;
+      border-radius: var(--radius);
+      background: #182214;
+      color: #eaf3e0;
+      padding: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      line-height: 1.55;
+      white-space: pre;
+    }
+
+    .store {
+      position: relative;
+      max-width: 1280px;
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid #e0e2da;
+      border-radius: 14px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .store-top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      background: var(--brand);
+      color: #fff36c;
+      font-weight: 800;
+    }
+
+    .nav-row {
+      display: grid;
+      grid-template-columns: 270px 1fr 320px;
+      align-items: center;
+      gap: 16px;
+      min-height: 74px;
+      padding: 0 30px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 42px;
+      border: 1px solid #aeb6a7;
+      border-radius: 999px;
+      padding: 0 13px 0 18px;
+      color: #a3a79e;
+      font-size: 14px;
+    }
+
+    .search-icon {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #2c3328;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .search-icon::after {
+      content: "";
+      position: absolute;
+      right: -5px;
+      bottom: -4px;
+      width: 8px;
+      height: 2px;
+      background: #2c3328;
+      transform: rotate(45deg);
+      border-radius: 2px;
+    }
+
+    .brand-mark {
+      text-align: center;
+      color: var(--brand);
+    }
+
+    .brand-symbol {
+      display: inline-grid;
+      place-items: center;
+      width: 48px;
+      height: 32px;
+      margin-right: 6px;
+      border: 2px solid var(--brand);
+      border-radius: 50%;
+      font-weight: 900;
+      vertical-align: middle;
+    }
+
+    .brand-name {
+      font-weight: 900;
+      letter-spacing: 0.22em;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 16px;
+      color: #272b23;
+      font-size: 14px;
+    }
+
+    .cart-icon {
+      width: 24px;
+      height: 24px;
+      border: 2px solid currentColor;
+      border-top: 0;
+      transform: skew(-8deg);
+      position: relative;
+    }
+
+    .cart-icon::before,
+    .cart-icon::after {
+      content: "";
+      position: absolute;
+      bottom: -7px;
+      width: 5px;
+      height: 5px;
+      background: currentColor;
+      border-radius: 50%;
+    }
+
+    .cart-icon::before {
+      left: 2px;
+    }
+
+    .cart-icon::after {
+      right: 2px;
+    }
+
+    .partner-btn {
+      border: 0;
+      border-radius: 999px;
+      background: var(--brand);
+      color: #fff;
+      min-height: 38px;
+      padding: 0 18px;
+      font-weight: 800;
+    }
+
+    .menu-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 70px;
+      height: 42px;
+      border-bottom: 1px solid #eceee8;
+      color: #2f332b;
+      font-weight: 700;
+    }
+
+    .product-area {
+      padding: 18px 30px 34px;
+    }
+
+    .crumb {
+      color: #8a9085;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: minmax(360px, 1fr) minmax(410px, 0.88fr);
+      gap: 70px;
+      align-items: start;
+    }
+
+    .gallery-main {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      background-image: url("https://cdn.imweb.me/thumbnail/20260120/beb9125a625ca.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .gallery-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      border-radius: 4px;
+      background: var(--accent);
+      color: #fff;
+      padding: 9px 8px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .thumbs {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .thumb {
+      width: 62px;
+      height: 62px;
+      border: 2px solid #fff;
+      outline: 1px solid #d9ddd2;
+      background-image: url("https://cdn.imweb.me/thumbnail/20260120/beb9125a625ca.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .thumb:nth-child(2) {
+      background-position: 25% 50%;
+    }
+
+    .thumb:nth-child(3) {
+      background-position: 80% 45%;
+    }
+
+    .product-info h1 {
+      margin-top: 2px;
+      color: #3a3d36;
+      font-size: 24px;
+      line-height: 1.35;
+      font-weight: 850;
+      letter-spacing: 0;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border: 1px solid #dadfd5;
+      border-radius: 3px;
+      padding: 0 9px;
+      color: #33372f;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .badge.hot {
+      border-color: transparent;
+      background: #ff5656;
+      color: #fff;
+    }
+
+    .badge.green {
+      border-color: transparent;
+      background: #dbead9;
+      color: var(--brand);
+    }
+
+    .rating-inline {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      color: #33372f;
+      font-size: 13px;
+    }
+
+    .stars {
+      color: #ff422e;
+      letter-spacing: 1px;
+      font-size: 15px;
+      white-space: nowrap;
+    }
+
+    .price {
+      margin-top: 10px;
+      color: #424640;
+      font-size: 26px;
+      font-weight: 500;
+    }
+
+    .coupon-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 12px;
+      margin-top: 18px;
+      border: 1px solid #eceee9;
+      border-radius: var(--radius);
+      padding: 18px 20px;
+    }
+
+    .coupon-card strong {
+      display: block;
+      font-size: 27px;
+      line-height: 1.2;
+    }
+
+    .coupon-card span {
+      display: block;
+      margin-top: 4px;
+      color: #53584e;
+      font-size: 13px;
+    }
+
+    .dark-btn {
+      border: 0;
+      border-radius: 5px;
+      background: var(--brand);
+      color: #fff;
+      min-height: 34px;
+      padding: 0 12px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .proof-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 22px;
+    }
+
+    .guide-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--brand);
+      font-size: 13px;
+      text-decoration: underline;
+    }
+
+    .shipping-card {
+      margin-top: 26px;
+      border-radius: var(--radius);
+      background: #f5f4f0;
+      padding: 18px;
+      text-align: center;
+      box-shadow: 0 5px 14px rgba(47, 54, 39, 0.09);
+    }
+
+    .shipping-card strong {
+      display: block;
+      color: var(--brand);
+      font-size: 16px;
+    }
+
+    .shipping-card span {
+      display: block;
+      margin-top: 8px;
+      color: #62675d;
+      font-size: 13px;
+    }
+
+    .option-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 40px;
+      border: 1px solid #d9ddd5;
+      padding: 0 12px;
+      color: #4a4e45;
+      font-size: 13px;
+    }
+
+    .chev {
+      width: 9px;
+      height: 9px;
+      border-right: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      transform: rotate(45deg);
+    }
+
+    .buy-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .buy-row button {
+      min-height: 46px;
+      border-radius: 6px;
+      border: 1px solid var(--brand);
+      font-weight: 900;
+    }
+
+    .buy-row .primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .buy-row .secondary {
+      background: #fff;
+      color: var(--brand);
+    }
+
+    .review-widget {
+      border: 1px solid color-mix(in srgb, var(--brand) 22%, #dfe5d9);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 6%, #ffffff), #ffffff 70%);
+      box-shadow: 0 14px 34px rgba(42, 52, 30, 0.12);
+    }
+
+    .top-insert {
+      display: none;
+      margin-top: 18px;
+      padding: 16px;
+    }
+
+    .placement-top .top-insert {
+      display: block;
+    }
+
+    .widget-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .widget-kicker {
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .widget-title {
+      margin-top: 2px;
+      color: #252a20;
+      font-size: 19px;
+      font-weight: 900;
+      line-height: 1.3;
+    }
+
+    .review-score {
+      display: grid;
+      justify-items: end;
+      gap: 2px;
+      min-width: 104px;
+    }
+
+    .score-number {
+      color: var(--brand);
+      font-size: 30px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .score-caption {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .review-phrase-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .phrase {
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--brand) 9%, #ffffff);
+      color: var(--brand-strong);
+      padding: 5px 9px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(var(--card-cols, 2), minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .review-card {
+      min-height: 132px;
+      border: 1px solid #e3e7dc;
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 12px;
+    }
+
+    .review-card.photo {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 10px;
+      min-height: 126px;
+    }
+
+    .review-photo {
+      min-height: 92px;
+      border-radius: 6px;
+      background-image: url("https://cdn.imweb.me/thumbnail/20260120/beb9125a625ca.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .review-card:nth-child(2n) .review-photo {
+      background-position: 78% 46%;
+    }
+
+    .review-card:nth-child(3n) .review-photo {
+      background-position: 24% 58%;
+    }
+
+    .review-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      color: #7b8176;
+      font-size: 12px;
+      margin-bottom: 8px;
+      min-width: 0;
+    }
+
+    .source-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 20px;
+      border-radius: 4px;
+      background: #f0f2f1;
+      color: #68716a;
+      padding: 0 6px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .review-meta span:not(.source-badge) {
+      white-space: nowrap;
+    }
+
+    .review-text {
+      color: #2e322b;
+      font-size: 13px;
+      word-break: keep-all;
+    }
+
+    .review-author {
+      margin-top: 10px;
+      color: #7a8074;
+      font-size: 12px;
+    }
+
+    .widget-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+      border-top: 1px solid #edf0e8;
+      padding-top: 12px;
+    }
+
+    .mini-proof {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .cta-link {
+      border: 0;
+      border-radius: 999px;
+      background: var(--brand);
+      color: #fff;
+      min-height: 34px;
+      padding: 0 14px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .detail-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 34px;
+      border-top: 1px solid #e5e8df;
+      border-bottom: 1px solid #e5e8df;
+    }
+
+    .detail-tabs button {
+      border: 0;
+      border-right: 1px solid #e5e8df;
+      background: #fff;
+      color: #30342c;
+      min-height: 48px;
+      font-weight: 800;
+    }
+
+    .detail-tabs button:first-child {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .detail-tabs button:last-child {
+      border-right: 0;
+    }
+
+    .detail-copy {
+      display: grid;
+      justify-items: center;
+      gap: 24px;
+      padding: 44px 20px 34px;
+      text-align: center;
+    }
+
+    .detail-copy h2 {
+      max-width: 760px;
+      color: var(--brand);
+      font-size: 36px;
+      line-height: 1.25;
+      font-weight: 900;
+    }
+
+    .detail-visual {
+      width: min(620px, 100%);
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(42, 52, 30, 0.06), rgba(35, 119, 201, 0.18)),
+        url("https://cdn.imweb.me/thumbnail/20260120/beb9125a625ca.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .detail-review-section {
+      display: none;
+      padding: 34px 42px 48px;
+      border-top: 1px solid #edf0e8;
+      background: #fff;
+    }
+
+    .placement-detail .detail-review-section {
+      display: block;
+    }
+
+    .detail-review-shell {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .review-dashboard {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 22px;
+      margin-bottom: 20px;
+    }
+
+    .score-panel {
+      border-radius: var(--radius);
+      background: color-mix(in srgb, var(--brand) 7%, #ffffff);
+      padding: 18px;
+    }
+
+    .score-panel .score-number {
+      font-size: 48px;
+    }
+
+    .bar-list {
+      display: grid;
+      gap: 8px;
+      align-content: center;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 36px 1fr 44px;
+      gap: 8px;
+      align-items: center;
+      color: #5f665a;
+      font-size: 12px;
+    }
+
+    .bar-track {
+      overflow: hidden;
+      height: 8px;
+      border-radius: 999px;
+      background: #edf0ea;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--brand);
+    }
+
+    .photo-strip {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .photo-strip .review-photo {
+      aspect-ratio: 1 / 1;
+      min-height: 0;
+    }
+
+    .floating-widget {
+      display: none;
+      position: fixed;
+      right: 390px;
+      bottom: 26px;
+      width: min(360px, calc(100vw - 420px));
+      border: 1px solid color-mix(in srgb, var(--brand) 24%, #dce4d6);
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 16px 38px rgba(31, 39, 24, 0.19);
+      padding: 9px 12px;
+      z-index: 20;
+    }
+
+    .store.placement-floating ~ .floating-widget {
+      display: block;
+    }
+
+    .floating-inner {
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .floating-avatar {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--brand);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .floating-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #2b3028;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .floating-sub {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #777d71;
+      font-size: 12px;
+    }
+
+    .floating-chip {
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--brand) 10%, #fff);
+      color: var(--brand);
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .kakao-float {
+      position: absolute;
+      right: 30px;
+      bottom: 30px;
+      display: grid;
+      place-items: center;
+      width: 84px;
+      height: 48px;
+      border-radius: 999px;
+      background: #ffd900;
+      color: #111;
+      font-weight: 900;
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.14);
+      z-index: 3;
+    }
+
+    .active-area {
+      position: relative;
+    }
+
+    .active-area::before {
+      content: "코드 삽입 미리보기";
+      position: absolute;
+      top: -12px;
+      left: 16px;
+      z-index: 2;
+      border-radius: 999px;
+      background: var(--blue);
+      color: #fff;
+      padding: 4px 9px;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .placement-top .top-insert,
+    .placement-detail .detail-review-shell {
+      outline: 2px solid rgba(35, 119, 201, 0.38);
+      outline-offset: 4px;
+    }
+
+    .hide-rating .score-block,
+    .hide-rating .review-score,
+    .hide-rating .score-panel,
+    .hide-rating .bar-list {
+      display: none;
+    }
+
+    .hide-photo .photo-strip,
+    .hide-photo .review-photo {
+      display: none;
+    }
+
+    .hide-photo .review-card.photo {
+      display: block;
+    }
+
+    .hide-source .source-badge {
+      display: none;
+    }
+
+    @media (max-width: 1180px) {
+      .preview-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .settings {
+        position: static;
+        height: auto;
+        border-left: 0;
+        border-top: 1px solid #dde1d6;
+      }
+
+      .floating-widget {
+        right: 24px;
+        width: min(360px, calc(100vw - 48px));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .preview-stage {
+        padding: 12px;
+      }
+
+      .store {
+        border-radius: 10px;
+      }
+
+      .store-top {
+        min-height: 42px;
+        padding: 0 12px;
+        font-size: 13px;
+      }
+
+      .nav-row {
+        grid-template-columns: 1fr auto;
+        padding: 12px 14px;
+      }
+
+      .search-box,
+      .nav-actions {
+        display: none;
+      }
+
+      .brand-mark {
+        text-align: left;
+      }
+
+      .menu-row {
+        gap: 28px;
+        height: 40px;
+        font-size: 13px;
+      }
+
+      .product-area {
+        padding: 14px;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+
+      .product-info h1 {
+        font-size: 21px;
+      }
+
+      .coupon-card {
+        grid-template-columns: 1fr;
+      }
+
+      .coupon-card strong {
+        font-size: 23px;
+      }
+
+      .review-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .review-card.photo {
+        grid-template-columns: 76px 1fr;
+      }
+
+      .detail-copy h2 {
+        font-size: 27px;
+      }
+
+      .detail-review-section {
+        padding: 20px 12px 30px;
+      }
+
+      .detail-review-shell {
+        padding: 16px;
+      }
+
+      .review-dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-strip {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .settings {
+        padding: 16px;
+      }
+
+      .segmented {
+        grid-template-columns: 1fr;
+      }
+
+      .kakao-float {
+        right: 14px;
+        bottom: 14px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .preview-stage {
+        padding: 0;
+      }
+
+      .store {
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+      }
+
+      .menu-row {
+        justify-content: space-around;
+        gap: 0;
+      }
+
+      .gallery-main {
+        margin-left: -14px;
+        margin-right: -14px;
+        aspect-ratio: 1 / 0.92;
+      }
+
+      .thumbs {
+        overflow: auto;
+        padding-bottom: 2px;
+      }
+
+      .widget-head,
+      .widget-footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .review-score {
+        justify-items: start;
+      }
+
+      .buy-row {
+        grid-template-columns: 1fr;
+      }
+
+      .floating-widget {
+        right: 10px;
+        bottom: 78px;
+        width: calc(100vw - 20px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <div class="preview-stage">
+      <div id="store" class="store placement-detail">
+        <div class="store-top">카카오채널 추가하고 18,000원 쿠폰팩 받기!</div>
+        <div class="nav-row">
+          <div class="search-box"><span>Search</span><span class="search-icon" aria-hidden="true"></span></div>
+          <div class="brand-mark" aria-label="윤식단">
+            <span class="brand-symbol">Y</span><span class="brand-name">윤식단</span>
+          </div>
+          <div class="nav-actions">
+            <span>로그인</span>
+            <span>회원가입</span>
+            <span class="cart-icon" aria-hidden="true"></span>
+            <button class="partner-btn" type="button">제휴문의</button>
+          </div>
+        </div>
+        <div class="menu-row"><span>SHOP</span><span>BRAND</span><span>COMMUNITY</span></div>
+
+        <main class="product-area">
+          <div class="crumb">Home &nbsp;&gt;&nbsp; 도시락 식단</div>
+          <section class="product-grid">
+            <div>
+              <div class="gallery-main">
+                <span class="gallery-badge">BEST</span>
+              </div>
+              <div class="thumbs" aria-label="상품 이미지 썸네일">
+                <span class="thumb"></span>
+                <span class="thumb"></span>
+                <span class="thumb"></span>
+              </div>
+            </div>
+
+            <div class="product-info">
+              <h1>(단백질 50g) 단백질 도시락 10종 단백밥 단품 골라담기</h1>
+              <div class="badges">
+                <span class="badge">BEST</span>
+                <span class="badge">MD</span>
+                <span class="badge">HOT</span>
+                <span class="badge">오늘출발</span>
+              </div>
+              <div class="rating-inline score-block">
+                <span class="stars">★★★★★</span>
+                <span><strong>21,085</strong>개 구매평</span>
+              </div>
+              <div class="price">5,490원</div>
+
+              <div class="coupon-card">
+                <div>
+                  <strong>3,500원 할인</strong>
+                  <span>[비밀쿠폰] 단백밥 무료배송 쿠폰</span>
+                </div>
+                <button class="dark-btn" type="button">쿠폰받기</button>
+              </div>
+
+              <section class="review-widget top-insert active-area" aria-label="상품 상단 리뷰 위젯">
+                <div class="widget-head">
+                  <div>
+                    <div class="widget-kicker">자사몰 리뷰 위젯</div>
+                    <h2 class="widget-title">구매 전 가장 많이 확인한 실제 후기</h2>
+                  </div>
+                  <div class="review-score">
+                    <span class="score-number">4.9</span>
+                    <span class="stars">★★★★★</span>
+                    <span class="score-caption">총 21,085개</span>
+                  </div>
+                </div>
+                <div class="review-phrase-row">
+                  <span class="phrase">든든해요</span>
+                  <span class="phrase">양이 좋아요</span>
+                  <span class="phrase">점심 대용</span>
+                  <span class="phrase">재구매</span>
+                </div>
+                <div id="topCards" class="review-grid"></div>
+                <div class="widget-footer">
+                  <span class="mini-proof">포토 구매평 11,509개 중 일부를 먼저 보여줍니다.</span>
+                  <button id="topCta" class="cta-link" type="button">구매평 전체 보기</button>
+                </div>
+              </section>
+
+              <div class="proof-row">
+                <span class="badge hot">HACCP 인증</span>
+                <span class="badge green">윤식단 only</span>
+              </div>
+              <a class="guide-link" href="#" aria-label="관련 공식 가이드">관련 공식 가이드: 직장인 점심 냉동도시락 고르는 법</a>
+
+              <div class="shipping-card">
+                <strong>지금 주문시 6/22(월)에 발송됩니다</strong>
+                <span>배송 마감까지 50:35:47</span>
+              </div>
+
+              <div class="option-list">
+                <div class="option"><span>단백밥 단품 골라담기 (필수)</span><span class="chev"></span></div>
+                <div class="option"><span>단백질 추가구성 [19%할인] (선택)</span><span class="chev"></span></div>
+                <div class="option"><span>저당소스 추가 (선택)</span><span class="chev"></span></div>
+                <div class="option"><span>아이스팩 추가 (선택)</span><span class="chev"></span></div>
+              </div>
+
+              <div class="buy-row">
+                <button class="secondary" type="button">장바구니</button>
+                <button class="primary" type="button">구매하기</button>
+              </div>
+            </div>
+          </section>
+
+          <nav class="detail-tabs" aria-label="상세 탭">
+            <button type="button">상세정보</button>
+            <button type="button">구매평 (21085)</button>
+            <button type="button">Q&amp;A (257)</button>
+          </nav>
+
+          <section class="detail-copy">
+            <h2><span style="background:var(--brand);color:#fff;padding:0 8px;">소스 별도 제공</span>으로 더 진한 맛과 풍미를 느낄 수 있어요.</h2>
+            <div class="detail-visual" role="img" aria-label="단백밥 상세 이미지"></div>
+          </section>
+
+          <section class="detail-review-section" aria-label="구매평 탭 리뷰 위젯">
+            <div class="review-widget detail-review-shell active-area">
+              <div class="widget-head">
+                <div>
+                  <div class="widget-kicker">구매평 탭형</div>
+                  <h2 class="widget-title">단백밥 구매 고객이 남긴 핵심 후기</h2>
+                </div>
+                <button id="detailCta" class="cta-link" type="button">구매평 전체 보기</button>
+              </div>
+              <div class="review-dashboard">
+                <div class="score-panel">
+                  <div class="score-number">4.9</div>
+                  <div class="stars">★★★★★</div>
+                  <div class="score-caption">총 21,085개의 구매평</div>
+                </div>
+                <div class="bar-list">
+                  <div class="bar-row"><span>5점</span><span class="bar-track"><span class="bar-fill" style="width:92%"></span></span><strong>92%</strong></div>
+                  <div class="bar-row"><span>4점</span><span class="bar-track"><span class="bar-fill" style="width:6%"></span></span><strong>6%</strong></div>
+                  <div class="bar-row"><span>3점</span><span class="bar-track"><span class="bar-fill" style="width:1.4%"></span></span><strong>1%</strong></div>
+                  <div class="bar-row"><span>2점</span><span class="bar-track"><span class="bar-fill" style="width:0.4%"></span></span><strong>0%</strong></div>
+                  <div class="bar-row"><span>1점</span><span class="bar-track"><span class="bar-fill" style="width:0.2%"></span></span><strong>0%</strong></div>
+                </div>
+              </div>
+              <div class="review-phrase-row">
+                <span class="phrase">많이 언급된 말: 든든함</span>
+                <span class="phrase">점심 루틴</span>
+                <span class="phrase">냉동실 쟁여둠</span>
+                <span class="phrase">맛과 영양</span>
+              </div>
+              <div class="photo-strip" aria-label="포토 구매평 미리보기">
+                <span class="review-photo"></span>
+                <span class="review-photo"></span>
+                <span class="review-photo"></span>
+                <span class="review-photo"></span>
+                <span class="review-photo"></span>
+                <span class="review-photo"></span>
+              </div>
+              <div id="detailCards" class="review-grid"></div>
+            </div>
+          </section>
+        </main>
+
+        <div class="kakao-float">문의</div>
+      </div>
+
+      <aside id="floatingWidget" class="floating-widget active-area" aria-label="플로팅 리뷰 위젯">
+        <div class="floating-inner">
+          <div class="floating-avatar">★</div>
+          <div>
+            <div class="floating-title">방금 본 구매평: "양도 많고 든든해요"</div>
+            <div class="floating-sub">스마트스토어 구매평 · km**** · 2026-06-19</div>
+          </div>
+          <span class="floating-chip">4.9</span>
+        </div>
+      </aside>
+    </div>
+
+    <aside class="settings" aria-label="리뷰 위젯 설정 패널">
+      <div class="settings-head">
+        <div>
+          <h1 class="settings-title">리뷰 위젯 설정 시안</h1>
+          <p class="settings-sub">실제 자사몰 설정을 바꾸지 않는 HTML 미리보기입니다.</p>
+        </div>
+        <span class="status-pill">미리보기 전용</span>
+      </div>
+
+      <section class="control-group">
+        <h2 class="control-title">노출 위치</h2>
+        <div class="segmented" data-control="placement">
+          <button type="button" data-placement="top">상품 상단</button>
+          <button type="button" data-placement="detail" class="active">구매평 탭</button>
+          <button type="button" data-placement="floating">플로팅</button>
+        </div>
+      </section>
+
+      <section class="control-group">
+        <h2 class="control-title">테마 컬러</h2>
+        <div class="swatches" data-control="theme">
+          <button class="swatch active" type="button" data-color="#2a341e" style="background:#2a341e" aria-label="윤식단 올리브"></button>
+          <button class="swatch" type="button" data-color="#315d45" style="background:#315d45" aria-label="그린"></button>
+          <button class="swatch" type="button" data-color="#7b402d" style="background:#7b402d" aria-label="테라코타"></button>
+          <button class="swatch" type="button" data-color="#263b57" style="background:#263b57" aria-label="네이비"></button>
+        </div>
+      </section>
+
+      <section class="control-group">
+        <h2 class="control-title">콘텐츠 구성</h2>
+        <div class="form-row">
+          <label for="cardCount">리뷰 카드 수</label>
+          <div class="range-line">
+            <input id="cardCount" type="range" min="2" max="6" value="4">
+            <strong id="cardCountLabel">4개</strong>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="sortMode">정렬 기준</label>
+          <select id="sortMode">
+            <option value="highlight">대표 후기 우선</option>
+            <option value="latest">최신순</option>
+            <option value="photo">포토 리뷰 우선</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="ctaMode">CTA 문구</label>
+          <select id="ctaMode">
+            <option value="구매평 전체 보기">구매평 전체 보기</option>
+            <option value="포토 후기 먼저 보기">포토 후기 먼저 보기</option>
+            <option value="리뷰 보고 구매하기">리뷰 보고 구매하기</option>
+          </select>
+        </div>
+        <label class="toggle-row"><span>평점/리뷰수 표시</span><input id="showRating" type="checkbox" checked></label>
+        <label class="toggle-row"><span>포토 리뷰 표시</span><input id="showPhoto" type="checkbox" checked></label>
+        <label class="toggle-row"><span>출처 라벨 표시</span><input id="showSource" type="checkbox" checked></label>
+      </section>
+
+      <section class="control-group">
+        <h2 class="control-title">세팅 가능 범위</h2>
+        <div class="setting-note">
+          노출 위치, 테마 컬러, 리뷰 개수, 포토 리뷰 사용 여부, 평점 표시 여부, 출처 라벨, 정렬 기준, CTA 문구, 모바일 카드 수까지 프론트 코드에서 조정 가능한 형태로 잡았습니다.
+        </div>
+      </section>
+
+      <section class="control-group">
+        <h2 class="control-title">삽입 코드 예시</h2>
+        <pre id="configOutput" class="code-box"></pre>
+      </section>
+    </aside>
+  </div>
+
+  <script>
+    const reviews = [
+      {
+        source: "스마트스토어 구매평",
+        text: "시장에 다이어트 도시락은 많은데 양이 너무 적었어요. 이건 한 끼가 든든하고 포만감이 오래가서 점심으로 만족스럽습니다.",
+        author: "rnrd********",
+        date: "2026-06-19",
+        photo: true,
+        priority: 1
+      },
+      {
+        source: "스마트스토어 구매평",
+        text: "맛과 영양 모두 최고입니다. 돌고 돌아 결국 윤식단으로 다시 오게 되네요.",
+        author: "stok*******",
+        date: "2026-06-19",
+        photo: false,
+        priority: 2
+      },
+      {
+        source: "스마트스토어 구매평",
+        text: "사무실 근처 밥집 대신 주문했습니다. 양 좋고 맛도 좋아요. 냉동실에 쟁여두기 좋습니다.",
+        author: "dl****",
+        date: "2026-06-19",
+        photo: true,
+        priority: 3
+      },
+      {
+        source: "자사몰 구매평",
+        text: "점심에 도시락 가져가기 귀찮을 때 딱 좋아요. 조리도 편하고 식단 관리가 훨씬 쉬워졌습니다.",
+        author: "shei*****",
+        date: "2026-06-18",
+        photo: true,
+        priority: 4
+      },
+      {
+        source: "스마트스토어 구매평",
+        text: "양도 많고 맛있어서 이것만 시켜요. 다음에도 같은 조합으로 재구매할 예정입니다.",
+        author: "km****",
+        date: "2026-06-19",
+        photo: false,
+        priority: 5
+      },
+      {
+        source: "자사몰 구매평",
+        text: "먹기 편하고 든든해요. 야근 전 저녁으로 먹어도 부담이 덜해서 만족합니다.",
+        author: "navy****",
+        date: "2026-06-19",
+        photo: true,
+        priority: 6
+      }
+    ];
+
+    const state = {
+      placement: "detail",
+      color: "#2a341e",
+      count: 4,
+      sort: "highlight",
+      cta: "구매평 전체 보기",
+      showRating: true,
+      showPhoto: true,
+      showSource: true
+    };
+
+    const store = document.getElementById("store");
+    const topCards = document.getElementById("topCards");
+    const detailCards = document.getElementById("detailCards");
+    const configOutput = document.getElementById("configOutput");
+
+    function sortedReviews() {
+      const list = [...reviews];
+      if (state.sort === "latest") {
+        list.sort((a, b) => b.date.localeCompare(a.date) || a.priority - b.priority);
+      } else if (state.sort === "photo") {
+        list.sort((a, b) => Number(b.photo) - Number(a.photo) || a.priority - b.priority);
+      } else {
+        list.sort((a, b) => a.priority - b.priority);
+      }
+      return list.slice(0, state.count);
+    }
+
+    function reviewCard(review) {
+      const photoClass = review.photo ? " photo" : "";
+      const photo = review.photo ? '<div class="review-photo" aria-label="포토 구매평 이미지"></div>' : "";
+      return `
+        <article class="review-card${photoClass}">
+          ${photo}
+          <div>
+            <div class="review-meta">
+              <span class="source-badge">${review.source}</span>
+              <span>${review.date}</span>
+            </div>
+            <div class="stars score-block">★★★★★</div>
+            <p class="review-text">${review.text}</p>
+            <div class="review-author">${review.author}</div>
+          </div>
+        </article>
+      `;
+    }
+
+    function placementName() {
+      return {
+        top: "afterCoupon",
+        detail: "reviewTabTop",
+        floating: "floatingBottom"
+      }[state.placement];
+    }
+
+    function renderConfig() {
+      configOutput.textContent = `<script>
+window.YD_REVIEW_WIDGET = {
+  productId: "yundiet-danbaekbap-672",
+  mount: "${placementName()}",
+  themeColor: "${state.color}",
+  reviewCount: ${state.count},
+  sort: "${state.sort}",
+  showRating: ${state.showRating},
+  showPhotoReviews: ${state.showPhoto},
+  showSourceLabel: ${state.showSource},
+  ctaText: "${state.cta}"
+};
+<\/script>
+<script src="/assets/yd-review-widget.js" defer><\/script>`;
+    }
+
+    function render() {
+      const cards = sortedReviews().map(reviewCard).join("");
+      topCards.innerHTML = cards;
+      detailCards.innerHTML = cards;
+      document.getElementById("topCta").textContent = state.cta;
+      document.getElementById("detailCta").textContent = state.cta;
+
+      document.documentElement.style.setProperty("--brand", state.color);
+      document.documentElement.style.setProperty("--brand-strong", state.color);
+      store.classList.remove("placement-top", "placement-detail", "placement-floating", "hide-rating", "hide-photo", "hide-source");
+      store.classList.add(`placement-${state.placement}`);
+      if (!state.showRating) store.classList.add("hide-rating");
+      if (!state.showPhoto) store.classList.add("hide-photo");
+      if (!state.showSource) store.classList.add("hide-source");
+
+      const cols = state.count >= 5 ? 3 : 2;
+      topCards.style.setProperty("--card-cols", Math.min(cols, 2));
+      detailCards.style.setProperty("--card-cols", cols);
+
+      document.getElementById("cardCountLabel").textContent = `${state.count}개`;
+      renderConfig();
+    }
+
+    document.querySelectorAll("[data-placement]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.placement = button.dataset.placement;
+        document.querySelectorAll("[data-placement]").forEach((item) => item.classList.toggle("active", item === button));
+        render();
+      });
+    });
+
+    document.querySelectorAll("[data-color]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.color = button.dataset.color;
+        document.querySelectorAll("[data-color]").forEach((item) => item.classList.toggle("active", item === button));
+        render();
+      });
+    });
+
+    document.getElementById("cardCount").addEventListener("input", (event) => {
+      state.count = Number(event.target.value);
+      render();
+    });
+
+    document.getElementById("sortMode").addEventListener("change", (event) => {
+      state.sort = event.target.value;
+      render();
+    });
+
+    document.getElementById("ctaMode").addEventListener("change", (event) => {
+      state.cta = event.target.value;
+      render();
+    });
+
+    document.getElementById("showRating").addEventListener("change", (event) => {
+      state.showRating = event.target.checked;
+      render();
+    });
+
+    document.getElementById("showPhoto").addEventListener("change", (event) => {
+      state.showPhoto = event.target.checked;
+      render();
+    });
+
+    document.getElementById("showSource").addEventListener("change", (event) => {
+      state.showSource = event.target.checked;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
