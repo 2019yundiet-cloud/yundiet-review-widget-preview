@@ -65,7 +65,7 @@
     var style = document.createElement('style');
     style.id = 'yd-inline-review-style';
     style.textContent = [
-      '#yd-review-top-proof,#yd-review-inline-system{--yd-brand:#2a341e;--yd-ink:#3d3d3d;--yd-muted:#73776f;--yd-line:rgba(42,52,30,.16);--yd-soft:#f7f7f5;--yd-star:#ff4d3f;--yd-badge:#f0f2f1;--yd-green-soft:#dcebdd;font-family:"Pretendard English",Pretendard,"Apple SD Gothic Neo","Malgun Gothic","Nanum Gothic","Noto Sans",sans-serif;color:var(--yd-ink);letter-spacing:0;box-sizing:border-box}',
+      '#yd-review-top-proof,#yd-review-inline-system,#yd-prime-review-link,.yd-mobile-review-mode{--yd-brand:#2a341e;--yd-ink:#3d3d3d;--yd-muted:#73776f;--yd-line:rgba(42,52,30,.16);--yd-soft:#f7f7f5;--yd-star:#ff4d3f;--yd-badge:#f0f2f1;--yd-green-soft:#dcebdd;font-family:"Pretendard English",Pretendard,"Apple SD Gothic Neo","Malgun Gothic","Nanum Gothic","Noto Sans",sans-serif;color:var(--yd-ink);letter-spacing:0;box-sizing:border-box}',
       '#yd-review-top-proof *,#yd-review-inline-system *{box-sizing:border-box;letter-spacing:0}',
       '#yd-review-top-proof{margin:18px 0 16px;border:1px solid var(--yd-line);border-left:4px solid var(--yd-brand);background:#fff;border-radius:6px;padding:14px 16px;display:grid;gap:10px}',
       '#yd-review-top-proof .yd-top-row{display:flex;align-items:center;justify-content:space-between;gap:14px}',
@@ -76,6 +76,15 @@
       '#yd-review-top-proof .yd-jump{border:1px solid rgba(42,52,30,.22);background:var(--yd-brand);color:#fff;border-radius:4px;height:34px;padding:0 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}',
       '#yd-review-top-proof .yd-mini-tags{display:flex;flex-wrap:wrap;gap:6px}',
       '#yd-review-top-proof .yd-mini-tags span{border:1px solid rgba(42,52,30,.12);background:var(--yd-badge);border-radius:10px;padding:4px 7px;font-size:11px;font-weight:700;color:#717680}',
+      '#yd-prime-review-link{margin:12px 0 10px;border-top:1px solid rgba(42,52,30,.16);border-bottom:1px solid rgba(42,52,30,.16);background:#fff;padding:10px 0;display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--yd-brand);max-width:520px}',
+      '#yd-prime-review-link .yd-prime-main{display:flex;align-items:center;gap:6px;min-width:0;white-space:nowrap;overflow:hidden}',
+      '#yd-prime-review-link .yd-stars{color:var(--yd-star);font-weight:900;font-size:13px;line-height:1}',
+      '#yd-prime-review-link .yd-prime-score{font-size:16px;font-weight:800;color:var(--yd-brand)}',
+      '#yd-prime-review-link .yd-prime-text{font-size:13px;color:#717680;overflow:hidden;text-overflow:ellipsis}',
+      '#yd-prime-review-link button{height:32px;border:1px solid var(--yd-brand);border-radius:4px;background:#fff;color:var(--yd-brand);padding:0 10px;font-size:12px;font-weight:800;white-space:nowrap;cursor:pointer}',
+      '.yd-mobile-review-mode .btn.defualt-cart{background:#fff!important;border:1px solid rgba(42,52,30,.18)!important;color:var(--yd-brand)!important;font-weight:800!important}',
+      '.yd-mobile-review-mode .btn.defualt-cart .yd-mobile-review-score{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:18px;margin-right:5px;border-radius:999px;background:var(--yd-brand);color:#fff;font-size:11px;font-weight:800;vertical-align:1px}',
+      '.yd-mobile-review-mode .btn.defualt-cart .yd-mobile-review-label{vertical-align:1px}',
       '#yd-review-inline-system{border-top:2px solid var(--yd-brand);padding:30px 0 38px;margin:10px 0 30px;background:#fff}',
       '#yd-review-inline-system .yd-system-head{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:30px;align-items:stretch;margin-bottom:24px}',
       '#yd-review-inline-system .yd-kicker{margin:0 0 9px;font-size:12px;line-height:1.35;color:var(--yd-brand);font-weight:800}',
@@ -121,7 +130,7 @@
       '#yd-review-inline-system .yd-native-note b{color:var(--yd-brand)}',
       '#yd-review-inline-system[data-filter="taste"] .yd-review-card:not([data-topic="taste"]),#yd-review-inline-system[data-filter="delivery"] .yd-review-card:not([data-topic="delivery"]),#yd-review-inline-system[data-filter="routine"] .yd-review-card:not([data-topic="routine"]),#yd-review-inline-system[data-filter="satiety"] .yd-review-card:not([data-topic="satiety"]){display:none}',
       '@media(max-width:900px){#yd-review-inline-system .yd-system-head,#yd-review-inline-system .yd-focus-grid{grid-template-columns:1fr}#yd-review-inline-system .yd-proof-grid,#yd-review-inline-system .yd-photo-strip,#yd-review-inline-system .yd-product-strip{grid-template-columns:1fr 1fr}#yd-review-inline-system .yd-product-img{height:170px}#yd-review-inline-system h3{font-size:23px}}',
-      '@media(max-width:560px){#yd-review-top-proof .yd-top-row{align-items:flex-start;flex-direction:column}#yd-review-inline-system{padding:24px 0 30px}#yd-review-inline-system .yd-system-head{gap:16px}#yd-review-inline-system h3{font-size:21px}#yd-review-inline-system .yd-lead-review{grid-template-columns:1fr}#yd-review-inline-system .yd-lead-photo{width:100%;max-width:180px}#yd-review-inline-system .yd-proof-grid,#yd-review-inline-system .yd-photo-strip,#yd-review-inline-system .yd-product-strip{grid-template-columns:1fr}#yd-review-inline-system .yd-product-img{height:220px}#yd-review-inline-system .yd-review-card{grid-template-columns:1fr;gap:8px}#yd-review-inline-system .yd-native-note{display:block}}'
+      '@media(max-width:560px){#yd-prime-review-link{margin:10px 0 8px;padding:9px 0}#yd-prime-review-link .yd-prime-text{font-size:12px}#yd-prime-review-link .yd-prime-score{font-size:15px}#yd-prime-review-link button{height:28px;padding:0 9px}#yd-review-top-proof .yd-top-row{align-items:flex-start;flex-direction:column}#yd-review-inline-system{padding:24px 0 30px}#yd-review-inline-system .yd-system-head{gap:16px}#yd-review-inline-system h3{font-size:21px}#yd-review-inline-system .yd-lead-review{grid-template-columns:1fr}#yd-review-inline-system .yd-lead-photo{width:100%;max-width:180px}#yd-review-inline-system .yd-proof-grid,#yd-review-inline-system .yd-photo-strip,#yd-review-inline-system .yd-product-strip{grid-template-columns:1fr}#yd-review-inline-system .yd-product-img{height:220px}#yd-review-inline-system .yd-review-card{grid-template-columns:1fr;gap:8px}#yd-review-inline-system .yd-native-note{display:block}}'
     ].join('\n');
     document.head.appendChild(style);
   }
@@ -138,11 +147,41 @@
     var el = document.createElement('div');
     el.id = 'yd-review-top-proof';
     el.innerHTML = '<div class="yd-top-row"><div class="yd-score"><span class="yd-stars">★★★★★</span><strong>'+escapeHtml(feed.product.rating)+'</strong><span>실제 구매평 '+count+'개에서 확인한 단백밥 핵심 포인트</span></div><button type="button" class="yd-jump">구매평 핵심 보기</button></div><div class="yd-mini-tags"><span>포만감</span><span>맛/영양</span><span>직장 점심</span><span>재구매</span></div>';
-    el.querySelector('.yd-jump').addEventListener('click', function(){
-      var target = document.querySelector('#yd-review-inline-system') || document.querySelector('#first_review');
-      if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
-    });
+    el.querySelector('.yd-jump').addEventListener('click', scrollToReviewSystem);
     return el;
+  }
+  function scrollToReviewSystem(ev){
+    if (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
+    var target = document.querySelector('#yd-review-inline-system') || document.querySelector('#yd-review-top-proof') || document.querySelector('#first_review');
+    if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  function makePrimeReviewLink(feed){
+    var count = formatCount(feed.product && feed.product.review_count);
+    var el = document.createElement('div');
+    el.id = 'yd-prime-review-link';
+    el.innerHTML = '<div class="yd-prime-main"><span class="yd-stars">★★★★★</span><span class="yd-prime-score">'+escapeHtml(feed.product.rating)+'</span><span class="yd-prime-text">실제 구매평 '+count+'개 · 핵심 보기</span></div><button type="button">리뷰보기</button>';
+    el.querySelector('button').addEventListener('click', scrollToReviewSystem);
+    return el;
+  }
+  function enhanceMobileBottomCta(feed){
+    if (!window.matchMedia || !window.matchMedia('(max-width: 640px)').matches) return;
+    var cart = document.querySelector('.buy_btns.mobile .cart_btn a.btn.defualt-cart');
+    if (!cart || cart.getAttribute('data-yd-review-bound') === '1') return;
+    var wrap = cart.closest && cart.closest('.cart_btn');
+    cart.setAttribute('data-yd-review-bound', '1');
+    cart.setAttribute('data-yd-original-label', text(cart));
+    cart.setAttribute('href', 'javascript:void(0)');
+    cart.innerHTML = '<span class="yd-mobile-review-score">'+escapeHtml(feed.product.rating || '')+'</span><span class="yd-mobile-review-label">리뷰보기</span>';
+    if (wrap) wrap.classList.add('yd-mobile-review-mode');
+    cart.addEventListener('click', function(ev){
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+      scrollToReviewSystem();
+    }, true);
   }
   function leadPhoto(feed){
     var img = (feed.review_images || [])[0] || (feed.product.images || [])[0];
@@ -196,6 +235,19 @@
   function render(feed){
     injectStyle();
     if (document.getElementById('yd-review-preview-root')) document.getElementById('yd-review-preview-root').remove();
+    waitFor(function(){
+      return document.querySelector('#prod_goods_form header h1') || document.querySelector('#prod_goods_form .view_tit') || document.querySelector('#prod_goods_form .pay_detail.full-width');
+    }, function(anchor){
+      if (!document.getElementById('yd-prime-review-link')) {
+        anchor.insertAdjacentElement('afterend', makePrimeReviewLink(feed));
+      }
+      enhanceMobileBottomCta(feed);
+    });
+    waitFor(function(){
+      return window.matchMedia && window.matchMedia('(max-width: 640px)').matches && document.querySelector('.buy_btns.mobile .cart_btn a.btn.defualt-cart');
+    }, function(){
+      enhanceMobileBottomCta(feed);
+    });
     waitFor(function(){
       return document.querySelector('._item_detail_wrap') || document.querySelector('.item_detail') || Array.prototype.find.call(document.querySelectorAll('a,button'), function(el){
         return visible(el) && /구매하기/.test(text(el));
