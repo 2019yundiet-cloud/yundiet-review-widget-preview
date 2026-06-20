@@ -211,7 +211,7 @@
         topText: '모바일 구매 직전 리뷰 확인 · {count}개',
         topButton: '하단 CTA 확인',
         primeText: '모바일 리뷰 CTA',
-        mobileLabel: '4.9 리뷰',
+        mobileLabel: '리뷰보기',
         tags: ['모바일 전환','구매 직전','리뷰 확인','CTA']
       },
       c10: {
