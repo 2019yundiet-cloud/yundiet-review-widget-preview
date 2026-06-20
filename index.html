@@ -3,23 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>윤식단 자사몰 리뷰 위젯 미리보기</title>
-  <meta name="theme-color" content="#2a341e">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232a341e'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-size='30' font-family='Arial' font-weight='700' fill='white'%3EY%3C/text%3E%3C/svg%3E">
+  <title>윤식단 리뷰 UX/UI 전략 시안 v2</title>
+  <meta name="theme-color" content="#243019">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23243019'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='28' font-family='Arial' font-weight='800' fill='white'%3EY%3C/text%3E%3C/svg%3E">
   <style>
     :root {
-      --brand: #2a341e;
-      --brand-strong: #1c2714;
-      --brand-soft: #edf2e7;
-      --ink: #252821;
-      --muted: #6b7165;
-      --line: #e6e8e1;
+      --olive: #243019;
+      --olive-2: #334225;
+      --leaf: #6f8d46;
+      --lime: #d8f35c;
+      --ink: #24271f;
+      --muted: #697062;
+      --soft: #f3f5ee;
       --paper: #ffffff;
-      --wash: #f7f8f4;
-      --accent: #ff4b38;
-      --blue: #2377c9;
-      --shadow: 0 18px 44px rgba(27, 35, 19, 0.12);
-      --radius: 8px;
+      --line: #e2e7da;
+      --warn: #ff4f3d;
+      --blue: #2f6fbe;
+      --yellow: #ffe46d;
+      --shadow: 0 18px 48px rgba(34, 44, 25, 0.13);
+      --tight: 8px;
       color-scheme: light;
     }
 
@@ -30,13 +32,13 @@
     body {
       margin: 0;
       color: var(--ink);
-      background: #f3f4ef;
+      background: #ecefe6;
       font-family: "Pretendard English", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      line-height: 1.45;
+      line-height: 1.48;
+      letter-spacing: 0;
     }
 
     button,
-    input,
     select {
       font: inherit;
     }
@@ -45,356 +47,371 @@
       cursor: pointer;
     }
 
-    .preview-shell {
+    a {
+      color: inherit;
+    }
+
+    .page {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 360px;
+      grid-template-columns: minmax(0, 1fr) 390px;
       min-height: 100vh;
     }
 
-    .preview-stage {
+    .main {
       min-width: 0;
-      padding: 24px;
+      padding: 28px;
     }
 
-    .settings {
+    .panel {
       position: sticky;
       top: 0;
       height: 100vh;
       overflow: auto;
-      border-left: 1px solid #dde1d6;
+      border-left: 1px solid #d8dece;
       background: #fbfcf8;
-      padding: 20px;
+      padding: 22px;
     }
 
-    .settings h1,
-    .settings h2,
-    .settings h3,
-    .store h1,
+    .sheet {
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+      gap: 22px;
+      align-items: stretch;
+      margin-bottom: 22px;
+    }
+
+    .hero-card,
+    .section,
+    .store,
+    .panel-card {
+      border: 1px solid var(--line);
+      border-radius: var(--tight);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: 28px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-card.dark {
+      background:
+        radial-gradient(circle at 78% 6%, rgba(216, 243, 92, 0.24), transparent 24%),
+        linear-gradient(135deg, #1c2614, #2e3d21 56%, #223018);
+      color: #fff;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 26px;
+      border-radius: 999px;
+      background: rgba(216, 243, 92, 0.14);
+      color: var(--lime);
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .hero h1 {
+      margin: 16px 0 12px;
+      font-size: clamp(32px, 3vw, 46px);
+      line-height: 1.12;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .hero p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 16px;
+      word-break: keep-all;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .metric {
+      min-height: 88px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--tight);
+      background: rgba(255, 255, 255, 0.08);
+      padding: 12px;
+    }
+
+    .metric strong {
+      display: block;
+      color: #fff;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 8px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .reference-card {
+      padding: 24px;
+    }
+
+    .reference-card h2,
+    .section h2,
+    .panel h2,
     .store h2,
     .store h3,
     .store p {
       margin: 0;
     }
 
-    .settings-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--line);
+    .reference-card h2 {
+      font-size: 22px;
+      line-height: 1.25;
     }
 
-    .settings-title {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 0;
-    }
-
-    .status-pill {
-      flex: 0 0 auto;
-      border: 1px solid #cad4bf;
-      background: #eef4e8;
-      color: var(--brand-strong);
-      border-radius: 999px;
-      padding: 6px 9px;
-      font-size: 12px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .settings-sub {
-      margin-top: 8px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .control-group {
-      padding: 18px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .control-title {
-      margin-bottom: 10px;
-      color: #3a3e34;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .segmented {
+    .reference-list {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
+      gap: 12px;
+      margin-top: 18px;
     }
 
-    .segmented button,
-    .chip-row button,
-    .outline-button {
-      min-height: 36px;
-      border: 1px solid #d8ddd1;
-      border-radius: var(--radius);
-      background: #fff;
-      color: #34382f;
-      font-size: 13px;
-      font-weight: 700;
+    .reference-item {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 12px;
+      border: 1px solid #e3e8dc;
+      border-radius: var(--tight);
+      background: #fafbf7;
     }
 
-    .segmented button.active,
-    .chip-row button.active {
-      border-color: var(--brand);
-      background: var(--brand);
+    .reference-icon {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--olive);
       color: #fff;
-      box-shadow: 0 8px 22px rgba(42, 52, 30, 0.18);
+      font-weight: 900;
     }
 
-    .swatches {
+    .reference-item strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .reference-item span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      word-break: keep-all;
+    }
+
+    .section {
+      padding: 24px;
+      margin-bottom: 22px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .section-kicker {
+      color: var(--leaf);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .section h2 {
+      margin-top: 4px;
+      font-size: 26px;
+      line-height: 1.25;
+    }
+
+    .section-copy {
+      max-width: 570px;
+      color: var(--muted);
+      font-size: 14px;
+      word-break: keep-all;
+    }
+
+    .strategy-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-
-    .swatch {
-      min-height: 42px;
-      border: 2px solid #fff;
-      border-radius: var(--radius);
-      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
-
-    .swatch.active {
-      outline: 3px solid rgba(42, 52, 30, 0.22);
-    }
-
-    .form-row {
-      display: grid;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .form-row label,
-    .toggle-row {
-      color: #3c4037;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .range-line {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      align-items: center;
-    }
-
-    input[type="range"] {
-      accent-color: var(--brand);
-      width: 100%;
-    }
-
-    select {
-      width: 100%;
-      border: 1px solid #d8ddd1;
-      border-radius: var(--radius);
-      background: #fff;
-      color: #262a22;
-      min-height: 38px;
-      padding: 0 10px;
-    }
-
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       gap: 12px;
-      margin-top: 10px;
     }
 
-    .toggle-row input {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--brand);
+    .strategy-card {
+      border: 1px solid var(--line);
+      border-radius: var(--tight);
+      background: #fbfcf8;
+      padding: 15px;
     }
 
-    .setting-note {
-      margin-top: 10px;
-      border: 1px solid #e0dfd4;
-      border-radius: var(--radius);
-      background: #fff;
-      padding: 10px;
-      color: #62675d;
-      font-size: 12px;
-    }
-
-    .code-box {
-      overflow: auto;
-      max-height: 230px;
-      border: 1px solid #dfe4d8;
-      border-radius: var(--radius);
-      background: #182214;
-      color: #eaf3e0;
-      padding: 12px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    .strategy-card .tag {
+      display: inline-flex;
+      min-height: 24px;
+      align-items: center;
+      border-radius: 999px;
+      background: var(--olive);
+      color: #fff;
+      padding: 0 9px;
       font-size: 11px;
-      line-height: 1.55;
-      white-space: pre;
+      font-weight: 900;
+    }
+
+    .strategy-card h3 {
+      margin: 12px 0 8px;
+      font-size: 16px;
+      line-height: 1.3;
+    }
+
+    .strategy-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      word-break: keep-all;
     }
 
     .store {
-      position: relative;
-      max-width: 1280px;
-      margin: 0 auto;
       overflow: hidden;
-      border: 1px solid #e0e2da;
-      border-radius: 14px;
-      background: var(--paper);
-      box-shadow: var(--shadow);
+      margin-bottom: 22px;
     }
 
     .store-top {
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 50px;
-      background: var(--brand);
+      min-height: 46px;
+      background: var(--olive);
       color: #fff36c;
-      font-weight: 800;
+      font-weight: 900;
     }
 
-    .nav-row {
+    .store-nav {
       display: grid;
-      grid-template-columns: 270px 1fr 320px;
-      align-items: center;
+      grid-template-columns: 280px 1fr 280px;
       gap: 16px;
-      min-height: 74px;
-      padding: 0 30px;
+      align-items: center;
+      min-height: 72px;
+      padding: 0 32px;
       border-bottom: 1px solid var(--line);
       background: #fff;
     }
 
-    .search-box {
+    .search {
       display: flex;
       align-items: center;
       justify-content: space-between;
       height: 42px;
-      border: 1px solid #aeb6a7;
+      border: 1px solid #aeb7a6;
       border-radius: 999px;
-      padding: 0 13px 0 18px;
-      color: #a3a79e;
+      padding: 0 14px 0 18px;
+      color: #a0a69a;
       font-size: 14px;
     }
 
-    .search-icon {
+    .search::after {
+      content: "";
       width: 18px;
       height: 18px;
-      border: 2px solid #2c3328;
+      border: 2px solid var(--olive);
       border-radius: 50%;
-      position: relative;
+      box-shadow: 8px 8px 0 -6px var(--olive);
+      transform: rotate(-6deg);
     }
 
-    .search-icon::after {
-      content: "";
-      position: absolute;
-      right: -5px;
-      bottom: -4px;
-      width: 8px;
-      height: 2px;
-      background: #2c3328;
-      transform: rotate(45deg);
-      border-radius: 2px;
-    }
-
-    .brand-mark {
+    .brand {
       text-align: center;
-      color: var(--brand);
+      color: var(--olive);
+      font-weight: 900;
+      letter-spacing: 0.18em;
     }
 
-    .brand-symbol {
+    .brand::before {
+      content: "Y";
       display: inline-grid;
       place-items: center;
-      width: 48px;
-      height: 32px;
-      margin-right: 6px;
-      border: 2px solid var(--brand);
+      width: 44px;
+      height: 30px;
+      margin-right: 8px;
+      border: 2px solid var(--olive);
       border-radius: 50%;
-      font-weight: 900;
-      vertical-align: middle;
+      letter-spacing: 0;
     }
 
-    .brand-name {
-      font-weight: 900;
-      letter-spacing: 0.22em;
-    }
-
-    .nav-actions {
+    .store-actions {
       display: flex;
-      align-items: center;
       justify-content: flex-end;
-      gap: 16px;
-      color: #272b23;
-      font-size: 14px;
-    }
-
-    .cart-icon {
-      width: 24px;
-      height: 24px;
-      border: 2px solid currentColor;
-      border-top: 0;
-      transform: skew(-8deg);
-      position: relative;
-    }
-
-    .cart-icon::before,
-    .cart-icon::after {
-      content: "";
-      position: absolute;
-      bottom: -7px;
-      width: 5px;
-      height: 5px;
-      background: currentColor;
-      border-radius: 50%;
-    }
-
-    .cart-icon::before {
-      left: 2px;
-    }
-
-    .cart-icon::after {
-      right: 2px;
-    }
-
-    .partner-btn {
-      border: 0;
-      border-radius: 999px;
-      background: var(--brand);
-      color: #fff;
-      min-height: 38px;
-      padding: 0 18px;
-      font-weight: 800;
-    }
-
-    .menu-row {
-      display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 70px;
-      height: 42px;
-      border-bottom: 1px solid #eceee8;
-      color: #2f332b;
+      gap: 16px;
+      color: #30342d;
+      font-size: 14px;
       font-weight: 700;
     }
 
-    .product-area {
-      padding: 18px 30px 34px;
+    .contact-btn,
+    .primary-btn,
+    .ghost-btn {
+      border-radius: 6px;
+      font-weight: 900;
+    }
+
+    .contact-btn {
+      border: 0;
+      background: var(--olive);
+      color: #fff;
+      min-height: 38px;
+      padding: 0 16px;
+      border-radius: 999px;
+    }
+
+    .store-menu {
+      display: flex;
+      justify-content: center;
+      gap: 68px;
+      min-height: 44px;
+      align-items: center;
+      border-bottom: 1px solid #ecefe7;
+      font-weight: 900;
+    }
+
+    .product {
+      padding: 28px 32px 0;
     }
 
     .crumb {
-      color: #8a9085;
+      color: #8b9185;
       font-size: 13px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .product-grid {
       display: grid;
-      grid-template-columns: minmax(360px, 1fr) minmax(410px, 0.88fr);
-      gap: 70px;
+      grid-template-columns: minmax(370px, 0.95fr) minmax(430px, 1fr);
+      gap: 60px;
       align-items: start;
     }
 
@@ -409,10 +426,10 @@
 
     .gallery-badge {
       position: absolute;
-      top: 12px;
       left: 12px;
+      top: 12px;
       border-radius: 4px;
-      background: var(--accent);
+      background: var(--warn);
       color: #fff;
       padding: 9px 8px;
       font-size: 12px;
@@ -421,38 +438,28 @@
 
     .thumbs {
       display: flex;
-      gap: 6px;
+      gap: 7px;
       margin-top: 10px;
     }
 
     .thumb {
-      width: 62px;
-      height: 62px;
+      width: 64px;
+      height: 64px;
       border: 2px solid #fff;
-      outline: 1px solid #d9ddd2;
+      outline: 1px solid #d8ddd0;
       background-image: url("https://cdn.imweb.me/thumbnail/20260120/beb9125a625ca.jpg");
       background-size: cover;
       background-position: center;
     }
 
-    .thumb:nth-child(2) {
-      background-position: 25% 50%;
-    }
-
-    .thumb:nth-child(3) {
-      background-position: 80% 45%;
-    }
-
-    .product-info h1 {
-      margin-top: 2px;
+    .product-info h2 {
       color: #3a3d36;
-      font-size: 24px;
-      line-height: 1.35;
-      font-weight: 850;
-      letter-spacing: 0;
+      font-size: 26px;
+      line-height: 1.32;
+      font-weight: 900;
     }
 
-    .badges {
+    .badge-row {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
@@ -463,139 +470,306 @@
       display: inline-flex;
       align-items: center;
       min-height: 24px;
-      border: 1px solid #dadfd5;
+      border: 1px solid #d8ded1;
       border-radius: 3px;
       padding: 0 9px;
-      color: #33372f;
+      color: #363b32;
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 900;
     }
 
-    .badge.hot {
-      border-color: transparent;
-      background: #ff5656;
+    .badge.red {
+      border: 0;
+      background: #ff5a55;
       color: #fff;
     }
 
     .badge.green {
-      border-color: transparent;
-      background: #dbead9;
-      color: var(--brand);
+      border: 0;
+      background: #dcebd9;
+      color: var(--olive);
     }
 
-    .rating-inline {
+    .rating-line {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-top: 10px;
-      color: #33372f;
-      font-size: 13px;
+      gap: 9px;
+      margin-top: 12px;
+      font-size: 14px;
     }
 
     .stars {
-      color: #ff422e;
+      color: var(--warn);
       letter-spacing: 1px;
-      font-size: 15px;
       white-space: nowrap;
     }
 
     .price {
-      margin-top: 10px;
-      color: #424640;
-      font-size: 26px;
-      font-weight: 500;
+      margin-top: 12px;
+      color: #3f443d;
+      font-size: 30px;
+      font-weight: 700;
     }
 
-    .coupon-card {
+    .coupon {
       display: grid;
       grid-template-columns: 1fr auto;
+      gap: 14px;
       align-items: center;
-      gap: 12px;
       margin-top: 18px;
-      border: 1px solid #eceee9;
-      border-radius: var(--radius);
+      border: 1px solid #e8ece4;
+      border-radius: var(--tight);
       padding: 18px 20px;
     }
 
-    .coupon-card strong {
+    .coupon strong {
       display: block;
       font-size: 27px;
-      line-height: 1.2;
+      line-height: 1.1;
     }
 
-    .coupon-card span {
+    .coupon span {
       display: block;
-      margin-top: 4px;
-      color: #53584e;
+      margin-top: 5px;
+      color: #555c50;
       font-size: 13px;
     }
 
     .dark-btn {
       border: 0;
+      min-height: 36px;
       border-radius: 5px;
-      background: var(--brand);
+      background: var(--olive);
       color: #fff;
-      min-height: 34px;
-      padding: 0 12px;
+      padding: 0 13px;
       font-size: 13px;
+      font-weight: 900;
+    }
+
+    .decision-brief {
+      position: relative;
+      margin-top: 18px;
+      border: 2px solid rgba(47, 111, 190, 0.28);
+      border-radius: var(--tight);
+      background:
+        linear-gradient(180deg, rgba(111, 141, 70, 0.08), rgba(255, 255, 255, 1) 52%),
+        #fff;
+      padding: 18px;
+      box-shadow: 0 18px 40px rgba(36, 48, 25, 0.12);
+    }
+
+    .decision-brief::before,
+    .review-hub::before,
+    .mobile-proof::before {
+      content: "라라스윗식 리뷰 전략 적용";
+      position: absolute;
+      left: 14px;
+      top: -14px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: #fff;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .brief-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .brief-kicker {
+      color: var(--leaf);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .brief-head h3 {
+      margin-top: 4px;
+      font-size: 22px;
+      line-height: 1.28;
+    }
+
+    .brief-score {
+      display: grid;
+      justify-items: end;
+      gap: 2px;
+      min-width: 118px;
+    }
+
+    .brief-score strong {
+      color: var(--olive);
+      font-size: 46px;
+      line-height: 0.95;
+    }
+
+    .brief-score span {
+      color: var(--muted);
+      font-size: 12px;
       font-weight: 800;
     }
 
-    .proof-row {
+    .question-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 16px 0 14px;
+    }
+
+    .question-chip {
+      border: 1px solid #dce4d4;
+      border-radius: 999px;
+      background: #f6f8f2;
+      color: var(--olive);
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .brief-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .mini-review {
+      border: 1px solid #e2e7dc;
+      border-radius: var(--tight);
+      background: #fff;
+      padding: 12px;
+      min-height: 128px;
+    }
+
+    .mini-review.featured {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 11px;
+    }
+
+    .review-photo {
+      min-height: 96px;
+      border-radius: 6px;
+      background-image: url("https://cdn.imweb.me/thumbnail/20260120/beb9125a625ca.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .review-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .source {
+      border-radius: 4px;
+      background: #f0f2f1;
+      color: #667064;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .mini-review p {
+      margin: 6px 0 0;
+      color: #31362d;
+      font-size: 13px;
+      word-break: keep-all;
+    }
+
+    .author {
+      margin-top: 9px;
+      color: #7a8174;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .proof-bars {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+      border-top: 1px solid #edf1e8;
+      padding-top: 13px;
+    }
+
+    .bar {
+      display: grid;
+      grid-template-columns: 86px 1fr 42px;
+      align-items: center;
+      gap: 8px;
+      color: #555d50;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .bar-track {
+      overflow: hidden;
+      height: 8px;
+      border-radius: 999px;
+      background: #eef2e8;
+    }
+
+    .bar-fill {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      background: var(--olive);
+    }
+
+    .trust-row {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 22px;
+      margin-top: 20px;
     }
 
-    .guide-link {
-      display: inline-block;
-      margin-top: 12px;
-      color: var(--brand);
-      font-size: 13px;
-      text-decoration: underline;
-    }
-
-    .shipping-card {
-      margin-top: 26px;
-      border-radius: var(--radius);
-      background: #f5f4f0;
-      padding: 18px;
+    .shipping {
+      margin-top: 24px;
+      border-radius: var(--tight);
+      background: #f4f3ef;
+      padding: 17px;
       text-align: center;
-      box-shadow: 0 5px 14px rgba(47, 54, 39, 0.09);
+      box-shadow: 0 4px 14px rgba(36, 48, 25, 0.08);
     }
 
-    .shipping-card strong {
+    .shipping strong {
       display: block;
-      color: var(--brand);
+      color: var(--olive);
       font-size: 16px;
     }
 
-    .shipping-card span {
+    .shipping span {
       display: block;
-      margin-top: 8px;
-      color: #62675d;
+      margin-top: 7px;
+      color: var(--muted);
       font-size: 13px;
     }
 
-    .option-list {
+    .options {
       display: grid;
       gap: 12px;
-      margin-top: 26px;
+      margin-top: 22px;
     }
 
     .option {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      min-height: 40px;
-      border: 1px solid #d9ddd5;
+      align-items: center;
+      min-height: 42px;
+      border: 1px solid #d9dfd1;
       padding: 0 12px;
-      color: #4a4e45;
+      color: #50554a;
       font-size: 13px;
     }
 
-    .chev {
+    .option::after {
+      content: "";
       width: 9px;
       height: 9px;
       border-right: 1px solid currentColor;
@@ -607,1060 +781,802 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-top: 18px;
+      margin-top: 16px;
     }
 
-    .buy-row button {
-      min-height: 46px;
-      border-radius: 6px;
-      border: 1px solid var(--brand);
-      font-weight: 900;
+    .primary-btn,
+    .ghost-btn {
+      min-height: 48px;
+      border: 1px solid var(--olive);
     }
 
-    .buy-row .primary {
-      background: var(--brand);
+    .primary-btn {
+      background: var(--olive);
       color: #fff;
     }
 
-    .buy-row .secondary {
+    .ghost-btn {
       background: #fff;
-      color: var(--brand);
-    }
-
-    .review-widget {
-      border: 1px solid color-mix(in srgb, var(--brand) 22%, #dfe5d9);
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 6%, #ffffff), #ffffff 70%);
-      box-shadow: 0 14px 34px rgba(42, 52, 30, 0.12);
-    }
-
-    .top-insert {
-      display: none;
-      margin-top: 18px;
-      padding: 16px;
-    }
-
-    .placement-top .top-insert {
-      display: block;
-    }
-
-    .widget-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 14px;
-    }
-
-    .widget-kicker {
-      color: var(--brand);
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    .widget-title {
-      margin-top: 2px;
-      color: #252a20;
-      font-size: 19px;
-      font-weight: 900;
-      line-height: 1.3;
-    }
-
-    .review-score {
-      display: grid;
-      justify-items: end;
-      gap: 2px;
-      min-width: 104px;
-    }
-
-    .score-number {
-      color: var(--brand);
-      font-size: 30px;
-      font-weight: 900;
-      line-height: 1;
-    }
-
-    .score-caption {
-      color: var(--muted);
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .review-phrase-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-
-    .phrase {
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--brand) 9%, #ffffff);
-      color: var(--brand-strong);
-      padding: 5px 9px;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .review-grid {
-      display: grid;
-      grid-template-columns: repeat(var(--card-cols, 2), minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .review-card {
-      min-height: 132px;
-      border: 1px solid #e3e7dc;
-      border-radius: var(--radius);
-      background: #fff;
-      padding: 12px;
-    }
-
-    .review-card.photo {
-      display: grid;
-      grid-template-columns: 86px 1fr;
-      gap: 10px;
-      min-height: 126px;
-    }
-
-    .review-photo {
-      min-height: 92px;
-      border-radius: 6px;
-      background-image: url("https://cdn.imweb.me/thumbnail/20260120/beb9125a625ca.jpg");
-      background-size: cover;
-      background-position: center;
-    }
-
-    .review-card:nth-child(2n) .review-photo {
-      background-position: 78% 46%;
-    }
-
-    .review-card:nth-child(3n) .review-photo {
-      background-position: 24% 58%;
-    }
-
-    .review-meta {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 6px;
-      color: #7b8176;
-      font-size: 12px;
-      margin-bottom: 8px;
-      min-width: 0;
-    }
-
-    .source-badge {
-      display: inline-flex;
-      align-items: center;
-      min-height: 20px;
-      border-radius: 4px;
-      background: #f0f2f1;
-      color: #68716a;
-      padding: 0 6px;
-      font-size: 11px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .review-meta span:not(.source-badge) {
-      white-space: nowrap;
-    }
-
-    .review-text {
-      color: #2e322b;
-      font-size: 13px;
-      word-break: keep-all;
-    }
-
-    .review-author {
-      margin-top: 10px;
-      color: #7a8074;
-      font-size: 12px;
-    }
-
-    .widget-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-top: 14px;
-      border-top: 1px solid #edf0e8;
-      padding-top: 12px;
-    }
-
-    .mini-proof {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .cta-link {
-      border: 0;
-      border-radius: 999px;
-      background: var(--brand);
-      color: #fff;
-      min-height: 34px;
-      padding: 0 14px;
-      font-size: 12px;
-      font-weight: 900;
-      white-space: nowrap;
+      color: var(--olive);
     }
 
     .detail-tabs {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       margin-top: 34px;
-      border-top: 1px solid #e5e8df;
-      border-bottom: 1px solid #e5e8df;
+      border-top: 1px solid #e3e8dc;
+      border-bottom: 1px solid #e3e8dc;
     }
 
     .detail-tabs button {
       border: 0;
-      border-right: 1px solid #e5e8df;
+      border-right: 1px solid #e3e8dc;
+      min-height: 50px;
       background: #fff;
-      color: #30342c;
-      min-height: 48px;
-      font-weight: 800;
-    }
-
-    .detail-tabs button:first-child {
-      background: var(--brand);
-      color: #fff;
-    }
-
-    .detail-tabs button:last-child {
-      border-right: 0;
-    }
-
-    .detail-copy {
-      display: grid;
-      justify-items: center;
-      gap: 24px;
-      padding: 44px 20px 34px;
-      text-align: center;
-    }
-
-    .detail-copy h2 {
-      max-width: 760px;
-      color: var(--brand);
-      font-size: 36px;
-      line-height: 1.25;
+      color: #30342d;
       font-weight: 900;
     }
 
-    .detail-visual {
+    .detail-tabs button:first-child {
+      background: var(--olive);
+      color: #fff;
+    }
+
+    .product-story {
+      display: grid;
+      justify-items: center;
+      gap: 24px;
+      padding: 48px 18px 32px;
+      text-align: center;
+    }
+
+    .product-story h3 {
+      max-width: 760px;
+      color: var(--olive);
+      font-size: 34px;
+      line-height: 1.25;
+      margin: 0;
+    }
+
+    .story-image {
       width: min(620px, 100%);
       aspect-ratio: 16 / 9;
-      border-radius: var(--radius);
+      border-radius: var(--tight);
       background:
-        linear-gradient(135deg, rgba(42, 52, 30, 0.06), rgba(35, 119, 201, 0.18)),
+        linear-gradient(135deg, rgba(36, 48, 25, 0.06), rgba(47, 111, 190, 0.18)),
         url("https://cdn.imweb.me/thumbnail/20260120/beb9125a625ca.jpg");
       background-size: cover;
       background-position: center;
     }
 
-    .detail-review-section {
-      display: none;
-      padding: 34px 42px 48px;
-      border-top: 1px solid #edf0e8;
+    .review-hub {
+      position: relative;
+      margin: 0 32px 34px;
+      border: 2px solid rgba(47, 111, 190, 0.28);
+      border-radius: var(--tight);
       background: #fff;
+      padding: 24px;
+      box-shadow: 0 20px 44px rgba(36, 48, 25, 0.11);
     }
 
-    .placement-detail .detail-review-section {
-      display: block;
-    }
-
-    .detail-review-shell {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 22px;
-    }
-
-    .review-dashboard {
+    .hub-head {
       display: grid;
-      grid-template-columns: 250px 1fr;
-      gap: 22px;
-      margin-bottom: 20px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: start;
     }
 
-    .score-panel {
-      border-radius: var(--radius);
-      background: color-mix(in srgb, var(--brand) 7%, #ffffff);
-      padding: 18px;
-    }
-
-    .score-panel .score-number {
-      font-size: 48px;
-    }
-
-    .bar-list {
-      display: grid;
-      gap: 8px;
-      align-content: center;
-    }
-
-    .bar-row {
-      display: grid;
-      grid-template-columns: 36px 1fr 44px;
-      gap: 8px;
-      align-items: center;
-      color: #5f665a;
+    .hub-title {
+      color: var(--leaf);
       font-size: 12px;
+      font-weight: 900;
     }
 
-    .bar-track {
-      overflow: hidden;
-      height: 8px;
+    .hub-head h3 {
+      margin: 4px 0 0;
+      font-size: 28px;
+      line-height: 1.24;
+    }
+
+    .hub-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .filter-btn {
+      min-height: 34px;
+      border: 1px solid #d8dfd0;
       border-radius: 999px;
-      background: #edf0ea;
+      background: #fff;
+      color: #3b4235;
+      padding: 0 12px;
+      font-size: 12px;
+      font-weight: 900;
     }
 
-    .bar-fill {
-      height: 100%;
-      border-radius: 999px;
-      background: var(--brand);
+    .filter-btn.active {
+      border-color: var(--olive);
+      background: var(--olive);
+      color: #fff;
     }
 
-    .photo-strip {
+    .keyword-cloud {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .keyword {
+      border: 1px solid #e0e6d8;
+      border-radius: var(--tight);
+      background: #f8faf4;
+      padding: 13px;
+    }
+
+    .keyword strong {
+      display: block;
+      font-size: 15px;
+    }
+
+    .keyword span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .photo-proof {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 8px;
-      margin: 16px 0;
+      gap: 9px;
+      margin: 18px 0;
     }
 
-    .photo-strip .review-photo {
+    .photo-proof .review-photo {
       aspect-ratio: 1 / 1;
       min-height: 0;
     }
 
-    .floating-widget {
+    .review-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .review-card {
+      border: 1px solid #e2e7dc;
+      border-radius: var(--tight);
+      background: #fff;
+      padding: 13px;
+      min-height: 190px;
+    }
+
+    .review-card h4 {
+      margin: 8px 0 7px;
+      font-size: 15px;
+      line-height: 1.32;
+    }
+
+    .review-card p {
+      color: #3b4038;
+      font-size: 13px;
+      word-break: keep-all;
+    }
+
+    .mobile-proof {
+      position: relative;
+      margin-top: 18px;
+      border: 2px solid rgba(47, 111, 190, 0.28);
+      border-radius: 22px;
+      background: #111;
+      padding: 14px;
+      color: #fff;
+    }
+
+    .phone-shell {
+      border-radius: 18px;
+      background: #fff;
+      color: var(--ink);
+      overflow: hidden;
+    }
+
+    .phone-image {
+      aspect-ratio: 1 / 0.82;
+      background-image: url("https://cdn.imweb.me/thumbnail/20260120/beb9125a625ca.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .phone-content {
+      padding: 14px;
+    }
+
+    .phone-content h3 {
+      margin: 0;
+      font-size: 19px;
+      line-height: 1.3;
+    }
+
+    .phone-proof-strip {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .phone-proof-card {
+      border: 1px solid #e1e6d8;
+      border-radius: var(--tight);
+      background: #f9faf6;
+      padding: 10px;
+      font-size: 12px;
+    }
+
+    .floating-ticker {
       display: none;
       position: fixed;
-      right: 390px;
-      bottom: 26px;
-      width: min(360px, calc(100vw - 420px));
-      border: 1px solid color-mix(in srgb, var(--brand) 24%, #dce4d6);
+      left: 26px;
+      bottom: 24px;
+      grid-template-columns: 42px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      width: min(420px, calc(100vw - 52px));
+      border: 1px solid #dce4d4;
       border-radius: 999px;
       background: #fff;
-      box-shadow: 0 16px 38px rgba(31, 39, 24, 0.19);
+      box-shadow: 0 16px 40px rgba(25, 33, 17, 0.18);
       padding: 9px 12px;
       z-index: 20;
     }
 
-    .store.placement-floating ~ .floating-widget {
-      display: block;
-    }
-
-    .floating-inner {
-      display: grid;
-      grid-template-columns: 38px 1fr auto;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .floating-avatar {
+    .ticker-icon {
       display: grid;
       place-items: center;
-      width: 38px;
-      height: 38px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-      background: var(--brand);
+      background: var(--olive);
       color: #fff;
-      font-size: 15px;
       font-weight: 900;
     }
 
-    .floating-title {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color: #2b3028;
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .floating-sub {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color: #777d71;
-      font-size: 12px;
-    }
-
-    .floating-chip {
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--brand) 10%, #fff);
-      color: var(--brand);
-      padding: 6px 9px;
-      font-size: 12px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .kakao-float {
-      position: absolute;
-      right: 30px;
-      bottom: 30px;
-      display: grid;
-      place-items: center;
-      width: 84px;
-      height: 48px;
-      border-radius: 999px;
-      background: #ffd900;
-      color: #111;
-      font-weight: 900;
-      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.14);
-      z-index: 3;
-    }
-
-    .active-area {
-      position: relative;
-    }
-
-    .active-area::before {
-      content: "코드 삽입 미리보기";
-      position: absolute;
-      top: -12px;
-      left: 16px;
-      z-index: 2;
-      border-radius: 999px;
-      background: var(--blue);
-      color: #fff;
-      padding: 4px 9px;
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-    .placement-top .top-insert,
-    .placement-detail .detail-review-shell {
-      outline: 2px solid rgba(35, 119, 201, 0.38);
-      outline-offset: 4px;
-    }
-
-    .hide-rating .score-block,
-    .hide-rating .review-score,
-    .hide-rating .score-panel,
-    .hide-rating .bar-list {
-      display: none;
-    }
-
-    .hide-photo .photo-strip,
-    .hide-photo .review-photo {
-      display: none;
-    }
-
-    .hide-photo .review-card.photo {
+    .ticker-copy strong {
       display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
     }
 
-    .hide-source .source-badge {
-      display: none;
+    .ticker-copy span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 12px;
     }
 
-    @media (max-width: 1180px) {
-      .preview-shell {
+    .ticker-score {
+      border-radius: 999px;
+      background: #edf4e7;
+      color: var(--olive);
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .panel h2 {
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    .panel-sub {
+      margin: 9px 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+      word-break: keep-all;
+    }
+
+    .panel-card {
+      box-shadow: none;
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+
+    .panel-card h3 {
+      margin: 0 0 9px;
+      font-size: 14px;
+    }
+
+    .panel-card ul {
+      display: grid;
+      gap: 7px;
+      margin: 0;
+      padding-left: 18px;
+      color: #555d50;
+      font-size: 13px;
+    }
+
+    .source-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .source-link {
+      display: block;
+      border: 1px solid #e0e6d8;
+      border-radius: var(--tight);
+      background: #fff;
+      padding: 10px;
+      color: #36402d;
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .implementation {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .impl-step {
+      border: 1px solid #e0e6d8;
+      border-radius: var(--tight);
+      background: #fbfcf8;
+      padding: 14px;
+    }
+
+    .impl-step strong {
+      display: block;
+      color: var(--olive);
+      font-size: 13px;
+    }
+
+    .impl-step span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      word-break: keep-all;
+    }
+
+    @media (max-width: 1240px) {
+      .page {
         grid-template-columns: 1fr;
       }
 
-      .settings {
+      .panel {
         position: static;
         height: auto;
         border-left: 0;
-        border-top: 1px solid #dde1d6;
+        border-top: 1px solid #d8dece;
       }
 
-      .floating-widget {
-        right: 24px;
-        width: min(360px, calc(100vw - 48px));
+      .floating-ticker {
+        display: none;
       }
     }
 
-    @media (max-width: 900px) {
-      .preview-stage {
-        padding: 12px;
-      }
-
-      .store {
-        border-radius: 10px;
-      }
-
-      .store-top {
-        min-height: 42px;
-        padding: 0 12px;
-        font-size: 13px;
-      }
-
-      .nav-row {
-        grid-template-columns: 1fr auto;
-        padding: 12px 14px;
-      }
-
-      .search-box,
-      .nav-actions {
-        display: none;
-      }
-
-      .brand-mark {
-        text-align: left;
-      }
-
-      .menu-row {
-        gap: 28px;
-        height: 40px;
-        font-size: 13px;
-      }
-
-      .product-area {
+    @media (max-width: 980px) {
+      .main {
         padding: 14px;
       }
 
+      .hero,
       .product-grid {
         grid-template-columns: 1fr;
-        gap: 22px;
       }
 
-      .product-info h1 {
-        font-size: 21px;
+      .strategy-grid,
+      .keyword-cloud,
+      .review-list,
+      .implementation {
+        grid-template-columns: 1fr 1fr;
       }
 
-      .coupon-card {
-        grid-template-columns: 1fr;
+      .store-nav {
+        grid-template-columns: 1fr auto;
+        padding: 12px 16px;
       }
 
-      .coupon-card strong {
-        font-size: 23px;
+      .search,
+      .store-actions {
+        display: none;
       }
 
-      .review-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .review-card.photo {
-        grid-template-columns: 76px 1fr;
-      }
-
-      .detail-copy h2 {
-        font-size: 27px;
-      }
-
-      .detail-review-section {
-        padding: 20px 12px 30px;
-      }
-
-      .detail-review-shell {
-        padding: 16px;
-      }
-
-      .review-dashboard {
-        grid-template-columns: 1fr;
-      }
-
-      .photo-strip {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .settings {
-        padding: 16px;
-      }
-
-      .segmented {
-        grid-template-columns: 1fr;
-      }
-
-      .kakao-float {
-        right: 14px;
-        bottom: 14px;
+      .brand {
+        text-align: left;
       }
     }
 
-    @media (max-width: 560px) {
-      .preview-stage {
+    @media (max-width: 640px) {
+      .main {
         padding: 0;
       }
 
+      .sheet {
+        max-width: none;
+      }
+
+      .hero-card,
+      .section,
       .store {
-        border-radius: 0;
         border-left: 0;
         border-right: 0;
+        border-radius: 0;
       }
 
-      .menu-row {
-        justify-content: space-around;
+      .hero {
         gap: 0;
+        margin-bottom: 0;
       }
 
-      .gallery-main {
-        margin-left: -14px;
-        margin-right: -14px;
-        aspect-ratio: 1 / 0.92;
+      .hero-card {
+        padding: 22px 18px;
       }
 
-      .thumbs {
-        overflow: auto;
-        padding-bottom: 2px;
-      }
-
-      .widget-head,
-      .widget-footer {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .review-score {
-        justify-items: start;
-      }
-
-      .buy-row {
+      .hero-metrics,
+      .strategy-grid,
+      .keyword-cloud,
+      .review-list,
+      .implementation,
+      .brief-grid {
         grid-template-columns: 1fr;
       }
 
-      .floating-widget {
-        right: 10px;
-        bottom: 78px;
-        width: calc(100vw - 20px);
+      .photo-proof {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .product {
+        padding: 16px 16px 0;
+      }
+
+      .product-info h2 {
+        font-size: 22px;
+      }
+
+      .gallery-main {
+        margin-left: -16px;
+        margin-right: -16px;
+        aspect-ratio: 1 / 0.9;
+      }
+
+      .coupon,
+      .brief-head,
+      .hub-head {
+        grid-template-columns: 1fr;
+      }
+
+      .brief-score {
+        justify-items: start;
+      }
+
+      .mini-review.featured {
+        grid-template-columns: 78px 1fr;
+      }
+
+      .review-hub {
+        margin: 0 12px 26px;
+        padding: 18px 14px;
+      }
+
+      .store-menu {
+        justify-content: space-around;
+        gap: 0;
+        font-size: 14px;
+      }
+
+      .detail-tabs {
+        grid-template-columns: 1fr;
+      }
+
+      .product-story h3 {
+        font-size: 26px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="preview-shell">
-    <div class="preview-stage">
-      <div id="store" class="store placement-detail">
-        <div class="store-top">카카오채널 추가하고 18,000원 쿠폰팩 받기!</div>
-        <div class="nav-row">
-          <div class="search-box"><span>Search</span><span class="search-icon" aria-hidden="true"></span></div>
-          <div class="brand-mark" aria-label="윤식단">
-            <span class="brand-symbol">Y</span><span class="brand-name">윤식단</span>
+  <div class="page">
+    <main class="main">
+      <div class="sheet">
+        <section class="hero">
+          <div class="hero-card dark">
+            <span class="eyebrow">Lalasweet / Alpha Review Benchmark</span>
+            <h1>리뷰를 목록이 아니라<br>구매 결정을 밀어주는 증거 시스템으로</h1>
+            <p>라라스윗처럼 리뷰 데이터를 위젯화하되, 윤식단은 식단 구매자가 실제로 망설이는 질문을 기준으로 재배열해야 합니다.</p>
+            <div class="hero-metrics">
+              <div class="metric"><strong>4.9</strong><span>기존 평점 자산</span></div>
+              <div class="metric"><strong>21,085</strong><span>상품 상세 리뷰 볼륨</span></div>
+              <div class="metric"><strong>4 Proof</strong><span>양 · 맛 · 루틴 · 배송</span></div>
+            </div>
           </div>
-          <div class="nav-actions">
-            <span>로그인</span>
-            <span>회원가입</span>
-            <span class="cart-icon" aria-hidden="true"></span>
-            <button class="partner-btn" type="button">제휴문의</button>
+          <div class="hero-card reference-card">
+            <h2>레퍼런스에서 가져올 것과 버릴 것</h2>
+            <div class="reference-list">
+              <div class="reference-item">
+                <span class="reference-icon">1</span>
+                <div><strong>라라스윗식 압축</strong><span>구매 영역은 단순하게 두고, 리뷰/상세 탭에서 증거를 강하게 모읍니다.</span></div>
+              </div>
+              <div class="reference-item">
+                <span class="reference-icon">2</span>
+                <div><strong>알파리뷰식 위젯 조합</strong><span>포토, 베스트, 키워드, 플로팅, 스마트스토어 연동을 목적별로 나눠 배치합니다.</span></div>
+              </div>
+              <div class="reference-item">
+                <span class="reference-icon">3</span>
+                <div><strong>윤식단식 재해석</strong><span>아이스크림과 달리 식단은 맛보다 “한 끼로 버틸 수 있나”가 핵심 장벽입니다.</span></div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="menu-row"><span>SHOP</span><span>BRAND</span><span>COMMUNITY</span></div>
+        </section>
 
-        <main class="product-area">
-          <div class="crumb">Home &nbsp;&gt;&nbsp; 도시락 식단</div>
-          <section class="product-grid">
+        <section class="section">
+          <div class="section-head">
             <div>
-              <div class="gallery-main">
-                <span class="gallery-badge">BEST</span>
+              <div class="section-kicker">Review Strategy</div>
+              <h2>윤식단 리뷰 UI는 네 가지 질문에 답해야 합니다</h2>
+            </div>
+            <p class="section-copy">기존처럼 평점과 최신 리뷰만 나열하면 고객은 “내 상황에도 맞을까?”를 다시 스크롤해서 찾아야 합니다. 위젯은 그 탐색 비용을 먼저 줄이는 역할이어야 합니다.</p>
+          </div>
+          <div class="strategy-grid">
+            <article class="strategy-card">
+              <span class="tag">Barrier 01</span>
+              <h3>양과 포만감</h3>
+              <p>다이어트 도시락은 적을 것 같다는 의심을 “3시까지 버팀”, “밥이 있어 든든함” 리뷰로 바로 해소합니다.</p>
+            </article>
+            <article class="strategy-card">
+              <span class="tag">Barrier 02</span>
+              <h3>맛과 질림</h3>
+              <p>맛있다는 말보다 “돌고 돌아 윤식단”, “소스/구성 조합”처럼 반복 구매 이유를 노출합니다.</p>
+            </article>
+            <article class="strategy-card">
+              <span class="tag">Barrier 03</span>
+              <h3>직장 점심 루틴</h3>
+              <p>사무실, 점심, 야근, 냉동실 쟁여두기처럼 실제 사용 장면을 기준으로 리뷰를 필터링합니다.</p>
+            </article>
+            <article class="strategy-card">
+              <span class="tag">Barrier 04</span>
+              <h3>냉동 배송 신뢰</h3>
+              <p>냉동식품 특성상 배송/보관 불안을 별도 키워드로 분리해 FAQ와 연결합니다.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="store" aria-label="윤식단 자사몰 적용 시안">
+          <div class="store-top">카카오채널 추가하고 18,000원 쿠폰팩 받기!</div>
+          <div class="store-nav">
+            <div class="search">Search</div>
+            <div class="brand">윤식단</div>
+            <div class="store-actions">
+              <span>로그인</span>
+              <span>회원가입</span>
+              <button class="contact-btn" type="button">제휴문의</button>
+            </div>
+          </div>
+          <div class="store-menu"><span>SHOP</span><span>BRAND</span><span>COMMUNITY</span></div>
+
+          <div class="product">
+            <div class="crumb">Home &gt; 도시락 식단</div>
+            <div class="product-grid">
+              <div>
+                <div class="gallery-main"><span class="gallery-badge">BEST</span></div>
+                <div class="thumbs"><span class="thumb"></span><span class="thumb"></span><span class="thumb"></span></div>
+                <div class="mobile-proof">
+                  <div class="phone-shell">
+                    <div class="phone-image"></div>
+                    <div class="phone-content">
+                      <h3>모바일에서는 구매 버튼 위에 짧은 리뷰 증거만</h3>
+                      <div class="phone-proof-strip">
+                        <div class="phone-proof-card"><strong>직장 점심 후기</strong><br>“점심에 도시락 가져가기 귀찮을 때 딱 좋아요.”</div>
+                        <div class="phone-proof-card"><strong>포만감 후기</strong><br>“양이 너무 적지 않아서 오후까지 든든해요.”</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="thumbs" aria-label="상품 이미지 썸네일">
-                <span class="thumb"></span>
-                <span class="thumb"></span>
-                <span class="thumb"></span>
+
+              <div class="product-info">
+                <h2>(단백질 50g) 단백질 도시락 10종 단백밥 단품 골라담기</h2>
+                <div class="badge-row"><span class="badge">BEST</span><span class="badge">MD</span><span class="badge">HOT</span><span class="badge">오늘출발</span></div>
+                <div class="rating-line"><span class="stars">★★★★★</span><strong>21,085개 구매평</strong></div>
+                <div class="price">5,490원</div>
+                <div class="coupon">
+                  <div><strong>3,500원 할인</strong><span>[비밀쿠폰] 단백밥 무료배송 쿠폰</span></div>
+                  <button class="dark-btn" type="button">쿠폰받기</button>
+                </div>
+
+                <section class="decision-brief" aria-label="구매 결정 리뷰 브리프">
+                  <div class="brief-head">
+                    <div>
+                      <div class="brief-kicker">구매 버튼 위 리뷰 브리프</div>
+                      <h3>나와 비슷한 사람이 왜 재구매했는지 먼저 보여줍니다</h3>
+                    </div>
+                    <div class="brief-score">
+                      <strong>4.9</strong>
+                      <span class="stars">★★★★★</span>
+                      <span>총 21,085개</span>
+                    </div>
+                  </div>
+                  <div class="question-row">
+                    <span class="question-chip">양이 충분한가</span>
+                    <span class="question-chip">맛이 질리지 않나</span>
+                    <span class="question-chip">회사 점심에 맞나</span>
+                    <span class="question-chip">배송/보관 괜찮나</span>
+                  </div>
+                  <div class="brief-grid">
+                    <article class="mini-review featured">
+                      <div class="review-photo"></div>
+                      <div>
+                        <div class="review-meta"><span class="source">스마트스토어</span><span>포만감</span></div>
+                        <span class="stars">★★★★★</span>
+                        <p>양이 너무 적을까 걱정했는데 밥이 있어서 점심으로 먹기 든든했습니다.</p>
+                        <div class="author">rnrd********</div>
+                      </div>
+                    </article>
+                    <article class="mini-review">
+                      <div class="review-meta"><span class="source">자사몰</span><span>직장 점심</span></div>
+                      <span class="stars">★★★★★</span>
+                      <p>사무실 근처 밥집 대신 주문했어요. 냉동실에 쟁여두기 좋고 조리도 편합니다.</p>
+                      <div class="author">dl****</div>
+                    </article>
+                  </div>
+                  <div class="proof-bars">
+                    <div class="bar"><span>든든함</span><span class="bar-track"><span class="bar-fill" style="width:86%"></span></span><strong>86%</strong></div>
+                    <div class="bar"><span>맛 만족</span><span class="bar-track"><span class="bar-fill" style="width:78%"></span></span><strong>78%</strong></div>
+                    <div class="bar"><span>재구매</span><span class="bar-track"><span class="bar-fill" style="width:64%"></span></span><strong>64%</strong></div>
+                  </div>
+                </section>
+
+                <div class="trust-row"><span class="badge red">HACCP 인증</span><span class="badge green">윤식단 only</span></div>
+                <div class="shipping"><strong>지금 주문시 6/22(월)에 발송됩니다</strong><span>배송 마감까지 50:35:47</span></div>
+                <div class="options">
+                  <div class="option">단백밥 단품 골라담기 (필수)</div>
+                  <div class="option">단백질 추가구성 [19%할인] (선택)</div>
+                  <div class="option">저당소스 추가 (선택)</div>
+                </div>
+                <div class="buy-row"><button class="ghost-btn" type="button">장바구니</button><button class="primary-btn" type="button">구매하기</button></div>
               </div>
             </div>
 
-            <div class="product-info">
-              <h1>(단백질 50g) 단백질 도시락 10종 단백밥 단품 골라담기</h1>
-              <div class="badges">
-                <span class="badge">BEST</span>
-                <span class="badge">MD</span>
-                <span class="badge">HOT</span>
-                <span class="badge">오늘출발</span>
+            <div class="detail-tabs"><button type="button">상세정보</button><button type="button">구매평 (21085)</button><button type="button">Q&amp;A (257)</button></div>
+            <div class="product-story">
+              <h3><span style="background:var(--olive);color:#fff;padding:0 8px;">상세 중간</span>에서는 제품 설명보다 고객 경험 증거를 먼저 만납니다</h3>
+              <div class="story-image"></div>
+            </div>
+          </div>
+
+          <section class="review-hub" aria-label="리뷰 허브 시안">
+            <div class="hub-head">
+              <div>
+                <div class="hub-title">리뷰 허브 / 구매평 탭 상단</div>
+                <h3>후기 2만 개를 상황별 구매 확신으로 재정렬</h3>
               </div>
-              <div class="rating-inline score-block">
+              <div class="hub-actions">
+                <button class="filter-btn active" type="button">전체</button>
+                <button class="filter-btn" type="button">직장 점심</button>
+                <button class="filter-btn" type="button">포만감</button>
+                <button class="filter-btn" type="button">재구매</button>
+                <button class="filter-btn" type="button">배송/보관</button>
+              </div>
+            </div>
+
+            <div class="keyword-cloud">
+              <div class="keyword"><strong>든든해요</strong><span>1,842회 언급</span></div>
+              <div class="keyword"><strong>양이 좋아요</strong><span>1,136회 언급</span></div>
+              <div class="keyword"><strong>점심 대용</strong><span>928회 언급</span></div>
+              <div class="keyword"><strong>계속 시켜요</strong><span>774회 언급</span></div>
+            </div>
+
+            <div class="photo-proof" aria-label="포토 리뷰 프루프">
+              <div class="review-photo"></div><div class="review-photo"></div><div class="review-photo"></div>
+              <div class="review-photo"></div><div class="review-photo"></div><div class="review-photo"></div>
+            </div>
+
+            <div class="review-list">
+              <article class="review-card">
+                <div class="review-meta"><span class="source">스마트스토어</span><span>직장 점심</span></div>
                 <span class="stars">★★★★★</span>
-                <span><strong>21,085</strong>개 구매평</span>
-              </div>
-              <div class="price">5,490원</div>
-
-              <div class="coupon-card">
-                <div>
-                  <strong>3,500원 할인</strong>
-                  <span>[비밀쿠폰] 단백밥 무료배송 쿠폰</span>
-                </div>
-                <button class="dark-btn" type="button">쿠폰받기</button>
-              </div>
-
-              <section class="review-widget top-insert active-area" aria-label="상품 상단 리뷰 위젯">
-                <div class="widget-head">
-                  <div>
-                    <div class="widget-kicker">자사몰 리뷰 위젯</div>
-                    <h2 class="widget-title">구매 전 가장 많이 확인한 실제 후기</h2>
-                  </div>
-                  <div class="review-score">
-                    <span class="score-number">4.9</span>
-                    <span class="stars">★★★★★</span>
-                    <span class="score-caption">총 21,085개</span>
-                  </div>
-                </div>
-                <div class="review-phrase-row">
-                  <span class="phrase">든든해요</span>
-                  <span class="phrase">양이 좋아요</span>
-                  <span class="phrase">점심 대용</span>
-                  <span class="phrase">재구매</span>
-                </div>
-                <div id="topCards" class="review-grid"></div>
-                <div class="widget-footer">
-                  <span class="mini-proof">포토 구매평 11,509개 중 일부를 먼저 보여줍니다.</span>
-                  <button id="topCta" class="cta-link" type="button">구매평 전체 보기</button>
-                </div>
-              </section>
-
-              <div class="proof-row">
-                <span class="badge hot">HACCP 인증</span>
-                <span class="badge green">윤식단 only</span>
-              </div>
-              <a class="guide-link" href="#" aria-label="관련 공식 가이드">관련 공식 가이드: 직장인 점심 냉동도시락 고르는 법</a>
-
-              <div class="shipping-card">
-                <strong>지금 주문시 6/22(월)에 발송됩니다</strong>
-                <span>배송 마감까지 50:35:47</span>
-              </div>
-
-              <div class="option-list">
-                <div class="option"><span>단백밥 단품 골라담기 (필수)</span><span class="chev"></span></div>
-                <div class="option"><span>단백질 추가구성 [19%할인] (선택)</span><span class="chev"></span></div>
-                <div class="option"><span>저당소스 추가 (선택)</span><span class="chev"></span></div>
-                <div class="option"><span>아이스팩 추가 (선택)</span><span class="chev"></span></div>
-              </div>
-
-              <div class="buy-row">
-                <button class="secondary" type="button">장바구니</button>
-                <button class="primary" type="button">구매하기</button>
-              </div>
+                <h4>“밥집 대신 사무실 냉동실에 넣어두고 먹습니다.”</h4>
+                <p>양도 좋고 맛도 좋아서 점심 선택 고민이 줄었습니다. 소스 추가하면 질리지 않아요.</p>
+                <div class="author">dl**** · 2026-06-19</div>
+              </article>
+              <article class="review-card">
+                <div class="review-meta"><span class="source">자사몰</span><span>재구매</span></div>
+                <span class="stars">★★★★★</span>
+                <h4>“돌고 돌아 결국 윤식단.”</h4>
+                <p>맛과 영양이 같이 잡혀 있어서 다른 도시락 먹다가 다시 돌아왔습니다.</p>
+                <div class="author">stok******* · 2026-06-19</div>
+              </article>
+              <article class="review-card">
+                <div class="review-meta"><span class="source">스마트스토어</span><span>포만감</span></div>
+                <span class="stars">★★★★★</span>
+                <h4>“다이어트 도시락인데 너무 적지 않아요.”</h4>
+                <p>3시면 배고픈 도시락이 많았는데 단백밥은 밥과 고기가 있어 오래 갑니다.</p>
+                <div class="author">rnrd******** · 2026-06-19</div>
+              </article>
             </div>
           </section>
+        </section>
 
-          <nav class="detail-tabs" aria-label="상세 탭">
-            <button type="button">상세정보</button>
-            <button type="button">구매평 (21085)</button>
-            <button type="button">Q&amp;A (257)</button>
-          </nav>
-
-          <section class="detail-copy">
-            <h2><span style="background:var(--brand);color:#fff;padding:0 8px;">소스 별도 제공</span>으로 더 진한 맛과 풍미를 느낄 수 있어요.</h2>
-            <div class="detail-visual" role="img" aria-label="단백밥 상세 이미지"></div>
-          </section>
-
-          <section class="detail-review-section" aria-label="구매평 탭 리뷰 위젯">
-            <div class="review-widget detail-review-shell active-area">
-              <div class="widget-head">
-                <div>
-                  <div class="widget-kicker">구매평 탭형</div>
-                  <h2 class="widget-title">단백밥 구매 고객이 남긴 핵심 후기</h2>
-                </div>
-                <button id="detailCta" class="cta-link" type="button">구매평 전체 보기</button>
-              </div>
-              <div class="review-dashboard">
-                <div class="score-panel">
-                  <div class="score-number">4.9</div>
-                  <div class="stars">★★★★★</div>
-                  <div class="score-caption">총 21,085개의 구매평</div>
-                </div>
-                <div class="bar-list">
-                  <div class="bar-row"><span>5점</span><span class="bar-track"><span class="bar-fill" style="width:92%"></span></span><strong>92%</strong></div>
-                  <div class="bar-row"><span>4점</span><span class="bar-track"><span class="bar-fill" style="width:6%"></span></span><strong>6%</strong></div>
-                  <div class="bar-row"><span>3점</span><span class="bar-track"><span class="bar-fill" style="width:1.4%"></span></span><strong>1%</strong></div>
-                  <div class="bar-row"><span>2점</span><span class="bar-track"><span class="bar-fill" style="width:0.4%"></span></span><strong>0%</strong></div>
-                  <div class="bar-row"><span>1점</span><span class="bar-track"><span class="bar-fill" style="width:0.2%"></span></span><strong>0%</strong></div>
-                </div>
-              </div>
-              <div class="review-phrase-row">
-                <span class="phrase">많이 언급된 말: 든든함</span>
-                <span class="phrase">점심 루틴</span>
-                <span class="phrase">냉동실 쟁여둠</span>
-                <span class="phrase">맛과 영양</span>
-              </div>
-              <div class="photo-strip" aria-label="포토 구매평 미리보기">
-                <span class="review-photo"></span>
-                <span class="review-photo"></span>
-                <span class="review-photo"></span>
-                <span class="review-photo"></span>
-                <span class="review-photo"></span>
-                <span class="review-photo"></span>
-              </div>
-              <div id="detailCards" class="review-grid"></div>
+        <section class="section">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">Implementation Map</div>
+              <h2>실제 세팅은 위젯을 많이 넣는 게 아니라 역할을 나눠야 합니다</h2>
             </div>
-          </section>
-        </main>
+            <p class="section-copy">라라스윗/알파리뷰식 접근을 그대로 복제하지 않고, 윤식단 구매 장벽에 맞춰 위젯을 최소한으로 배치합니다.</p>
+          </div>
+          <div class="implementation">
+            <div class="impl-step"><strong>1. 상품 상단 브리프</strong><span>평점, 리뷰수, 핵심 키워드, 대표 리뷰 2개만 노출해 구매 옵션 진입 전에 불안을 줄입니다.</span></div>
+            <div class="impl-step"><strong>2. 상세 중간 포토 프루프</strong><span>긴 상세 설명 사이에 실제 식사 사진과 상황 키워드를 넣어 스크롤 이탈을 줄입니다.</span></div>
+            <div class="impl-step"><strong>3. 구매평 탭 리뷰 허브</strong><span>최신순이 아니라 상황별 필터와 키워드 통계로 리뷰 2만 개를 탐색 가능한 자산으로 바꿉니다.</span></div>
+            <div class="impl-step"><strong>4. 모바일 하단 플로팅</strong><span>장바구니/구매 버튼 근처에는 짧은 사회적 증거만 띄우고, 상세한 리뷰는 탭으로 이동시킵니다.</span></div>
+          </div>
+        </section>
+      </div>
+    </main>
 
-        <div class="kakao-float">문의</div>
+    <aside class="panel" aria-label="전략 근거와 운영 체크리스트">
+      <h2>이번 시안의 기준</h2>
+      <p class="panel-sub">단순 리뷰 위젯이 아니라, 라라스윗/알파리뷰식 리뷰 운영을 윤식단 상품 상세에 맞게 재구성했습니다.</p>
+
+      <div class="panel-card">
+        <h3>라라스윗에서 본 패턴</h3>
+        <ul>
+          <li>상품 구매 영역은 가격/옵션/구매에 집중</li>
+          <li>리뷰는 별도 REVIEW 영역으로 모아 신뢰 자산화</li>
+          <li>브랜드 톤은 강하지만 상품 정보 구조는 단순</li>
+        </ul>
       </div>
 
-      <aside id="floatingWidget" class="floating-widget active-area" aria-label="플로팅 리뷰 위젯">
-        <div class="floating-inner">
-          <div class="floating-avatar">★</div>
-          <div>
-            <div class="floating-title">방금 본 구매평: "양도 많고 든든해요"</div>
-            <div class="floating-sub">스마트스토어 구매평 · km**** · 2026-06-19</div>
-          </div>
-          <span class="floating-chip">4.9</span>
-        </div>
-      </aside>
-    </div>
-
-    <aside class="settings" aria-label="리뷰 위젯 설정 패널">
-      <div class="settings-head">
-        <div>
-          <h1 class="settings-title">리뷰 위젯 설정 시안</h1>
-          <p class="settings-sub">실제 자사몰 설정을 바꾸지 않는 HTML 미리보기입니다.</p>
-        </div>
-        <span class="status-pill">미리보기 전용</span>
+      <div class="panel-card">
+        <h3>알파리뷰에서 쓸 기능</h3>
+        <ul>
+          <li>스마트스토어 리뷰 연동</li>
+          <li>베스트 리뷰 지정 위젯</li>
+          <li>키워드 리뷰 위젯</li>
+          <li>포토 리뷰 / 플로팅 리뷰</li>
+          <li>위젯 순서와 노출 개수 설정</li>
+        </ul>
       </div>
 
-      <section class="control-group">
-        <h2 class="control-title">노출 위치</h2>
-        <div class="segmented" data-control="placement">
-          <button type="button" data-placement="top">상품 상단</button>
-          <button type="button" data-placement="detail" class="active">구매평 탭</button>
-          <button type="button" data-placement="floating">플로팅</button>
-        </div>
-      </section>
+      <div class="panel-card">
+        <h3>윤식단에 맞춘 운영 룰</h3>
+        <ul>
+          <li>상단 대표 리뷰는 “맛있어요”보다 “점심/포만감/재구매” 우선</li>
+          <li>포토 리뷰는 제품 실물보다 식사 맥락이 보이는 컷 우선</li>
+          <li>부정/중립 리뷰도 배송/보관 FAQ와 연결해 투명성 확보</li>
+          <li>리뷰 작성 유도 항목은 양, 맛, 조리, 재구매 의향으로 설계</li>
+        </ul>
+      </div>
 
-      <section class="control-group">
-        <h2 class="control-title">테마 컬러</h2>
-        <div class="swatches" data-control="theme">
-          <button class="swatch active" type="button" data-color="#2a341e" style="background:#2a341e" aria-label="윤식단 올리브"></button>
-          <button class="swatch" type="button" data-color="#315d45" style="background:#315d45" aria-label="그린"></button>
-          <button class="swatch" type="button" data-color="#7b402d" style="background:#7b402d" aria-label="테라코타"></button>
-          <button class="swatch" type="button" data-color="#263b57" style="background:#263b57" aria-label="네이비"></button>
+      <div class="panel-card">
+        <h3>참고 근거</h3>
+        <div class="source-list">
+          <a class="source-link" href="https://lalasweet.kr/product/detail.html?product_no=29" target="_blank" rel="noreferrer">라라스윗 상품 상세 구조</a>
+          <a class="source-link" href="https://guide.alph.kr/widgets" target="_blank" rel="noreferrer">Alpha Review 위젯 모아보기</a>
+          <a class="source-link" href="https://guide.alph.kr/8c7ac259-7f38-438a-bcc8-e6eb8f3abad4" target="_blank" rel="noreferrer">스마트스토어 리뷰 연동</a>
+          <a class="source-link" href="https://guide.alph.kr/10aa49f5-17af-4c0c-baee-fdc76ad99ec4" target="_blank" rel="noreferrer">베스트 리뷰 위젯</a>
+          <a class="source-link" href="https://newalph.oopy.io/9b1c21a9-76a6-4e66-b436-fe134e978d14" target="_blank" rel="noreferrer">키워드 리뷰 위젯</a>
         </div>
-      </section>
-
-      <section class="control-group">
-        <h2 class="control-title">콘텐츠 구성</h2>
-        <div class="form-row">
-          <label for="cardCount">리뷰 카드 수</label>
-          <div class="range-line">
-            <input id="cardCount" type="range" min="2" max="6" value="4">
-            <strong id="cardCountLabel">4개</strong>
-          </div>
-        </div>
-        <div class="form-row">
-          <label for="sortMode">정렬 기준</label>
-          <select id="sortMode">
-            <option value="highlight">대표 후기 우선</option>
-            <option value="latest">최신순</option>
-            <option value="photo">포토 리뷰 우선</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label for="ctaMode">CTA 문구</label>
-          <select id="ctaMode">
-            <option value="구매평 전체 보기">구매평 전체 보기</option>
-            <option value="포토 후기 먼저 보기">포토 후기 먼저 보기</option>
-            <option value="리뷰 보고 구매하기">리뷰 보고 구매하기</option>
-          </select>
-        </div>
-        <label class="toggle-row"><span>평점/리뷰수 표시</span><input id="showRating" type="checkbox" checked></label>
-        <label class="toggle-row"><span>포토 리뷰 표시</span><input id="showPhoto" type="checkbox" checked></label>
-        <label class="toggle-row"><span>출처 라벨 표시</span><input id="showSource" type="checkbox" checked></label>
-      </section>
-
-      <section class="control-group">
-        <h2 class="control-title">세팅 가능 범위</h2>
-        <div class="setting-note">
-          노출 위치, 테마 컬러, 리뷰 개수, 포토 리뷰 사용 여부, 평점 표시 여부, 출처 라벨, 정렬 기준, CTA 문구, 모바일 카드 수까지 프론트 코드에서 조정 가능한 형태로 잡았습니다.
-        </div>
-      </section>
-
-      <section class="control-group">
-        <h2 class="control-title">삽입 코드 예시</h2>
-        <pre id="configOutput" class="code-box"></pre>
-      </section>
+      </div>
     </aside>
   </div>
 
-  <script>
-    const reviews = [
-      {
-        source: "스마트스토어 구매평",
-        text: "시장에 다이어트 도시락은 많은데 양이 너무 적었어요. 이건 한 끼가 든든하고 포만감이 오래가서 점심으로 만족스럽습니다.",
-        author: "rnrd********",
-        date: "2026-06-19",
-        photo: true,
-        priority: 1
-      },
-      {
-        source: "스마트스토어 구매평",
-        text: "맛과 영양 모두 최고입니다. 돌고 돌아 결국 윤식단으로 다시 오게 되네요.",
-        author: "stok*******",
-        date: "2026-06-19",
-        photo: false,
-        priority: 2
-      },
-      {
-        source: "스마트스토어 구매평",
-        text: "사무실 근처 밥집 대신 주문했습니다. 양 좋고 맛도 좋아요. 냉동실에 쟁여두기 좋습니다.",
-        author: "dl****",
-        date: "2026-06-19",
-        photo: true,
-        priority: 3
-      },
-      {
-        source: "자사몰 구매평",
-        text: "점심에 도시락 가져가기 귀찮을 때 딱 좋아요. 조리도 편하고 식단 관리가 훨씬 쉬워졌습니다.",
-        author: "shei*****",
-        date: "2026-06-18",
-        photo: true,
-        priority: 4
-      },
-      {
-        source: "스마트스토어 구매평",
-        text: "양도 많고 맛있어서 이것만 시켜요. 다음에도 같은 조합으로 재구매할 예정입니다.",
-        author: "km****",
-        date: "2026-06-19",
-        photo: false,
-        priority: 5
-      },
-      {
-        source: "자사몰 구매평",
-        text: "먹기 편하고 든든해요. 야근 전 저녁으로 먹어도 부담이 덜해서 만족합니다.",
-        author: "navy****",
-        date: "2026-06-19",
-        photo: true,
-        priority: 6
-      }
-    ];
-
-    const state = {
-      placement: "detail",
-      color: "#2a341e",
-      count: 4,
-      sort: "highlight",
-      cta: "구매평 전체 보기",
-      showRating: true,
-      showPhoto: true,
-      showSource: true
-    };
-
-    const store = document.getElementById("store");
-    const topCards = document.getElementById("topCards");
-    const detailCards = document.getElementById("detailCards");
-    const configOutput = document.getElementById("configOutput");
-
-    function sortedReviews() {
-      const list = [...reviews];
-      if (state.sort === "latest") {
-        list.sort((a, b) => b.date.localeCompare(a.date) || a.priority - b.priority);
-      } else if (state.sort === "photo") {
-        list.sort((a, b) => Number(b.photo) - Number(a.photo) || a.priority - b.priority);
-      } else {
-        list.sort((a, b) => a.priority - b.priority);
-      }
-      return list.slice(0, state.count);
-    }
-
-    function reviewCard(review) {
-      const photoClass = review.photo ? " photo" : "";
-      const photo = review.photo ? '<div class="review-photo" aria-label="포토 구매평 이미지"></div>' : "";
-      return `
-        <article class="review-card${photoClass}">
-          ${photo}
-          <div>
-            <div class="review-meta">
-              <span class="source-badge">${review.source}</span>
-              <span>${review.date}</span>
-            </div>
-            <div class="stars score-block">★★★★★</div>
-            <p class="review-text">${review.text}</p>
-            <div class="review-author">${review.author}</div>
-          </div>
-        </article>
-      `;
-    }
-
-    function placementName() {
-      return {
-        top: "afterCoupon",
-        detail: "reviewTabTop",
-        floating: "floatingBottom"
-      }[state.placement];
-    }
-
-    function renderConfig() {
-      configOutput.textContent = `<script>
-window.YD_REVIEW_WIDGET = {
-  productId: "yundiet-danbaekbap-672",
-  mount: "${placementName()}",
-  themeColor: "${state.color}",
-  reviewCount: ${state.count},
-  sort: "${state.sort}",
-  showRating: ${state.showRating},
-  showPhotoReviews: ${state.showPhoto},
-  showSourceLabel: ${state.showSource},
-  ctaText: "${state.cta}"
-};
-<\/script>
-<script src="/assets/yd-review-widget.js" defer><\/script>`;
-    }
-
-    function render() {
-      const cards = sortedReviews().map(reviewCard).join("");
-      topCards.innerHTML = cards;
-      detailCards.innerHTML = cards;
-      document.getElementById("topCta").textContent = state.cta;
-      document.getElementById("detailCta").textContent = state.cta;
-
-      document.documentElement.style.setProperty("--brand", state.color);
-      document.documentElement.style.setProperty("--brand-strong", state.color);
-      store.classList.remove("placement-top", "placement-detail", "placement-floating", "hide-rating", "hide-photo", "hide-source");
-      store.classList.add(`placement-${state.placement}`);
-      if (!state.showRating) store.classList.add("hide-rating");
-      if (!state.showPhoto) store.classList.add("hide-photo");
-      if (!state.showSource) store.classList.add("hide-source");
-
-      const cols = state.count >= 5 ? 3 : 2;
-      topCards.style.setProperty("--card-cols", Math.min(cols, 2));
-      detailCards.style.setProperty("--card-cols", cols);
-
-      document.getElementById("cardCountLabel").textContent = `${state.count}개`;
-      renderConfig();
-    }
-
-    document.querySelectorAll("[data-placement]").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.placement = button.dataset.placement;
-        document.querySelectorAll("[data-placement]").forEach((item) => item.classList.toggle("active", item === button));
-        render();
-      });
-    });
-
-    document.querySelectorAll("[data-color]").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.color = button.dataset.color;
-        document.querySelectorAll("[data-color]").forEach((item) => item.classList.toggle("active", item === button));
-        render();
-      });
-    });
-
-    document.getElementById("cardCount").addEventListener("input", (event) => {
-      state.count = Number(event.target.value);
-      render();
-    });
-
-    document.getElementById("sortMode").addEventListener("change", (event) => {
-      state.sort = event.target.value;
-      render();
-    });
-
-    document.getElementById("ctaMode").addEventListener("change", (event) => {
-      state.cta = event.target.value;
-      render();
-    });
-
-    document.getElementById("showRating").addEventListener("change", (event) => {
-      state.showRating = event.target.checked;
-      render();
-    });
-
-    document.getElementById("showPhoto").addEventListener("change", (event) => {
-      state.showPhoto = event.target.checked;
-      render();
-    });
-
-    document.getElementById("showSource").addEventListener("change", (event) => {
-      state.showSource = event.target.checked;
-      render();
-    });
-
-    render();
-  </script>
+  <div class="floating-ticker" aria-label="모바일 플로팅 리뷰 예시">
+    <div class="ticker-icon">★</div>
+    <div class="ticker-copy">
+      <strong>방금 본 구매평: “회사 점심으로 딱 좋아요”</strong>
+      <span>직장 점심 · 스마트스토어 구매평 · 2026-06-19</span>
+    </div>
+    <div class="ticker-score">4.9</div>
+  </div>
 </body>
 </html>
