@@ -1,0 +1,201 @@
+{
+  "version": "danbaekbap-real-public-review-2026-06-20T170907KST",
+  "generated_at_kst": "2026-06-20 17:18:47",
+  "source": {
+    "type": "public_imweb_product_page_snapshot",
+    "url": "https://www.yundiet.com/shop_view/?idx=672",
+    "captured_at_kst": "2026-06-20 17:09:07",
+    "privacy": "public_review_text_only; reviewer identifiers masked or excluded"
+  },
+  "product": {
+    "title": "(단백질 50g) 단백질 도시락 10종 단백밥 단품 골라담기 BESTMDHOT오늘출발",
+    "rating": "4.9",
+    "review_count": 21085,
+    "images": [
+      {
+        "url": "https://cdn-optimized.imweb.me/thumbnail/20260120/beb9125a625ca.jpg?w=750",
+        "label": "실제 상품 대표 이미지"
+      },
+      {
+        "url": "https://cdn-optimized.imweb.me/thumbnail/20250519/7ceabf586fa50.jpg?w=750",
+        "label": "실제 상품 이미지 2"
+      },
+      {
+        "url": "https://cdn-optimized.imweb.me/thumbnail/20260120/3205f661f794d.jpg?w=750",
+        "label": "실제 상품 이미지 3"
+      }
+    ]
+  },
+  "keywords": [
+    {
+      "id": "all",
+      "label": "전체"
+    },
+    {
+      "id": "satiety",
+      "label": "포만감"
+    },
+    {
+      "id": "taste",
+      "label": "맛/영양"
+    },
+    {
+      "id": "routine",
+      "label": "직장/재구매"
+    },
+    {
+      "id": "delivery",
+      "label": "보관/배송"
+    }
+  ],
+  "proof_cards": [
+    {
+      "title": "포만감",
+      "body": "“3시면 배가 꺼진다”는 불안을 실제 장문 리뷰로 먼저 해소합니다."
+    },
+    {
+      "title": "맛/영양",
+      "body": "맛과 영양을 반복 언급한 최신 리뷰를 전면에 배치합니다."
+    },
+    {
+      "title": "직장 점심",
+      "body": "사무실 점심, 냉동실 비축, 간편식 루틴 리뷰를 묶어 보여줍니다."
+    },
+    {
+      "title": "재구매",
+      "body": "“또 시킬게요”, “계속 시켜먹을게요” 같은 재구매 신호를 분리합니다."
+    }
+  ],
+  "reviews": [
+    {
+      "topic": "satiety",
+      "source": "스마트스토어 구매평",
+      "text": "시장에 다이어트 도시락은 많은데 양이 너무 적어서, 아무리 다이어트식단이라지만 3시면 배가 꺼지더라구요. 한끼 든든하면서도 포만감이 오래가는 가격이 좋은 도시락을 찾다가 윤식단 단백밥을 발견했습니다. 든든한 양의 고기와 아삭한채소, 탱글탱글한 밥까지 만족스럽습니다. 특히 야채는 여태먹었던 냉동도시락 중에선 식감이 제일 좋은듯 합니다. 아직 오리지널, 단짠불고기,제육 이렇게 3가지맛 먹어봤는데, 아직까진 다 마음에 듭니다. 다 먹어보고 제일 입맛에 맞는 조합으로 재구매 생각입니다.",
+      "date": "2026-06-19 13:35",
+      "masked_reviewer": "************",
+      "has_image": true
+    },
+    {
+      "topic": "taste",
+      "source": "스마트스토어 구매평",
+      "text": "맛과 영양 모두 최고입니다.",
+      "date": "2026-06-19 12:48",
+      "masked_reviewer": "***********",
+      "has_image": true
+    },
+    {
+      "topic": "routine",
+      "source": "스마트스토어 구매평",
+      "text": "맛과 영양 모두 최고입니다. 돌고 돌아 결국 윤식단",
+      "date": "2026-06-19 12:46",
+      "masked_reviewer": "***********",
+      "has_image": true
+    },
+    {
+      "topic": "delivery",
+      "source": "스마트스토어 구매평",
+      "text": "사무실 근처 밥집이 조미료범벅이라 주문했습니다. 양 좋고 맛도 좋아요ㅎ 심심할땐 볶음고추장 비벼서 먹고있어요ㅎ",
+      "date": "2026-06-19 12:18",
+      "masked_reviewer": "******",
+      "has_image": true
+    },
+    {
+      "topic": "taste",
+      "source": "스마트스토어 구매평",
+      "text": "이번에도 냉동실에 쟁여둡니다~",
+      "date": "2026-06-19 11:44",
+      "masked_reviewer": "***********",
+      "has_image": true
+    },
+    {
+      "topic": "taste",
+      "source": "스마트스토어 구매평",
+      "text": "먹기 편하고 든든해요",
+      "date": "2026-06-19 11:28",
+      "masked_reviewer": "********",
+      "has_image": false
+    },
+    {
+      "topic": "routine",
+      "source": "스마트스토어 구매평",
+      "text": "양도 많고 맛있어서 이것만 시켜요",
+      "date": "2026-06-19 07:58",
+      "masked_reviewer": "******",
+      "has_image": true
+    },
+    {
+      "topic": "delivery",
+      "source": "스마트스토어 구매평",
+      "text": "양도 적당하고 맛있어요",
+      "date": "2026-06-19 07:58",
+      "masked_reviewer": "******",
+      "has_image": true
+    },
+    {
+      "topic": "taste",
+      "source": "스마트스토어 구매평",
+      "text": "다음에 또 시킬게요 저녁으로 좋아요",
+      "date": "2026-06-19 07:56",
+      "masked_reviewer": "******",
+      "has_image": true
+    },
+    {
+      "topic": "taste",
+      "source": "스마트스토어 구매평",
+      "text": "두번째 구매입니다 맛이 바뀌었는데 더 맛나짐",
+      "date": "2026-06-19 00:14",
+      "masked_reviewer": "*********",
+      "has_image": true
+    },
+    {
+      "topic": "routine",
+      "source": "스마트스토어 구매평",
+      "text": "맛있어요 추가구매 의사있어요",
+      "date": "2026-06-18 16:17",
+      "masked_reviewer": "*******",
+      "has_image": false
+    },
+    {
+      "topic": "delivery",
+      "source": "스마트스토어 구매평",
+      "text": "양도 많고 영양소도 다 챙겼는데 맛도 있어서 계속 시켜먹을게요",
+      "date": "2026-06-18 15:07",
+      "masked_reviewer": "*********",
+      "has_image": false
+    }
+  ],
+  "review_images": [
+    {
+      "url": "https://cdn-optimized.imweb.me/upload/S20220627921120181795a/channel-review/b4d6f3902c498/8262752993637.jpg",
+      "label": "포토 구매평 1"
+    },
+    {
+      "url": "https://cdn-optimized.imweb.me/upload/S20220627921120181795a/channel-review/9a5063aa5edba/e20222bd7bb9f.jpg",
+      "label": "포토 구매평 2"
+    },
+    {
+      "url": "https://cdn-optimized.imweb.me/upload/S20220627921120181795a/channel-review/3052aa8d179f4/c3af69608911f.jpg",
+      "label": "포토 구매평 3"
+    },
+    {
+      "url": "https://cdn-optimized.imweb.me/upload/S20220627921120181795a/channel-review/e4d55bf728de2/2cf52b6ee0e17.jpg",
+      "label": "포토 구매평 4"
+    },
+    {
+      "url": "https://cdn-optimized.imweb.me/upload/S20220627921120181795a/channel-review/a0ede6d6191bd/988c201c14d20.jpg",
+      "label": "포토 구매평 5"
+    },
+    {
+      "url": "https://cdn-optimized.imweb.me/upload/S20220627921120181795a/channel-review/af052fe569f7c/f8a200c24e0fb.jpg",
+      "label": "포토 구매평 6"
+    },
+    {
+      "url": "https://cdn-optimized.imweb.me/upload/S20220627921120181795a/channel-review/e34f1831e74e3/a649d628f8b82.jpg",
+      "label": "포토 구매평 7"
+    },
+    {
+      "url": "https://cdn-optimized.imweb.me/upload/S20220627921120181795a/channel-review/188b4cdf27565/46a81b93d846c.jpg",
+      "label": "포토 구매평 8"
+    }
+  ]
+}
