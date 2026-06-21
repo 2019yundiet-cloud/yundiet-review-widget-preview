@@ -550,9 +550,45 @@
     });
     return el;
   }
+  var responsiveSyncTimer = null;
+  var responsiveSyncBound = false;
+  function placeReviewSystem(feed){
+    var review = bestReviewTarget();
+    if (!review) return false;
+    var system = document.getElementById('yd-review-inline-system') || makeReviewSystem(feed);
+    var wrap = review.matches && review.matches('._review_wrap') ? review : (review.querySelector && review.querySelector('._review_wrap'));
+    if (wrap && wrap.parentNode && visible(wrap)) {
+      if (system.parentNode !== wrap.parentNode || system.nextSibling !== wrap) wrap.parentNode.insertBefore(system, wrap);
+    } else if (system.parentNode !== review || review.firstChild !== system) {
+      review.insertBefore(system, review.firstChild);
+    }
+    return true;
+  }
+  function syncResponsiveReviewUi(feed){
+    if (variantHas('d')) enhanceMobileBottomCta(feed);
+    placeReviewSystem(feed);
+  }
+  function scheduleResponsiveReviewUi(feed){
+    if (responsiveSyncTimer) clearTimeout(responsiveSyncTimer);
+    responsiveSyncTimer = setTimeout(function(){ syncResponsiveReviewUi(feed); }, 120);
+  }
+  function bindResponsiveReviewUi(feed){
+    if (responsiveSyncBound) return;
+    responsiveSyncBound = true;
+    var sync = function(){ scheduleResponsiveReviewUi(feed); };
+    window.addEventListener('resize', sync, {passive:true});
+    window.addEventListener('orientationchange', sync, {passive:true});
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', sync, {passive:true});
+    if (window.matchMedia) {
+      var mobileQuery = window.matchMedia('(max-width: 640px)');
+      if (mobileQuery.addEventListener) mobileQuery.addEventListener('change', sync);
+      else if (mobileQuery.addListener) mobileQuery.addListener(sync);
+    }
+  }
   function render(feed){
     injectStyle();
     if (document.getElementById('yd-review-preview-root')) document.getElementById('yd-review-preview-root').remove();
+    bindResponsiveReviewUi(feed);
     waitFor(function(){
       return document.querySelector('#prod_goods_form header h1') || document.querySelector('#prod_goods_form .view_tit') || document.querySelector('#prod_goods_form .pay_detail.full-width');
     }, function(anchor){
@@ -577,11 +613,7 @@
       }
     });
     waitFor(bestReviewTarget, function(review){
-      if (document.getElementById('yd-review-inline-system')) return;
-      var system = makeReviewSystem(feed);
-      var wrap = review.matches && review.matches('._review_wrap') ? review : (review.querySelector && review.querySelector('._review_wrap'));
-      if (wrap && wrap.parentNode && visible(wrap)) wrap.parentNode.insertBefore(system, wrap);
-      else review.insertBefore(system, review.firstChild);
+      placeReviewSystem(feed);
     });
   }
   ready(function(){
