@@ -286,6 +286,30 @@
     candidates.sort(function(a,b){ return b.area - a.area; });
     return candidates.length ? candidates[0].el : null;
   }
+  function isMobileReviewViewport(){
+    return window.matchMedia && window.matchMedia('(max-width: 640px)').matches;
+  }
+  function mobileReviewSystemAnchor(){
+    if (!isMobileReviewViewport()) return null;
+    var form = document.querySelector('#prod_goods_form');
+    if (!form) return null;
+    var itemDetail = form.querySelector('.item_detail');
+    if (itemDetail && visible(itemDetail) && itemDetail.parentNode) {
+      return {parent: itemDetail.parentNode, before: itemDetail.nextSibling};
+    }
+    var header = form.querySelector('header');
+    if (header && visible(header) && header.parentNode) {
+      return {parent: header.parentNode, before: header.nextSibling};
+    }
+    return null;
+  }
+  function placeSystemAt(system, parent, before){
+    if (!system || !parent) return false;
+    if (before === system) return true;
+    if (system.parentNode === parent && system.nextSibling === before) return true;
+    parent.insertBefore(system, before || null);
+    return true;
+  }
   function injectStyle(){
     if (document.getElementById('yd-inline-review-style')) return;
     var style = document.createElement('style');
@@ -553,14 +577,17 @@
   var responsiveSyncTimer = null;
   var responsiveSyncBound = false;
   function placeReviewSystem(feed){
+    var system = document.getElementById('yd-review-inline-system') || makeReviewSystem(feed);
+    var mobileAnchor = mobileReviewSystemAnchor();
+    if (mobileAnchor) return placeSystemAt(system, mobileAnchor.parent, mobileAnchor.before);
+
     var review = bestReviewTarget();
     if (!review) return false;
-    var system = document.getElementById('yd-review-inline-system') || makeReviewSystem(feed);
     var wrap = review.matches && review.matches('._review_wrap') ? review : (review.querySelector && review.querySelector('._review_wrap'));
     if (wrap && wrap.parentNode && visible(wrap)) {
-      if (system.parentNode !== wrap.parentNode || system.nextSibling !== wrap) wrap.parentNode.insertBefore(system, wrap);
-    } else if (system.parentNode !== review || review.firstChild !== system) {
-      review.insertBefore(system, review.firstChild);
+      placeSystemAt(system, wrap.parentNode, wrap);
+    } else {
+      placeSystemAt(system, review, review.firstChild);
     }
     return true;
   }
@@ -612,7 +639,9 @@
         anchor.insertAdjacentElement('afterend', makeTopBar(feed));
       }
     });
-    waitFor(bestReviewTarget, function(review){
+    waitFor(function(){
+      return mobileReviewSystemAnchor() || bestReviewTarget();
+    }, function(){
       placeReviewSystem(feed);
     });
   }
