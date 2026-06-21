@@ -40,7 +40,7 @@
   function variantHas(part){
     var concept = currentConcept();
     if (part === 'a2') return !!concept.prime;
-    if (part === 'd') return !!concept.bottom;
+    if (part === 'd') return !!concept.bottom || /^c(?:0[1-9]|10)$/.test(concept.id || '');
     return placementVariant === part;
   }
   function currentConcept(){
