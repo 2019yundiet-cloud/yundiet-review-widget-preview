@@ -443,6 +443,7 @@
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo-toggle{font-size:14px;font-weight:900;color:#273241}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort{display:flex;align-items:center;gap:18px;font-size:13px;font-weight:800;color:#273241;white-space:nowrap}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort span{color:#9aa2ae;font-weight:700}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-write{height:32px;border:1px solid #cfd5df;background:#fff;border-radius:2px;padding:0 12px;color:#273241;font-size:12px;font-weight:900;cursor:pointer}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters{display:flex;gap:6px;padding:12px 0 10px;border-bottom:1px solid var(--yd-lala-line)}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button{height:44px;min-width:130px;border:1px solid #cfd5df;background:#fff;border-radius:2px;padding:0 13px;text-align:left;color:#273241;font-size:13px;font-weight:700;cursor:pointer}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button.is-active{border-color:#9ba7ba;background:#f8fafc}',
@@ -452,11 +453,14 @@
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-name{font-weight:800;color:#3f4856;margin-top:3px}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-date{margin-top:10px;color:#6d7582}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-stars{color:var(--yd-lala-gold);font-size:19px;letter-spacing:1px;line-height:1;margin:0 0 12px;font-weight:900}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-source-badge{display:inline-flex;align-items:center;height:24px;margin:0 0 12px;border:1px solid #d8dee8;border-radius:999px;padding:0 9px;color:#6f7a89;font-size:12px;font-weight:800}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-text{margin:0;font-size:15px;line-height:1.75;color:#222b38;word-break:keep-all}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-meta{display:block;margin-top:10px;font-size:12px;color:#98a1ad}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-empty{border-bottom:1px solid var(--yd-lala-line);padding:42px 0;color:#7f8896;text-align:center;font-size:14px;line-height:1.7}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin-top:20px;max-width:760px}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo{aspect-ratio:1/1;background:#f1f3f6;overflow:hidden}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo img{width:100%;height:100%;object-fit:cover;display:block}',
+      '.yd-native-review-source-hidden{display:none!important}',
       '#yd-review-inline-system.yd-lalasweet-system[data-filter="taste"] .yd-lala-row:not([data-topic="taste"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="delivery"] .yd-lala-row:not([data-topic="delivery"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="routine"] .yd-lala-row:not([data-topic="routine"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="satiety"] .yd-lala-row:not([data-topic="satiety"]){display:none}',
       '@media(max-width:760px){#yd-review-inline-system.yd-lalasweet-system{margin:42px auto 30px;padding:0 14px 30px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-title{font-size:24px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-rule{margin-bottom:26px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-summary{grid-template-columns:1fr;gap:20px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-score{border-right:0;border-bottom:1px solid #d7dce5;min-height:112px;padding-bottom:20px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-bar{grid-template-columns:74px minmax(0,1fr) 52px;gap:9px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-toolbar{align-items:flex-start;flex-direction:column;padding-left:0;padding-right:0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort{gap:12px;font-size:12px;flex-wrap:wrap}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters{overflow-x:auto;padding-bottom:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button{min-width:108px;height:40px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-row{grid-template-columns:1fr;gap:14px;padding:24px 0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-profile{grid-template-columns:34px minmax(0,1fr)}#yd-review-inline-system.yd-lalasweet-system .yd-lala-avatar{width:34px;height:34px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-date{margin-top:4px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-photos{grid-template-columns:repeat(2,minmax(0,1fr))}}'
     ].join('\n');
@@ -576,33 +580,197 @@
     if (!match) return '';
     return match[1].slice(2)+'.'+match[2]+'.'+match[3];
   }
+  function defaultKeywords(){
+    return [
+      {id:'all', label:'전체'},
+      {id:'satiety', label:'포만감'},
+      {id:'taste', label:'맛/품질'},
+      {id:'routine', label:'재구매/선물'},
+      {id:'delivery', label:'배송/보관'}
+    ];
+  }
+  function cleanReviewText(value){
+    return String(value || '').replace(/\s+/g, ' ').trim();
+  }
+  function nativeReviewWraps(){
+    return Array.prototype.filter.call(document.querySelectorAll('._review_wrap'), function(wrap){
+      return !wrap.closest('#yd-review-inline-system') && !wrap.closest('#yd-prime-review-link') && !wrap.closest('#yd-review-top-proof');
+    });
+  }
+  function nativeReviewItems(){
+    var items = [];
+    nativeReviewWraps().forEach(function(wrap){
+      Array.prototype.forEach.call(wrap.querySelectorAll('li.list_review_inner, li._show_more_review'), function(item){
+        if (!item.closest('#yd-review-inline-system')) items.push(item);
+      });
+    });
+    return items;
+  }
+  function nativeCountFromPage(){
+    var count = 0;
+    Array.prototype.forEach.call(document.querySelectorAll('._review_count_text, .braket-badge, a._review'), function(el){
+      if (el.closest('#yd-review-inline-system') || el.closest('#yd-prime-review-link') || el.closest('#yd-review-top-proof')) return;
+      var match = cleanReviewText(text(el)).match(/(\d[\d,]*)/);
+      if (match) count = Math.max(count, Number(match[1].replace(/,/g, '')) || 0);
+    });
+    return count;
+  }
+  function nativeProductTitle(){
+    return text(document.querySelector('#prod_goods_form header h1')) || text(document.querySelector('#prod_goods_form .view_tit')) || document.title || '';
+  }
+  function nativeReviewBody(item){
+    var body = item.querySelector('._review_body') || item.querySelector('._txt') || item.querySelector('.txt');
+    if (body) return cleanReviewText(text(body));
+    var cell = item.querySelector('.txt_wrap') || item.querySelector('.text-14');
+    return cleanReviewText(text(cell));
+  }
+  function nativeReviewDate(item){
+    var match = cleanReviewText(text(item)).match(/(20\d{2}[-.]\d{2}[-.]\d{2}(?:\s+\d{2}:\d{2})?)/);
+    return match ? match[1].replace(/\./g, '-') : '';
+  }
+  function nativeReviewAuthor(item, date){
+    var summary = item.querySelector('.use_summary') || item.querySelector('.width-5');
+    var value = '';
+    if (summary) {
+      var children = Array.prototype.filter.call(summary.children, function(child){
+        return cleanReviewText(text(child));
+      });
+      if (children.length) value = cleanReviewText(text(children[0]));
+      if (!value) value = cleanReviewText(text(summary)).replace(date || '', '').trim();
+    }
+    if (!value) value = '구매고객';
+    return value;
+  }
+  function nativeReviewRating(item){
+    var label = cleanReviewText(text(item.querySelector('.star-point-wrap, .star_point_wrap, .rating, .review_star')));
+    var numeric = label.match(/([1-5](?:\.\d)?)/);
+    if (numeric) return Number(numeric[1]) || 0;
+    var stars = cleanReviewText(text(item)).match(/★/g);
+    return stars && stars.length ? Math.min(5, stars.length) : 0;
+  }
+  function nativeReviewImages(item){
+    var seen = {};
+    return Array.prototype.map.call(item.querySelectorAll('img'), function(img){
+      return img.currentSrc || img.src || img.getAttribute('data-src') || '';
+    }).filter(function(src){
+      if (!src || seen[src]) return false;
+      seen[src] = true;
+      return !/blank|spacer|profile|avatar/i.test(src);
+    }).map(function(src, index){
+      return {url: src, label: '구매평 사진 '+(index + 1)};
+    });
+  }
+  function classifyReviewTopic(value){
+    var s = String(value || '');
+    if (/배송|포장|보관|냉동|택배|파손/.test(s)) return 'delivery';
+    if (/재구매|또|선물|추천|만족|최고/.test(s)) return 'routine';
+    if (/맛|향|품질|고소|담백|영양|식감/.test(s)) return 'taste';
+    if (/양|든든|포만|크기|넉넉/.test(s)) return 'satiety';
+    return 'taste';
+  }
+  function buildNativeReviewFeed(){
+    var seen = {};
+    var reviews = nativeReviewItems().map(function(item){
+      var body = nativeReviewBody(item);
+      var date = nativeReviewDate(item);
+      var author = nativeReviewAuthor(item, date);
+      var images = nativeReviewImages(item);
+      var key = body+'|'+date+'|'+author;
+      if (!body || seen[key]) return null;
+      seen[key] = true;
+      return {
+        topic: classifyReviewTopic(body),
+        source: '레갈로 자사몰 구매평',
+        text: body,
+        date: date,
+        masked_reviewer: author,
+        rating: nativeReviewRating(item),
+        has_image: images.length > 0,
+        images: images
+      };
+    }).filter(Boolean);
+    var ratingTotal = 0;
+    var ratingCount = 0;
+    reviews.forEach(function(review){
+      if (review.rating) {
+        ratingTotal += review.rating;
+        ratingCount += 1;
+      }
+    });
+    var reviewImages = [];
+    reviews.forEach(function(review){
+      review.images.forEach(function(img){ reviewImages.push(img); });
+    });
+    return {
+      version: 'imweb-native-live',
+      source: {type:'imweb_native_review_dom', url: location.href},
+      product: {
+        title: nativeProductTitle(),
+        rating: ratingCount ? (Math.round((ratingTotal / ratingCount) * 10) / 10).toFixed(1) : '',
+        review_count: Math.max(nativeCountFromPage(), reviews.length)
+      },
+      keywords: defaultKeywords(),
+      reviews: reviews,
+      review_images: reviewImages
+    };
+  }
+  function findNativeReviewWriteButton(){
+    var buttons = Array.prototype.filter.call(document.querySelectorAll('a,button'), function(el){
+      return !el.closest('#yd-review-inline-system') && cleanReviewText(text(el)) === '구매평 작성';
+    });
+    return buttons[0] || null;
+  }
+  function clickNativeReviewWrite(){
+    var button = findNativeReviewWriteButton();
+    if (button) button.click();
+  }
+  function hideNativeReviewSources(){
+    nativeReviewWraps().forEach(function(wrap){
+      wrap.classList.add('yd-native-review-source-hidden');
+      wrap.setAttribute('aria-hidden', 'true');
+    });
+  }
+  function starText(rating){
+    var n = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
+    return n ? new Array(n + 1).join('★') : '';
+  }
   function makeLalaBars(feed){
+    var reviews = feed.reviews || [];
+    var total = Math.max(1, reviews.length);
+    var photoCount = reviews.filter(function(r){ return r.has_image; }).length;
+    var topicCount = function(topic){
+      return reviews.filter(function(r){ return r.topic === topic; }).length;
+    };
     var bars = [
-      {label:'양이 많아요', value:90, count:'핵심'},
-      {label:'맛있어요', value:84, count:'다수'},
-      {label:'재구매했어요', value:72, count:'반복'},
-      {label:'간편해요', value:60, count:'루틴'},
-      {label:'포장/보관', value:46, count:'안심'}
+      {label:'전체 리뷰', value:100, count:formatCount(feed.product && feed.product.review_count)+'개'},
+      {label:'포토 리뷰', value:Math.round(photoCount / total * 100), count:formatCount(photoCount)+'개'},
+      {label:'맛/품질', value:Math.round(topicCount('taste') / total * 100), count:formatCount(topicCount('taste'))+'개'},
+      {label:'재구매/선물', value:Math.round(topicCount('routine') / total * 100), count:formatCount(topicCount('routine'))+'개'},
+      {label:'배송/보관', value:Math.round(topicCount('delivery') / total * 100), count:formatCount(topicCount('delivery'))+'개'}
     ];
     return bars.map(function(bar, index){
       return '<div class="yd-lala-bar '+(index === 0 ? 'is-main' : '')+'"><span>'+escapeHtml(bar.label)+'</span><div class="yd-lala-track"><div class="yd-lala-fill" style="width:'+bar.value+'%"></div></div><span class="yd-lala-bar-num">'+escapeHtml(bar.count)+'</span></div>';
     }).join('');
   }
-  function makeLalaPhotos(feed, start, count){
-    return (feed.review_images || []).slice(start || 0, (start || 0) + (count || 5)).map(function(item){
+  function makeLalaPhotos(items){
+    return (items || []).map(function(item){
       if (!item || !item.url) return '';
-      return '<div class="yd-lala-photo"><img loading="lazy" src="'+escapeHtml(item.url)+'" alt="단백밥 포토 리뷰"></div>';
+      return '<div class="yd-lala-photo"><img loading="lazy" src="'+escapeHtml(item.url)+'" alt="구매평 사진"></div>';
     }).join('');
   }
   function makeLalaRows(feed){
     var reviews = (feed.reviews || []).slice(0,7);
+    if (!reviews.length) {
+      return '<div class="yd-lala-empty">아직 등록된 구매평이 없습니다.<br>고객이 구매평을 작성하면 이 영역에 자동으로 반영됩니다.</div>';
+    }
     return reviews.map(function(r, index){
-      var photos = '';
-      if (r.has_image && index < 2) photos = '<div class="yd-lala-photos">'+makeLalaPhotos(feed, index === 0 ? 0 : 5, index === 0 ? 5 : 3)+'</div>';
+      var photos = r.has_image ? '<div class="yd-lala-photos">'+makeLalaPhotos(r.images)+'</div>' : '';
+      var rating = starText(r.rating);
+      var ratingHtml = rating ? '<div class="yd-lala-stars">'+escapeHtml(rating)+'</div>' : '<div class="yd-lala-source-badge">구매평</div>';
       return [
         '<article class="yd-lala-row" data-topic="'+escapeHtml(r.topic || '')+'">',
-          '<div class="yd-lala-profile"><span class="yd-lala-avatar"></span><div><div class="yd-lala-name">구매고객</div><div class="yd-lala-date">'+escapeHtml(shortDate(r.date))+' 작성</div></div></div>',
-          '<div><div class="yd-lala-stars">★★★★★</div><p class="yd-lala-text">'+escapeHtml(r.text || '')+'</p><span class="yd-lala-meta">'+escapeHtml(r.source || '구매평')+(r.has_image ? ' · 포토 리뷰' : '')+'</span>'+photos+'</div>',
+          '<div class="yd-lala-profile"><span class="yd-lala-avatar"></span><div><div class="yd-lala-name">'+escapeHtml(r.masked_reviewer || '구매고객')+'</div><div class="yd-lala-date">'+escapeHtml(shortDate(r.date) || r.date || '')+' 작성</div></div></div>',
+          '<div>'+ratingHtml+'<p class="yd-lala-text">'+escapeHtml(r.text || '')+'</p><span class="yd-lala-meta">'+escapeHtml(r.source || '구매평')+(r.has_image ? ' · 포토 리뷰' : '')+'</span>'+photos+'</div>',
         '</article>'
       ].join('');
     }).join('');
@@ -616,15 +784,17 @@
 
     var product = feed.product || {};
     var count = formatCount(product.review_count);
+    var hasRating = !!product.rating;
+    var scoreHtml = hasRating ? '<span class="yd-lala-big-star">★</span><b>'+escapeHtml(product.rating)+'</b>' : '<b>리뷰</b>';
     var keywordHtml = (feed.keywords || []).map(function(k, i){
       return '<button type="button" class="'+(i === 0 ? 'is-active' : '')+'" data-filter-value="'+escapeHtml(k.id)+'">'+escapeHtml(k.label)+'</button>';
     }).join('');
 
     el.innerHTML = [
       '<h2 class="yd-lala-title">REVIEW</h2><div class="yd-lala-rule"></div>',
-      '<div class="yd-lala-summary"><div class="yd-lala-score"><div class="yd-lala-score-main"><span class="yd-lala-big-star">★</span><b>'+escapeHtml(product.rating || '')+'</b></div><em>'+count+'개 리뷰</em></div><div class="yd-lala-bars">'+makeLalaBars(feed)+'</div></div>',
+      '<div class="yd-lala-summary"><div class="yd-lala-score"><div class="yd-lala-score-main">'+scoreHtml+'</div><em>'+count+'개 구매평</em></div><div class="yd-lala-bars">'+makeLalaBars(feed)+'</div></div>',
       '<h3 class="yd-lala-review-count">리뷰'+count+'</h3>',
-      '<div class="yd-lala-toolbar"><div class="yd-lala-photo-toggle">포토&동영상</div><div class="yd-lala-sort"><b>추천순</b><b>최신순</b><b>별점 높은순</b><span>직접검색</span></div></div>',
+      '<div class="yd-lala-toolbar"><div class="yd-lala-photo-toggle">포토&동영상</div><div class="yd-lala-sort"><b>추천순</b><b>최신순</b><b>별점 높은순</b><span>직접검색</span><button type="button" class="yd-lala-write">구매평 작성</button></div></div>',
       '<div class="yd-lala-filters">'+keywordHtml+'</div>',
       '<div class="yd-lala-list">'+makeLalaRows(feed)+'</div>'
     ].join('');
@@ -638,12 +808,34 @@
         });
       });
     });
+    var writeButton = el.querySelector('.yd-lala-write');
+    if (writeButton) writeButton.addEventListener('click', clickNativeReviewWrite);
     return el;
   }
   var responsiveSyncTimer = null;
   var responsiveSyncBound = false;
+  var currentReviewFingerprint = '';
+  function reviewFingerprint(feed){
+    return [
+      feed.product && feed.product.review_count,
+      feed.product && feed.product.rating,
+      (feed.reviews || []).map(function(r){
+        return [r.text, r.date, r.masked_reviewer, r.rating, (r.images || []).length].join('|');
+      }).join('||')
+    ].join('::');
+  }
+  function reviewSystemFor(feed){
+    var existing = document.getElementById('yd-review-inline-system');
+    var fingerprint = reviewFingerprint(feed);
+    if (existing && existing.getAttribute('data-feed-fingerprint') === fingerprint) return existing;
+    var system = makeReviewSystem(feed);
+    system.setAttribute('data-feed-fingerprint', fingerprint);
+    if (existing && existing.parentNode) existing.parentNode.replaceChild(system, existing);
+    currentReviewFingerprint = fingerprint;
+    return system;
+  }
   function placeReviewSystem(feed){
-    var system = document.getElementById('yd-review-inline-system') || makeReviewSystem(feed);
+    var system = reviewSystemFor(feed);
     var mobileAnchor = mobileReviewSystemAnchor();
     if (mobileAnchor) return placeSystemAt(system, mobileAnchor.parent, mobileAnchor.before);
 
@@ -658,8 +850,8 @@
     return true;
   }
   function syncResponsiveReviewUi(feed){
-    if (variantHas('d')) enhanceMobileBottomCta(feed);
-    placeReviewSystem(feed);
+    var placed = placeReviewSystem(feed);
+    if (placed) hideNativeReviewSources();
   }
   function scheduleResponsiveReviewUi(feed){
     if (responsiveSyncTimer) clearTimeout(responsiveSyncTimer);
@@ -681,45 +873,65 @@
   function render(feed){
     injectStyle();
     if (document.getElementById('yd-review-preview-root')) document.getElementById('yd-review-preview-root').remove();
+    if (document.getElementById('yd-prime-review-link')) document.getElementById('yd-prime-review-link').remove();
+    if (document.getElementById('yd-review-top-proof')) document.getElementById('yd-review-top-proof').remove();
     bindResponsiveReviewUi(feed);
-    waitFor(function(){
-      return document.querySelector('#prod_goods_form header h1') || document.querySelector('#prod_goods_form .view_tit') || document.querySelector('#prod_goods_form .pay_detail.full-width');
-    }, function(anchor){
-      if (variantHas('a2') && !document.getElementById('yd-prime-review-link')) {
-        anchor.insertAdjacentElement('afterend', makePrimeReviewLink(feed));
-      }
-      if (variantHas('d')) enhanceMobileBottomCta(feed);
-    });
-    waitFor(function(){
-      return variantHas('d') && window.matchMedia && window.matchMedia('(max-width: 640px)').matches && document.querySelector('.buy_btns.mobile .cart_btn a.btn.defualt-cart');
-    }, function(){
-      enhanceMobileBottomCta(feed);
-    });
-    waitFor(function(){
-      return document.querySelector('._item_detail_wrap') || document.querySelector('.item_detail') || Array.prototype.find.call(document.querySelectorAll('a,button'), function(el){
-        return visible(el) && /구매하기/.test(text(el));
-      });
-    }, function(target){
-      if (!document.getElementById('yd-review-top-proof')) {
-        var anchor = target.classList && (target.classList.contains('_item_detail_wrap') || target.classList.contains('item_detail')) ? target : target.parentElement;
-        anchor.insertAdjacentElement('afterend', makeTopBar(feed));
-      }
-    });
     waitFor(function(){
       return mobileReviewSystemAnchor() || bestReviewTarget();
     }, function(){
       placeReviewSystem(feed);
+      hideNativeReviewSources();
+    });
+  }
+  var nativeReviewObserverBound = false;
+  var nativeReviewRenderTimer = null;
+  function scheduleNativeReviewRender(){
+    if (nativeReviewRenderTimer) clearTimeout(nativeReviewRenderTimer);
+    nativeReviewRenderTimer = setTimeout(function(){
+      var feed = buildNativeReviewFeed();
+      if (reviewFingerprint(feed) !== currentReviewFingerprint || !document.getElementById('yd-review-inline-system')) {
+        render(feed);
+      } else {
+        hideNativeReviewSources();
+      }
+    }, 180);
+  }
+  function bindNativeReviewObserver(){
+    if (nativeReviewObserverBound || !window.MutationObserver) return;
+    nativeReviewObserverBound = true;
+    var observer = new MutationObserver(function(mutations){
+      var shouldRender = mutations.some(function(mutation){
+        var target = mutation.target;
+        if (target && target.closest && target.closest('#yd-review-inline-system')) return false;
+        return true;
+      });
+      if (shouldRender) scheduleNativeReviewRender();
+    });
+    observer.observe(document.body, {childList:true, subtree:true, characterData:true});
+  }
+  function startNativeReviewAdapter(){
+    injectStyle();
+    waitFor(function(){
+      return nativeReviewWraps().length || bestReviewTarget() || document.querySelector('.review-box');
+    }, function(){
+      scheduleNativeReviewRender();
+      bindNativeReviewObserver();
     });
   }
   ready(function(){
-    fetch(feedUrl, { mode: 'cors', credentials: 'omit', cache: 'no-store' })
-      .then(function(res){
-        if (!res.ok) throw new Error('feed_http_'+res.status);
-        return res.json();
-      })
-      .then(render)
-      .catch(function(err){
-        console.warn('[YD Review Widget] feed load failed', err);
-      });
+    if (config.previewFeed || queryValue('yd_review_preview') === 'feed') {
+      fetch(feedUrl, { mode: 'cors', credentials: 'omit', cache: 'no-store' })
+        .then(function(res){
+          if (!res.ok) throw new Error('feed_http_'+res.status);
+          return res.json();
+        })
+        .then(render)
+        .catch(function(err){
+          console.warn('[YD Review Widget] feed load failed', err);
+          startNativeReviewAdapter();
+        });
+    } else {
+      startNativeReviewAdapter();
+    }
   });
 })();
