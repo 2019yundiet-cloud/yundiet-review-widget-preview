@@ -1,0 +1,102 @@
+<script>
+(function(){
+  if (window.__YD_REVIEW_SELFSTORE_BOOT__) return;
+  window.__YD_REVIEW_SELFSTORE_BOOT__ = true;
+  if (location.href.indexOf('/admin') !== -1 || location.href.indexOf('/_/') !== -1) return;
+  if (location.pathname.indexOf('/shop_view') === -1 && location.search.indexOf('idx=') === -1) return;
+
+  var BRAND = '#2a341e';
+  var WIDGET_URL = 'https://cdn.jsdelivr.net/gh/2019yundiet-cloud/yundiet-review-widget-preview@ef6dfe4/widgets/danbaek-review-widget-v1.js';
+  var detailSel = '#first_detail,#prod_detail_body,.detail_detail_wrap,.detail_detail_wrap_mobile,._detail_detail_wrap:not(#fixed_tab),._detail_detail_wrap_mobile:not(#fixed_tab_mobile)';
+  var reviewSel = '.detail_review_wrap,.detail_review_wrap_mobile,#first_review,._detail_review_wrap,._detail_review_wrap_mobile';
+  var qnaSel = '.detail_qna_wrap,.detail_qna_wrap_mobile,#first_qna,._detail_qna_wrap,._detail_qna_wrap_mobile';
+  var activeTab = /review/i.test(location.hash) ? 'review' : /qna/i.test(location.hash) ? 'qna' : 'detail';
+
+  function scoped(scope, selectors){
+    return selectors.split(',').map(function(selector){ return scope + ' ' + selector; }).join(',');
+  }
+  function setTab(tab){
+    activeTab = tab || activeTab || 'detail';
+    window.__YD_LALA_ACTIVE_TAB__ = activeTab;
+    document.documentElement.setAttribute('data-yd-lala-active-tab', activeTab);
+    if (document.body) document.body.setAttribute('data-yd-lala-active-tab', activeTab);
+  }
+  function injectPrebootStyle(){
+    if (document.getElementById('yd-review-selfstore-preboot-style')) return;
+    var style = document.createElement('style');
+    style.id = 'yd-review-selfstore-preboot-style';
+    style.textContent = [
+      scoped('html[data-yd-lala-active-tab="detail"]', reviewSel + ',' + qnaSel) + '{display:none!important}',
+      scoped('html[data-yd-lala-active-tab="review"]', detailSel + ',' + qnaSel) + '{display:none!important}',
+      scoped('html[data-yd-lala-active-tab="qna"]', detailSel + ',' + reviewSel) + '{display:none!important}',
+      scoped('body[data-yd-lala-active-tab="detail"]', reviewSel + ',' + qnaSel) + '{display:none!important}',
+      scoped('body[data-yd-lala-active-tab="review"]', detailSel + ',' + qnaSel) + '{display:none!important}',
+      scoped('body[data-yd-lala-active-tab="qna"]', detailSel + ',' + reviewSel) + '{display:none!important}',
+      'ul.site_prod_nav{position:relative!important}',
+      'ul.site_prod_nav:before,ul.site_prod_nav:after{content:"|"!important;display:block!important;position:absolute!important;top:50%!important;color:#191d24!important;font-size:14px!important;line-height:1!important;font-weight:400!important;transform:translate(-50%,-50%)!important;z-index:5!important;pointer-events:none!important}',
+      'ul.site_prod_nav:before{left:33.333%!important}',
+      'ul.site_prod_nav:after{left:66.666%!important}',
+      'ul.site_prod_nav li.prod_tab_3{position:relative!important;min-width:33.333%!important;text-align:center!important;border:0!important;background:#fff!important}',
+      'ul.site_prod_nav li.prod_tab_3:before,ul.site_prod_nav li.prod_tab_3:after,ul.site_prod_nav li.prod_tab_3>a:after{display:none!important;content:none!important}',
+      'ul.site_prod_nav a._detail,ul.site_prod_nav a._review,ul.site_prod_nav a._qna{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-width:66px!important;white-space:nowrap!important;border:0!important;background:#fff!important;box-shadow:none!important;color:#191d24!important;font-weight:500!important;text-decoration:none!important;transition:none!important;animation:none!important}',
+      'html[data-yd-lala-active-tab="detail"] ul.site_prod_nav a._detail,html[data-yd-lala-active-tab="review"] ul.site_prod_nav a._review,html[data-yd-lala-active-tab="qna"] ul.site_prod_nav a._qna,body[data-yd-lala-active-tab="detail"] ul.site_prod_nav a._detail,body[data-yd-lala-active-tab="review"] ul.site_prod_nav a._review,body[data-yd-lala-active-tab="qna"] ul.site_prod_nav a._qna{color:' + BRAND + '!important;font-weight:800!important}'
+    ].join('\n');
+    (document.head || document.documentElement).appendChild(style);
+  }
+  function ready(fn){
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn, {once:true});
+    else fn();
+  }
+  function text(el){ return (el && (el.innerText || el.textContent) || '').replace(/\s+/g, ' ').trim(); }
+  function reviewCount(){
+    var source = document.querySelector('._review_count_text') || document.querySelector('a._review');
+    var number = Number(text(source).replace(/[^0-9]/g, '')) || 0;
+    return number ? number.toLocaleString('ko-KR') : '';
+  }
+  function syncTabs(){
+    setTab(activeTab);
+    var count = reviewCount();
+    Array.prototype.forEach.call(document.querySelectorAll('a._review'), function(anchor){
+      anchor.textContent = count ? '리뷰 ' + count : '리뷰';
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('a._qna'), function(anchor){ anchor.textContent = 'Q&A'; });
+    Array.prototype.forEach.call(document.querySelectorAll('a._detail,a._review,a._qna'), function(anchor){
+      var kind = anchor.classList.contains('_review') ? 'review' : anchor.classList.contains('_qna') ? 'qna' : 'detail';
+      var on = kind === activeTab;
+      anchor.classList.toggle('active', on);
+      anchor.classList.toggle('on', on);
+      anchor.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  }
+  document.addEventListener('click', function(event){
+    var anchor = event.target.closest && event.target.closest('a._detail,a._review,a._qna');
+    if (!anchor || !anchor.closest('ul.site_prod_nav')) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    setTab(anchor.classList.contains('_review') ? 'review' : anchor.classList.contains('_qna') ? 'qna' : 'detail');
+    syncTabs();
+  }, true);
+  function loadWidget(){
+    if (document.getElementById('yd-review-widget-loader')) return;
+    window.YD_DANBAEK_REVIEW_WIDGET_CONFIG = Object.assign({}, window.YD_DANBAEK_REVIEW_WIDGET_CONFIG || {}, {
+      source: 'yundiet_selfstore_native_review_dom',
+      testSite: 'yundiet-selfstore',
+      brandColor: BRAND
+    });
+    var script = document.createElement('script');
+    script.id = 'yd-review-widget-loader';
+    script.async = true;
+    script.src = WIDGET_URL;
+    (document.head || document.documentElement).appendChild(script);
+  }
+
+  setTab(activeTab);
+  injectPrebootStyle();
+  ready(function(){
+    syncTabs();
+    setTimeout(syncTabs, 300);
+    if ('requestIdleCallback' in window) requestIdleCallback(loadWidget, {timeout: 1200});
+    else setTimeout(loadWidget, 600);
+  });
+})();
+</script>
