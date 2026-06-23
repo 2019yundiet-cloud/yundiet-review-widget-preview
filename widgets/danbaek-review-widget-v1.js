@@ -1,7 +1,7 @@
 (function(){
   if (window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__) return;
   window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__ = true;
-  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v13';
+  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v14';
 
   var config = window.YD_DANBAEK_REVIEW_WIDGET_CONFIG || {};
   var feedUrl = config.feedUrl || 'https://2019yundiet-cloud.github.io/yundiet-review-widget-preview/feeds/danbaekbap-review-feed.json';
@@ -24,6 +24,9 @@
   }
   var activeNativeTab = initialNativeTabKind();
   var currentNativeReviewPage = Number(window.__YD_LALA_REVIEW_PAGE__) || 1;
+  var reviewPageScrollTimers = [];
+  var reviewPageScrollGuardUntil = 0;
+  var reviewPageScrollCancelBound = false;
   function syncNativeTabAttribute(kind){
     activeNativeTab = kind || window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || 'detail';
     window.__YD_LALA_ACTIVE_TAB__ = activeNativeTab;
@@ -487,10 +490,39 @@
     var top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
     window.scrollTo({top: top, behavior:'auto'});
   }
-  function stabilizeReviewPageScroll(){
-    [0, 80, 220, 520, 920, 1500].forEach(function(delay){
-      setTimeout(scrollReviewSystemTop, delay);
+  function clearReviewPageScrollTimers(){
+    reviewPageScrollTimers.forEach(function(timer){ clearTimeout(timer); });
+    reviewPageScrollTimers = [];
+  }
+  function cancelReviewPageScrollStabilizer(){
+    if (!reviewPageScrollGuardUntil) return;
+    reviewPageScrollGuardUntil = 0;
+    clearReviewPageScrollTimers();
+  }
+  function bindReviewPageScrollCancel(){
+    if (reviewPageScrollCancelBound) return;
+    reviewPageScrollCancelBound = true;
+    ['wheel','touchmove','pointerdown'].forEach(function(type){
+      window.addEventListener(type, cancelReviewPageScrollStabilizer, {capture:true, passive:true});
     });
+    window.addEventListener('keydown', function(event){
+      if (/^(ArrowDown|ArrowUp|PageDown|PageUp|Home|End|Space)$/.test(event.code || event.key || '')) {
+        cancelReviewPageScrollStabilizer();
+      }
+    }, true);
+  }
+  function scheduleReviewPageScrollTop(delay){
+    var timer = setTimeout(function(){
+      if (!reviewPageScrollGuardUntil || Date.now() > reviewPageScrollGuardUntil) return;
+      scrollReviewSystemTop();
+    }, delay);
+    reviewPageScrollTimers.push(timer);
+  }
+  function stabilizeReviewPageScroll(){
+    clearReviewPageScrollTimers();
+    bindReviewPageScrollCancel();
+    reviewPageScrollGuardUntil = Date.now() + 1100;
+    [40, 260, 700, 1020].forEach(scheduleReviewPageScrollTop);
   }
   function applyNativeTabState(kind, shouldScroll){
     syncNativeTabAttribute(kind || window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || 'detail');
@@ -1195,8 +1227,8 @@
     control.element.click();
     stabilizeReviewPageScroll();
     scheduleNativeReviewRender(280);
-    setTimeout(function(){ scheduleNativeReviewRender(0); stabilizeReviewPageScroll(); }, 900);
-    setTimeout(function(){ scheduleNativeReviewRender(0); stabilizeReviewPageScroll(); }, 1700);
+    setTimeout(function(){ scheduleNativeReviewRender(0); }, 900);
+    setTimeout(function(){ scheduleNativeReviewRender(0); }, 1700);
     return true;
   }
   function nativeReviewImages(item){
