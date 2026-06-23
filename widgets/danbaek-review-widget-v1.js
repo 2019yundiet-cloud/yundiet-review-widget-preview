@@ -693,6 +693,21 @@
     return '';
   }
   var nativeReviewTabBound = false;
+  var nativeTabLabelGuardBound = false;
+  function bindNativeTabLabelGuard(){
+    if (nativeTabLabelGuardBound || !window.MutationObserver || !document.body) return;
+    nativeTabLabelGuardBound = true;
+    var observer = new MutationObserver(function(mutations){
+      var touchedNativeTab = mutations.some(function(mutation){
+        var target = mutation.target && mutation.target.nodeType === 3 ? mutation.target.parentElement : mutation.target;
+        return !!(target && target.closest && target.closest('a._review, a._detail, a._qna, li.prod_tab_3'));
+      });
+      if (!touchedNativeTab) return;
+      syncNativeReviewTabLabel();
+      syncNativeTabActiveClasses();
+    });
+    observer.observe(document.body, {childList:true, subtree:true, characterData:true});
+  }
   function bindNativeReviewTabLinks(){
     if (nativeReviewTabBound) return;
     nativeReviewTabBound = true;
@@ -1181,6 +1196,7 @@
     injectPreflightStyle();
     injectStyle();
     bindNativeReviewTabLinks();
+    bindNativeTabLabelGuard();
     normalizeNativeTabLabels({product:{review_count:nativeCountFromPage()}});
     applyNativeTabState(window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || 'detail', false);
     waitFor(function(){
