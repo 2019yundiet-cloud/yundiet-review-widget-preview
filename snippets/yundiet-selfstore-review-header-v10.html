@@ -1,19 +1,56 @@
 <script>
 (function(){
-  if (window.__YD_REVIEW_SELFSTORE_BOOT__) return;
-  window.__YD_REVIEW_SELFSTORE_BOOT__ = true;
+  var SHELL_VERSION = 'yundiet-review-shell-v17';
+  var BRAND = '#2a341e';
+  var WIDGET_URL = 'https://cdn.jsdelivr.net/gh/2019yundiet-cloud/yundiet-review-widget-preview@4a88312/widgets/danbaek-review-widget-v1.js';
+
   if (location.href.indexOf('/admin') !== -1 || location.href.indexOf('/_/') !== -1) return;
   if (location.pathname.indexOf('/shop_view') === -1 && location.search.indexOf('idx=') === -1) return;
 
-  var BRAND = '#2a341e';
-  var WIDGET_URL = 'https://cdn.jsdelivr.net/gh/2019yundiet-cloud/yundiet-review-widget-preview@d94894e/widgets/danbaek-review-widget-v1.js';
   var detailSel = '#first_detail,#prod_detail_body,.detail_detail_wrap,.detail_detail_wrap_mobile,._detail_detail_wrap:not(#fixed_tab),._detail_detail_wrap_mobile:not(#fixed_tab_mobile)';
   var reviewSel = '.detail_review_wrap,.detail_review_wrap_mobile,#first_review,._detail_review_wrap,._detail_review_wrap_mobile';
   var qnaSel = '.detail_qna_wrap,.detail_qna_wrap_mobile,#first_qna,._detail_qna_wrap,._detail_qna_wrap_mobile';
   var activeTab = 'detail';
+  var tabSyncTimer = null;
 
   function scoped(scope, selectors){
     return selectors.split(',').map(function(selector){ return scope + ' ' + selector; }).join(',');
+  }
+  function removeNode(node){
+    if (node && node.parentNode) node.parentNode.removeChild(node);
+  }
+  function normalizeTab(tab){
+    tab = String(tab || '');
+    return /^(detail|review|qna)$/.test(tab) ? tab : '';
+  }
+  function currentTab(){
+    var selected = normalizeTab(window.__YD_LALA_USER_SELECTED_TAB__);
+    var selectedAt = Number(window.__YD_LALA_USER_SELECTED_AT__ || 0);
+    if (selected && selectedAt && Date.now() - selectedAt < 30000) return selected;
+    return normalizeTab(window.__YD_LALA_ACTIVE_TAB__) || normalizeTab(activeTab) || selected || 'detail';
+  }
+  function resetPreviousReviewWidget(){
+    window.__YD_REVIEW_SELFSTORE_BOOT__ = false;
+    window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__ = false;
+    window.__YD_REVIEW_WIDGET_VERSION__ = '';
+    window.__YD_LALA_USER_SELECTED_TAB__ = '';
+    window.__YD_LALA_USER_SELECTED_AT__ = 0;
+    Array.prototype.forEach.call(document.querySelectorAll([
+      '#yd-review-widget-loader',
+      '#yd-review-widget-loader-v17',
+      '#yd-review-inline-system',
+      '#yd-inline-review-style',
+      '#yd-lala-preflight-style',
+      '#yd-review-selfstore-preboot-style',
+      '#yd-review-preview-root',
+      '#yd-prime-review-link',
+      '#yd-review-top-proof'
+    ].join(',')), removeNode);
+    Array.prototype.forEach.call(document.querySelectorAll('.yd-native-review-source-hidden,.yd-tab-pane-hidden'), function(el){
+      el.classList.remove('yd-native-review-source-hidden');
+      el.classList.remove('yd-tab-pane-hidden');
+      el.removeAttribute('aria-hidden');
+    });
   }
   function setTab(tab){
     activeTab = tab || activeTab || 'detail';
@@ -22,9 +59,10 @@
     if (document.body) document.body.setAttribute('data-yd-lala-active-tab', activeTab);
   }
   function injectPrebootStyle(){
-    if (document.getElementById('yd-review-selfstore-preboot-style')) return;
+    removeNode(document.getElementById('yd-review-selfstore-preboot-style'));
     var style = document.createElement('style');
     style.id = 'yd-review-selfstore-preboot-style';
+    style.setAttribute('data-yd-shell-version', SHELL_VERSION);
     style.textContent = [
       scoped('html[data-yd-lala-active-tab="detail"]', reviewSel + ',' + qnaSel) + '{display:none!important}',
       scoped('html[data-yd-lala-active-tab="review"]', detailSel + ',' + qnaSel) + '{display:none!important}',
@@ -56,49 +94,83 @@
     return number ? number.toLocaleString('ko-KR') : '';
   }
   function syncTabs(){
-    setTab(activeTab);
+    setTab(currentTab());
     var count = reviewCount();
     Array.prototype.forEach.call(document.querySelectorAll('a._review'), function(anchor){
       anchor.textContent = count ? '리뷰 ' + count : '리뷰';
     });
-    Array.prototype.forEach.call(document.querySelectorAll('a._qna'), function(anchor){ anchor.textContent = 'Q&A'; });
+    Array.prototype.forEach.call(document.querySelectorAll('a._qna'), function(anchor){
+      anchor.textContent = 'Q&A';
+    });
     Array.prototype.forEach.call(document.querySelectorAll('a._detail,a._review,a._qna'), function(anchor){
       var kind = anchor.classList.contains('_review') ? 'review' : anchor.classList.contains('_qna') ? 'qna' : 'detail';
       var on = kind === activeTab;
       anchor.classList.toggle('active', on);
       anchor.classList.toggle('on', on);
       anchor.setAttribute('aria-selected', on ? 'true' : 'false');
+      anchor.style.setProperty('color', on ? BRAND : '#191d24', 'important');
+      anchor.style.setProperty('font-weight', on ? '800' : '500', 'important');
     });
   }
-  document.addEventListener('click', function(event){
-    var anchor = event.target.closest && event.target.closest('a._detail,a._review,a._qna');
-    if (!anchor || !anchor.closest('ul.site_prod_nav')) return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    var nextTab = anchor.classList.contains('_review') ? 'review' : anchor.classList.contains('_qna') ? 'qna' : 'detail';
-    window.__YD_LALA_USER_SELECTED_TAB__ = nextTab;
-    setTab(nextTab);
-    syncTabs();
-  }, true);
+  function startTabSyncLoop(){
+    if (tabSyncTimer) clearInterval(tabSyncTimer);
+    var ticks = 0;
+    tabSyncTimer = setInterval(function(){
+      ticks += 1;
+      syncTabs();
+      if (ticks >= 80) {
+        clearInterval(tabSyncTimer);
+        tabSyncTimer = null;
+      }
+    }, 250);
+  }
+  function bindTabClick(){
+    if (window.__YD_REVIEW_SELFSTORE_CLICK_BOUND_VERSION__ === SHELL_VERSION) return;
+    window.__YD_REVIEW_SELFSTORE_CLICK_BOUND_VERSION__ = SHELL_VERSION;
+    document.addEventListener('click', function(event){
+      var anchor = event.target.closest && event.target.closest('a._detail,a._review,a._qna');
+      if (!anchor || !anchor.closest('ul.site_prod_nav')) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      var nextTab = anchor.classList.contains('_review') ? 'review' : anchor.classList.contains('_qna') ? 'qna' : 'detail';
+      window.__YD_LALA_USER_SELECTED_TAB__ = nextTab;
+      window.__YD_LALA_USER_SELECTED_AT__ = Date.now();
+      setTab(nextTab);
+      syncTabs();
+      startTabSyncLoop();
+    }, true);
+  }
   function loadWidget(){
-    if (document.getElementById('yd-review-widget-loader')) return;
+    removeNode(document.getElementById('yd-review-widget-loader'));
+    removeNode(document.getElementById('yd-review-widget-loader-v17'));
+    window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__ = false;
     window.YD_DANBAEK_REVIEW_WIDGET_CONFIG = Object.assign({}, window.YD_DANBAEK_REVIEW_WIDGET_CONFIG || {}, {
       source: 'yundiet_selfstore_native_review_dom',
       testSite: 'yundiet-selfstore',
-      brandColor: BRAND
+      brandColor: BRAND,
+      initialTab: 'detail'
     });
     var script = document.createElement('script');
-    script.id = 'yd-review-widget-loader';
+    script.id = 'yd-review-widget-loader-v17';
     script.async = true;
     script.src = WIDGET_URL;
+    script.setAttribute('data-yd-review-widget-url', WIDGET_URL);
+    script.setAttribute('data-yd-shell-version', SHELL_VERSION);
     (document.head || document.documentElement).appendChild(script);
   }
 
-  setTab(activeTab);
+  if (window.__YD_REVIEW_SELFSTORE_BOOT_VERSION__ !== SHELL_VERSION) {
+    resetPreviousReviewWidget();
+  }
+  window.__YD_REVIEW_SELFSTORE_BOOT__ = true;
+  window.__YD_REVIEW_SELFSTORE_BOOT_VERSION__ = SHELL_VERSION;
+  setTab('detail');
   injectPrebootStyle();
+  bindTabClick();
   if (document.body) loadWidget();
   ready(function(){
     syncTabs();
+    startTabSyncLoop();
     loadWidget();
     setTimeout(syncTabs, 60);
     setTimeout(syncTabs, 300);
