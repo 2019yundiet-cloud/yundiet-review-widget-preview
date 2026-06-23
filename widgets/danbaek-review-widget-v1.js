@@ -1,7 +1,7 @@
 (function(){
   if (window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__) return;
   window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__ = true;
-  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v4';
+  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v5';
 
   var config = window.YD_DANBAEK_REVIEW_WIDGET_CONFIG || {};
   var feedUrl = config.feedUrl || 'https://2019yundiet-cloud.github.io/yundiet-review-widget-preview/feeds/danbaekbap-review-feed.json';
@@ -34,12 +34,12 @@
   }
   function injectPreflightStyle(){
     var style = document.getElementById('yd-lala-preflight-style');
-    if (style && style.getAttribute('data-yd-lala-preflight-version') === 'green-stable-v2') return;
+    if (style && style.getAttribute('data-yd-lala-preflight-version') === 'green-stable-v5') return;
     if (!style) {
       style = document.createElement('style');
       style.id = 'yd-lala-preflight-style';
     }
-    style.setAttribute('data-yd-lala-preflight-version', 'green-stable-v2');
+    style.setAttribute('data-yd-lala-preflight-version', 'green-stable-v5');
     style.textContent = [
       scopedSelectors('html[data-yd-lala-active-tab="detail"]', reviewPaneCssSelector+','+qnaPaneCssSelector)+'{display:none!important}',
       scopedSelectors('html[data-yd-lala-active-tab="review"]', detailPaneCssSelector+','+qnaPaneCssSelector)+'{display:none!important}',
