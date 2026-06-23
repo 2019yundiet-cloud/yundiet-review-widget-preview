@@ -12,6 +12,37 @@
   }
   if (!isProductPage()) return;
 
+  function initialNativeTabKind(){
+    var hash = String(location.hash || '').toLowerCase();
+    if (hash.indexOf('review') !== -1) return 'review';
+    if (hash.indexOf('qna') !== -1) return 'qna';
+    return window.__YD_LALA_ACTIVE_TAB__ || 'detail';
+  }
+  var activeNativeTab = initialNativeTabKind();
+  function syncNativeTabAttribute(kind){
+    activeNativeTab = kind || activeNativeTab || 'detail';
+    window.__YD_LALA_ACTIVE_TAB__ = activeNativeTab;
+    if (document.documentElement) document.documentElement.setAttribute('data-yd-lala-active-tab', activeNativeTab);
+    if (document.body) document.body.setAttribute('data-yd-lala-active-tab', activeNativeTab);
+  }
+  function injectPreflightStyle(){
+    if (document.getElementById('yd-lala-preflight-style')) return;
+    var style = document.createElement('style');
+    style.id = 'yd-lala-preflight-style';
+    style.textContent = [
+      'html[data-yd-lala-active-tab="detail"] .detail_review_wrap,html[data-yd-lala-active-tab="detail"] .detail_review_wrap_mobile,html[data-yd-lala-active-tab="detail"] .detail_qna_wrap,html[data-yd-lala-active-tab="detail"] .detail_qna_wrap_mobile{display:none!important}',
+      'html[data-yd-lala-active-tab="review"] .detail_detail_wrap,html[data-yd-lala-active-tab="review"] .detail_detail_wrap_mobile,html[data-yd-lala-active-tab="review"] .detail_qna_wrap,html[data-yd-lala-active-tab="review"] .detail_qna_wrap_mobile{display:none!important}',
+      'html[data-yd-lala-active-tab="qna"] .detail_detail_wrap,html[data-yd-lala-active-tab="qna"] .detail_detail_wrap_mobile,html[data-yd-lala-active-tab="qna"] .detail_review_wrap,html[data-yd-lala-active-tab="qna"] .detail_review_wrap_mobile{display:none!important}',
+      'body[data-yd-lala-active-tab="detail"] .detail_review_wrap,body[data-yd-lala-active-tab="detail"] .detail_review_wrap_mobile,body[data-yd-lala-active-tab="detail"] .detail_qna_wrap,body[data-yd-lala-active-tab="detail"] .detail_qna_wrap_mobile{display:none!important}',
+      'body[data-yd-lala-active-tab="review"] .detail_detail_wrap,body[data-yd-lala-active-tab="review"] .detail_detail_wrap_mobile,body[data-yd-lala-active-tab="review"] .detail_qna_wrap,body[data-yd-lala-active-tab="review"] .detail_qna_wrap_mobile{display:none!important}',
+      'body[data-yd-lala-active-tab="qna"] .detail_detail_wrap,body[data-yd-lala-active-tab="qna"] .detail_detail_wrap_mobile,body[data-yd-lala-active-tab="qna"] .detail_review_wrap,body[data-yd-lala-active-tab="qna"] .detail_review_wrap_mobile{display:none!important}',
+      '._prod_detail_tab_fixed a._detail,._prod_detail_tab_fixed a._review,._prod_detail_tab_fixed a._qna,#fixed_tab a._detail,#fixed_tab a._review,#fixed_tab a._qna,#fixed_tab_mobile a._detail,#fixed_tab_mobile a._review,#fixed_tab_mobile a._qna{border:0!important;box-shadow:none!important;background:#fff!important;color:#191d24!important;font-weight:700!important;text-decoration:none!important}'
+    ].join('\n');
+    (document.head || document.documentElement).appendChild(style);
+  }
+  syncNativeTabAttribute(activeNativeTab);
+  injectPreflightStyle();
+
   function ready(fn){
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
     else fn();
@@ -248,8 +279,8 @@
     tries = tries || 0;
     var value = fn();
     if (value) return cb(value);
-    if (tries > 60) return;
-    setTimeout(function(){ waitFor(fn, cb, tries + 1); }, 200);
+    if (tries > 240) return;
+    setTimeout(function(){ waitFor(fn, cb, tries + 1); }, 50);
   }
   function formatCount(n){
     return Number(n || 0).toLocaleString('ko-KR');
@@ -292,7 +323,6 @@
   function mobileReviewSystemAnchor(){
     return null;
   }
-  var activeNativeTab = 'detail';
   function nativeTabPaneSelectors(kind){
     return {
       detail: '.detail_detail_wrap, .detail_detail_wrap_mobile',
@@ -316,8 +346,7 @@
     window.scrollTo({top: top, behavior:'smooth'});
   }
   function applyNativeTabState(kind, shouldScroll){
-    activeNativeTab = kind || activeNativeTab || 'detail';
-    if (document.body) document.body.setAttribute('data-yd-lala-active-tab', activeNativeTab);
+    syncNativeTabAttribute(kind || activeNativeTab || 'detail');
     ['detail','review','qna'].forEach(function(tab){
       nativeTabPanes(tab).forEach(function(pane){
         pane.classList.toggle('yd-tab-pane-hidden', tab !== activeNativeTab);
@@ -620,14 +649,19 @@
         setTimeout(function(){ applyNativeTabState(kind, false); }, delay);
       });
     }
+    ['pointerdown','touchstart','mousedown'].forEach(function(type){
+      window.addEventListener(type, handleNativeTabClick, {capture:true, passive:false});
+      document.addEventListener(type, handleNativeTabClick, {capture:true, passive:false});
+    });
     window.addEventListener('click', handleNativeTabClick, true);
     document.addEventListener('click', handleNativeTabClick, true);
   }
   function normalizeNativeTabLabels(feed){
-    var count = formatCount(feed && feed.product && feed.product.review_count);
+    var rawCount = Number(feed && feed.product && feed.product.review_count) || nativeCountFromPage();
+    var count = rawCount ? formatCount(rawCount) : '';
     Array.prototype.forEach.call(document.querySelectorAll('a._detail, a._review, a._qna'), function(anchor){
       if (anchor.classList.contains('_detail')) anchor.textContent = '상세정보';
-      if (anchor.classList.contains('_review')) anchor.textContent = '리뷰 '+count;
+      if (anchor.classList.contains('_review')) anchor.textContent = count ? '리뷰 '+count : '리뷰';
       if (anchor.classList.contains('_qna')) anchor.textContent = 'Q&A';
       var nav = anchor.closest('._prod_detail_tab_fixed') || anchor.closest('#fixed_tab') || anchor.closest('#fixed_tab_mobile') || anchor.parentElement;
       if (nav) nav.classList.add('yd-lala-tabs-normalized');
@@ -985,6 +1019,11 @@
     var mobileAnchor = mobileReviewSystemAnchor();
     if (mobileAnchor) return placeSystemAt(system, mobileAnchor.parent, mobileAnchor.before);
 
+    var reviewPane = nativeTabPanes('review')[0];
+    if (reviewPane) {
+      return placeSystemAt(system, reviewPane, reviewPane.firstChild);
+    }
+
     var nativeWraps = nativeReviewSourceWraps();
     var nativeWrap = nativeWraps.filter(visible)[0] || nativeWraps[0];
     if (nativeWrap && nativeWrap.parentNode) {
@@ -1030,7 +1069,7 @@
     bindResponsiveReviewUi(feed);
     normalizeNativeTabLabels(feed);
     waitFor(function(){
-      return mobileReviewSystemAnchor() || bestReviewTarget();
+      return mobileReviewSystemAnchor() || nativeTabPanes('review')[0] || bestReviewTarget();
     }, function(){
       placeReviewSystem(feed);
       hideNativeReviewSources();
@@ -1051,7 +1090,7 @@
         normalizeNativeTabLabels(feed);
         applyNativeTabState(activeNativeTab || 'detail', false);
       }
-    }, 180);
+    }, 40);
   }
   function bindNativeReviewObserver(){
     if (nativeReviewObserverBound || !window.MutationObserver) return;
@@ -1067,12 +1106,17 @@
     observer.observe(document.body, {childList:true, subtree:true, characterData:true});
   }
   function startNativeReviewAdapter(){
+    syncNativeTabAttribute(activeNativeTab || initialNativeTabKind());
+    injectPreflightStyle();
     injectStyle();
     bindNativeReviewTabLinks();
+    normalizeNativeTabLabels({product:{review_count:nativeCountFromPage()}});
+    applyNativeTabState(activeNativeTab || 'detail', false);
     waitFor(function(){
-      return nativeReviewWraps().length || bestReviewTarget() || document.querySelector('.review-box');
+      return nativeTabPanes('review')[0] || nativeReviewWraps().length || bestReviewTarget() || document.querySelector('.review-box');
     }, function(){
-      scheduleNativeReviewRender();
+      var feed = buildNativeReviewFeed();
+      render(feed);
       bindNativeReviewObserver();
     });
   }
