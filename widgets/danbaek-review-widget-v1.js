@@ -881,6 +881,7 @@
     el.setAttribute('data-filter','all');
     el.setAttribute('data-concept', currentConcept().id);
     el.setAttribute('data-mode', nativeReviewMode());
+    el.setAttribute('data-build', 'tabbed-content-v2');
 
     var product = feed.product || {};
     var count = formatCount(product.review_count);
