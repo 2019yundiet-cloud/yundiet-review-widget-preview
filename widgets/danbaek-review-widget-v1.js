@@ -1,7 +1,7 @@
 (function(){
   if (window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__) return;
   window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__ = true;
-  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v9';
+  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v10';
 
   var config = window.YD_DANBAEK_REVIEW_WIDGET_CONFIG || {};
   var feedUrl = config.feedUrl || 'https://2019yundiet-cloud.github.io/yundiet-review-widget-preview/feeds/danbaekbap-review-feed.json';
@@ -36,12 +36,12 @@
   }
   function injectPreflightStyle(){
     var style = document.getElementById('yd-lala-preflight-style');
-    if (style && style.getAttribute('data-yd-lala-preflight-version') === 'green-stable-v6') return;
+    if (style && style.getAttribute('data-yd-lala-preflight-version') === 'green-stable-v7') return;
     if (!style) {
       style = document.createElement('style');
       style.id = 'yd-lala-preflight-style';
     }
-    style.setAttribute('data-yd-lala-preflight-version', 'green-stable-v6');
+    style.setAttribute('data-yd-lala-preflight-version', 'green-stable-v7');
     style.textContent = [
       scopedSelectors('html[data-yd-lala-active-tab="detail"]', reviewPaneCssSelector+','+qnaPaneCssSelector)+'{display:none!important}',
       scopedSelectors('html[data-yd-lala-active-tab="review"]', detailPaneCssSelector+','+qnaPaneCssSelector)+'{display:none!important}',
@@ -102,14 +102,25 @@
   }
   function detectBrandColor(){
     var html = (document.documentElement && document.documentElement.innerHTML) || '';
+    var shopIndex = html.indexOf('SITE_SHOP_DETAIL.initDetail');
+    if (shopIndex !== -1) {
+      var shopBlock = html.slice(shopIndex, shopIndex + 50000);
+      var shopColorIndex = shopBlock.indexOf('brand_color');
+      if (shopColorIndex !== -1) {
+        var shopNearby = shopBlock.slice(shopColorIndex, shopColorIndex + 160);
+        var shopMatch = shopNearby.match(/#[0-9a-fA-F]{6}/);
+        if (shopMatch) return normalizeHexColor(shopMatch[0]);
+      }
+    }
+    if (window.getComputedStyle && document.body) {
+      var bodyColor = normalizeHexColor(rgbToHex(getComputedStyle(document.body).color));
+      if (bodyColor) return bodyColor;
+    }
     var index = html.indexOf('brand_color');
     if (index !== -1) {
       var nearby = html.slice(index, index + 160);
       var match = nearby.match(/#[0-9a-fA-F]{6}/);
       if (match) return normalizeHexColor(match[0]);
-    }
-    if (window.getComputedStyle && document.body) {
-      return normalizeHexColor(rgbToHex(getComputedStyle(document.body).color));
     }
     return '';
   }
