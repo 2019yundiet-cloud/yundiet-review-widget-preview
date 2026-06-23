@@ -1,7 +1,7 @@
 (function(){
   if (window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__) return;
   window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__ = true;
-  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v12';
+  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v13';
 
   var config = window.YD_DANBAEK_REVIEW_WIDGET_CONFIG || {};
   var feedUrl = config.feedUrl || 'https://2019yundiet-cloud.github.io/yundiet-review-widget-preview/feeds/danbaekbap-review-feed.json';
@@ -11,15 +11,16 @@
   if (location.href.indexOf('/admin') !== -1 || location.href.indexOf('/_/') !== -1) return;
 
   function isProductPage(){
-    return document.body.classList.contains('shop_view') || location.pathname.indexOf('/shop_view') !== -1;
+    return (document.body && document.body.classList.contains('shop_view')) || location.pathname.indexOf('/shop_view') !== -1;
   }
   if (!isProductPage()) return;
 
   function initialNativeTabKind(){
-    var hash = String(location.hash || '').toLowerCase();
-    if (hash.indexOf('review') !== -1) return 'review';
-    if (hash.indexOf('qna') !== -1) return 'qna';
-    return window.__YD_LALA_ACTIVE_TAB__ || 'detail';
+    var selected = String(window.__YD_LALA_USER_SELECTED_TAB__ || '').toLowerCase();
+    if (/^(detail|review|qna)$/.test(selected)) return selected;
+    var configured = String(config.initialTab || '').toLowerCase();
+    if (/^(detail|review|qna)$/.test(configured)) return configured;
+    return 'detail';
   }
   var activeNativeTab = initialNativeTabKind();
   var currentNativeReviewPage = Number(window.__YD_LALA_REVIEW_PAGE__) || 1;
@@ -479,6 +480,18 @@
     var top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
     window.scrollTo({top: top, behavior:'smooth'});
   }
+  function scrollReviewSystemTop(){
+    var target = document.getElementById('yd-review-inline-system') || preferredNativeTabPane('review');
+    if (!target) return;
+    var offset = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 64 : 58;
+    var top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
+    window.scrollTo({top: top, behavior:'auto'});
+  }
+  function stabilizeReviewPageScroll(){
+    [0, 80, 220, 520, 920, 1500].forEach(function(delay){
+      setTimeout(scrollReviewSystemTop, delay);
+    });
+  }
   function applyNativeTabState(kind, shouldScroll){
     syncNativeTabAttribute(kind || window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || 'detail');
     ['detail','review','qna'].forEach(function(tab){
@@ -767,6 +780,7 @@
       ev.preventDefault();
       ev.stopPropagation();
     }
+    window.__YD_LALA_USER_SELECTED_TAB__ = 'review';
     applyNativeTabState('review', true);
   }
   function nativeTabKindFromTrigger(el){
@@ -836,6 +850,7 @@
       if (ev.cancelable) ev.preventDefault();
       ev.stopPropagation();
       if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+      window.__YD_LALA_USER_SELECTED_TAB__ = kind;
       reinforceNativeTabState(kind, true);
       if (kind === 'review') scheduleNativeReviewRender(220);
       [8, 16, 24, 32, 48, 64, 80, 120, 160, 240, 420, 900, 1500].forEach(function(delay){
@@ -1178,9 +1193,10 @@
     }
     syncNativeTabAttribute('review');
     control.element.click();
+    stabilizeReviewPageScroll();
     scheduleNativeReviewRender(280);
-    setTimeout(function(){ scheduleNativeReviewRender(0); }, 900);
-    setTimeout(function(){ scheduleNativeReviewRender(0); }, 1700);
+    setTimeout(function(){ scheduleNativeReviewRender(0); stabilizeReviewPageScroll(); }, 900);
+    setTimeout(function(){ scheduleNativeReviewRender(0); stabilizeReviewPageScroll(); }, 1700);
     return true;
   }
   function nativeReviewImages(item){
