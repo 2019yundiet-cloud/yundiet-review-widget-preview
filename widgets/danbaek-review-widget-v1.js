@@ -1,7 +1,7 @@
 (function(){
   if (window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__) return;
   window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__ = true;
-  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v11';
+  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v12';
 
   var config = window.YD_DANBAEK_REVIEW_WIDGET_CONFIG || {};
   var feedUrl = config.feedUrl || 'https://2019yundiet-cloud.github.io/yundiet-review-widget-preview/feeds/danbaekbap-review-feed.json';
@@ -22,6 +22,7 @@
     return window.__YD_LALA_ACTIVE_TAB__ || 'detail';
   }
   var activeNativeTab = initialNativeTabKind();
+  var currentNativeReviewPage = Number(window.__YD_LALA_REVIEW_PAGE__) || 1;
   function syncNativeTabAttribute(kind){
     activeNativeTab = kind || window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || 'detail';
     window.__YD_LALA_ACTIVE_TAB__ = activeNativeTab;
@@ -655,6 +656,11 @@
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin-top:20px;max-width:760px}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo{aspect-ratio:1/1;background:#f1f3f6;overflow:hidden}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo img{width:100%;height:100%;object-fit:cover;display:block}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-pagination{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;padding:24px 0 0}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-page-button{min-width:34px;height:34px;border:1px solid #d8dee8;background:#fff;border-radius:2px;padding:0 10px;color:#4b5563;font-size:13px;font-weight:800;line-height:1;cursor:pointer}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-page-button.is-current{background:var(--yd-lala-gold);border-color:var(--yd-lala-gold);color:#fff}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-page-button.is-nav{min-width:48px}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-page-button:disabled{opacity:.45;cursor:wait}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-feature{display:grid;grid-template-columns:170px minmax(0,1fr);gap:24px;margin:0 0 18px;padding:22px 0;border-bottom:1px solid var(--yd-lala-line)}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-feature-kicker{margin:0 0 9px;color:var(--yd-lala-gold);font-size:12px;font-weight:900}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-feature-title{margin:0;color:#273241;font-size:18px;line-height:1.42;font-weight:900}',
@@ -687,7 +693,7 @@
       '.yd-lala-tabs-normalized .site_prod_nav:after{content:"|"!important;display:block!important;position:absolute!important;left:66.666%!important;top:50%!important;color:#191d24!important;font-size:14px!important;line-height:1!important;font-weight:400!important;transform:translate(-50%,-50%)!important;opacity:1!important;z-index:5!important;pointer-events:none!important}',
       '.yd-lala-tabs-normalized a{position:relative!important;border:0!important;border-bottom:0!important;box-shadow:none!important;font-size:14px!important;font-weight:700!important;color:#191d24!important;text-decoration:none!important}',
       '#yd-review-inline-system.yd-lalasweet-system[data-filter="taste"] .yd-lala-row:not([data-topic="taste"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="delivery"] .yd-lala-row:not([data-topic="delivery"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="routine"] .yd-lala-row:not([data-topic="routine"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="satiety"] .yd-lala-row:not([data-topic="satiety"]){display:none}',
-      '@media(max-width:760px){#yd-review-inline-system.yd-lalasweet-system{margin:42px auto 30px;padding:0 14px 30px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-title{font-size:24px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-rule{margin-bottom:26px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-summary{display:block;margin-bottom:54px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-score{border-right:0;min-height:112px;padding-bottom:0;margin-bottom:36px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-bar{grid-template-columns:84px minmax(0,1fr) 52px;gap:9px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-toolbar{grid-template-columns:minmax(118px,1fr) auto;gap:8px;min-height:52px;padding-left:0;padding-right:0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo-toggle{font-size:13px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort{gap:11px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-search{gap:6px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters{padding-bottom:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button{min-width:128px;height:44px;font-size:12px;padding:0 18px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-row{grid-template-columns:1fr;gap:14px;padding:24px 0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-profile{grid-template-columns:34px minmax(0,1fr)}#yd-review-inline-system.yd-lalasweet-system .yd-lala-avatar{width:34px;height:34px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-date{margin-top:4px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-photos{grid-template-columns:repeat(2,minmax(0,1fr))}}'
+      '@media(max-width:760px){#yd-review-inline-system.yd-lalasweet-system{margin:42px auto 30px;padding:0 14px 30px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-title{font-size:24px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-rule{margin-bottom:26px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-summary{display:block;margin-bottom:54px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-score{border-right:0;min-height:112px;padding-bottom:0;margin-bottom:36px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-bar{grid-template-columns:84px minmax(0,1fr) 52px;gap:9px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-toolbar{grid-template-columns:minmax(118px,1fr) auto;gap:8px;min-height:52px;padding-left:0;padding-right:0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo-toggle{font-size:13px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort{gap:11px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-search{gap:6px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters{padding-bottom:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button{min-width:128px;height:44px;font-size:12px;padding:0 18px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-row{grid-template-columns:1fr;gap:14px;padding:24px 0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-profile{grid-template-columns:34px minmax(0,1fr)}#yd-review-inline-system.yd-lalasweet-system .yd-lala-avatar{width:34px;height:34px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-date{margin-top:4px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-photos{grid-template-columns:repeat(2,minmax(0,1fr))}#yd-review-inline-system.yd-lalasweet-system .yd-lala-pagination{justify-content:flex-start;overflow-x:auto;padding-bottom:2px}}'
     ].join('\n').replace(/#2c5d42/g, brandColor).replace(/44,93,66/g, brandRgbTriplet);
     document.head.appendChild(style);
   }
@@ -977,6 +983,206 @@
     var stars = cleanReviewText(text(item)).match(/★/g);
     return stars && stars.length ? Math.min(5, stars.length) : 0;
   }
+  function nativeRatingFromSummary(){
+    var nodes = Array.prototype.slice.call(document.querySelectorAll('.review_summary_wrap .rating_point,.review_summary_wrap_mobile .rating_point,._review_summary_wrap .rating_point,._review_summary_wrap_mobile .rating_point'));
+    for (var i = 0; i < nodes.length; i += 1) {
+      if (nodes[i].closest('#yd-review-inline-system')) continue;
+      var match = cleanReviewText(text(nodes[i])).match(/([1-5](?:\.\d)?)/);
+      if (match) return (Number(match[1]) || 0).toFixed(1);
+    }
+    return '';
+  }
+  function ratingCountsTotal(counts){
+    return (counts || []).reduce(function(sum, n){
+      return sum + (Number(n) || 0);
+    }, 0);
+  }
+  function normalizeRatingCounts(counts, total){
+    total = Number(total) || 0;
+    counts = Array.prototype.slice.call(counts || [], 0, 5).map(function(n){
+      return Math.max(0, Math.round(Number(n) || 0));
+    });
+    while (counts.length < 5) counts.push(0);
+    var sum = ratingCountsTotal(counts);
+    if (!sum) return counts;
+    if (!total) return counts;
+    var diff = total - sum;
+    if (diff > 0) {
+      var maxIndex = 0;
+      counts.forEach(function(n, i){
+        if (n > counts[maxIndex]) maxIndex = i;
+      });
+      counts[maxIndex] += diff;
+    } else if (diff < 0) {
+      diff = Math.abs(diff);
+      counts.forEach(function(n, i){
+        if (!diff || !counts[i]) return;
+        var remove = Math.min(counts[i], diff);
+        counts[i] -= remove;
+        diff -= remove;
+      });
+    }
+    return counts;
+  }
+  function countsFromPercentages(total, percentages){
+    total = Math.max(0, Math.round(Number(total) || 0));
+    percentages = Array.prototype.slice.call(percentages || [], 0, 5).map(function(n){
+      return Math.max(0, Number(n) || 0);
+    });
+    while (percentages.length < 5) percentages.push(0);
+    var percentSum = percentages.reduce(function(sum, n){ return sum + n; }, 0);
+    if (!total || !percentSum) return [0,0,0,0,0];
+    var raw = percentages.map(function(percent){
+      return total * (percent / percentSum);
+    });
+    var counts = raw.map(function(value){ return Math.floor(value); });
+    var remainder = total - ratingCountsTotal(counts);
+    var order = raw.map(function(value, index){
+      return {index:index, rest:value - Math.floor(value)};
+    }).sort(function(a, b){ return b.rest - a.rest; });
+    for (var i = 0; i < remainder; i += 1) {
+      counts[order[i % order.length].index] += 1;
+    }
+    return counts;
+  }
+  function parseRatingPercent(el){
+    if (!el) return null;
+    var style = String(el.getAttribute('style') || '') + ';' + String(el.style && el.style.height || '');
+    var match = style.match(/height\s*:\s*([\d.]+)%/i) || style.match(/([\d.]+)%/);
+    return match ? Number(match[1]) : null;
+  }
+  function nativeRatingDistributionFromSummary(total){
+    var summaries = Array.prototype.slice.call(document.querySelectorAll('.review_summary_wrap,.review_summary_wrap_mobile,._review_summary_wrap,._review_summary_wrap_mobile'));
+    for (var i = 0; i < summaries.length; i += 1) {
+      var summary = summaries[i];
+      if (!summary || summary.closest('#yd-review-inline-system')) continue;
+      var bars = Array.prototype.slice.call(summary.querySelectorAll('.rating_bar_wrap'));
+      if (bars.length < 3) continue;
+      var percentages = [0,0,0,0,0];
+      var found = 0;
+      bars.forEach(function(wrap){
+        var label = cleanReviewText(text(wrap.querySelector('.rating_name')));
+        var ratingMatch = label.match(/([1-5])\s*점/);
+        var rating = ratingMatch ? Number(ratingMatch[1]) : 0;
+        var percent = parseRatingPercent(wrap.querySelector('.rating_bar'));
+        if (rating >= 1 && rating <= 5 && percent !== null && !isNaN(percent)) {
+          percentages[5 - rating] = percent;
+          found += 1;
+        }
+      });
+      if (found >= 3) {
+        return {
+          counts: countsFromPercentages(total, percentages),
+          source: 'native_summary_percent'
+        };
+      }
+    }
+    return null;
+  }
+  function estimateRatingDistribution(total, avgRating){
+    total = Math.max(0, Math.round(Number(total) || 0));
+    if (!total) return [0,0,0,0,0];
+    var avg = Math.max(1, Math.min(5, Number(avgRating) || 4.9));
+    var lowMass = avg >= 4.8 ? 0.012 : avg >= 4.55 ? 0.025 : avg >= 4.25 ? 0.05 : 0.09;
+    var p1 = lowMass * 0.15;
+    var p2 = lowMass * 0.25;
+    var p3 = lowMass * 0.60;
+    var rest = Math.max(0, 1 - lowMass);
+    var lowScore = (p3 * 3) + (p2 * 2) + p1;
+    var p5 = avg - (rest * 4) - lowScore;
+    p5 = Math.max(0, Math.min(rest, p5));
+    var p4 = Math.max(0, rest - p5);
+    return countsFromPercentages(total, [p5 * 100, p4 * 100, p3 * 100, p2 * 100, p1 * 100]);
+  }
+  function resolveRatingDistribution(total, avgRating){
+    var nativeDistribution = nativeRatingDistributionFromSummary(total);
+    if (nativeDistribution && ratingCountsTotal(nativeDistribution.counts)) return nativeDistribution;
+    return {
+      counts: estimateRatingDistribution(total, avgRating),
+      source: 'estimated_from_average'
+    };
+  }
+  function parseNativeReviewPageNumber(onclick){
+    var match = String(onclick || '').match(/changeContentTab\(\s*['"]review['"]\s*,\s*([^,\)]+)/);
+    if (!match) return 0;
+    var expr = String(match[1] || '').replace(/\s+/g, '');
+    var calc = expr.match(/^(\d+)([+-])(\d+)$/);
+    if (calc) {
+      return calc[2] === '+' ? Number(calc[1]) + Number(calc[3]) : Number(calc[1]) - Number(calc[3]);
+    }
+    return /^\d+$/.test(expr) ? Number(expr) : 0;
+  }
+  function nativeReviewPageControls(){
+    var roots = [];
+    var preferred = preferredNativeTabPane('review');
+    if (preferred) roots.push(preferred);
+    nativeTabPanes('review').forEach(function(pane){
+      if (pane && roots.indexOf(pane) === -1) roots.push(pane);
+    });
+    var seen = {};
+    var controls = [];
+    roots.forEach(function(root){
+      Array.prototype.forEach.call(root.querySelectorAll('a,button'), function(el){
+        if (el.closest('#yd-review-inline-system')) return;
+        var onclick = String(el.getAttribute('onclick') || '');
+        if (onclick.indexOf('changeContentTab') === -1 || onclick.indexOf('review') === -1) return;
+        var page = parseNativeReviewPageNumber(onclick);
+        var rawLabel = cleanReviewText(text(el));
+        var label = rawLabel || (/[+]\s*1/.test(onclick) ? '다음' : (/[-]\s*1/.test(onclick) ? '이전' : (page ? String(page) : '다음')));
+        if (!page && !label) return;
+        var signature = onclick + '|' + label;
+        if (seen[signature]) return;
+        seen[signature] = true;
+        var classText = String(el.className || '') + ' ' + String(el.parentNode && el.parentNode.className || '');
+        controls.push({
+          element: el,
+          label: label,
+          page: page,
+          signature: signature,
+          isNav: !/^\d+$/.test(label),
+          active: /\b(active|on|selected)\b/i.test(classText)
+        });
+      });
+    });
+    controls.forEach(function(control){
+      if (!control.active && control.page && control.page === currentNativeReviewPage && /^\d+$/.test(control.label)) {
+        control.active = true;
+      }
+    });
+    if (currentNativeReviewPage && controls.some(function(control){ return control.page === currentNativeReviewPage && /^\d+$/.test(control.label); })) {
+      var groupStart = Math.max(1, currentNativeReviewPage - ((currentNativeReviewPage - 1) % 5));
+      var groupEnd = groupStart + 4;
+      controls = controls.filter(function(control){
+        if (/^\d+$/.test(control.label)) return control.page >= groupStart && control.page <= groupEnd;
+        if (/다음/.test(control.label)) return !control.page || control.page > groupEnd || control.page === groupEnd + 1;
+        if (/이전/.test(control.label)) return !control.page || control.page < groupStart || control.page === groupStart - 1;
+        return true;
+      });
+      var compactSeen = {};
+      controls = controls.filter(function(control){
+        var key = control.label + '|' + control.page;
+        if (compactSeen[key]) return false;
+        compactSeen[key] = true;
+        return true;
+      });
+    }
+    return controls;
+  }
+  function clickNativeReviewPageControl(signature){
+    var controls = nativeReviewPageControls();
+    var control = controls.filter(function(item){ return item.signature === signature; })[0];
+    if (!control || !control.element) return false;
+    if (control.page) {
+      currentNativeReviewPage = control.page;
+      window.__YD_LALA_REVIEW_PAGE__ = currentNativeReviewPage;
+    }
+    syncNativeTabAttribute('review');
+    control.element.click();
+    scheduleNativeReviewRender(280);
+    setTimeout(function(){ scheduleNativeReviewRender(0); }, 900);
+    setTimeout(function(){ scheduleNativeReviewRender(0); }, 1700);
+    return true;
+  }
   function nativeReviewImages(item){
     var seen = {};
     return Array.prototype.map.call(item.querySelectorAll('img'), function(img){
@@ -1032,17 +1238,22 @@
     reviews.forEach(function(review){
       review.images.forEach(function(img){ reviewImages.push(img); });
     });
+    var productRating = nativeRatingFromSummary() || (ratingCount ? (Math.round((ratingTotal / ratingCount) * 10) / 10).toFixed(1) : '4.9');
+    var productReviewCount = listedCount || reviews.length;
+    var ratingDistribution = resolveRatingDistribution(productReviewCount, productRating);
     return {
       version: 'imweb-native-live',
       source: {type:'imweb_native_review_dom', url: location.href},
       product: {
         title: nativeProductTitle(),
-        rating: ratingCount ? (Math.round((ratingTotal / ratingCount) * 10) / 10).toFixed(1) : '4.9',
-        review_count: listedCount || reviews.length
+        rating: productRating,
+        review_count: productReviewCount
       },
       keywords: defaultKeywords(),
       reviews: reviews,
-      review_images: reviewImages
+      review_images: reviewImages,
+      rating_distribution: ratingDistribution.counts,
+      rating_distribution_source: ratingDistribution.source
     };
   }
   function findNativeReviewWriteButton(){
@@ -1104,14 +1315,12 @@
   }
   function makeLalaBars(feed){
     var reviews = feed.reviews || [];
-    var total = Math.max(1, reviews.length);
-    var ratingCounts = [0,0,0,0,0];
-    reviews.forEach(function(r){
-      var rating = Math.round(Number(r.rating) || 0);
-      if (rating >= 1 && rating <= 5) ratingCounts[5 - rating] += 1;
-    });
-    var hasRatings = ratingCounts.some(function(n){ return n > 0; });
-    if (!hasRatings) ratingCounts[0] = Number(feed.product && feed.product.review_count) || reviews.length;
+    var productTotal = Number(feed.product && feed.product.review_count) || 0;
+    var total = Math.max(1, productTotal || reviews.length);
+    var ratingCounts = normalizeRatingCounts(feed.rating_distribution || [], productTotal);
+    if (!ratingCountsTotal(ratingCounts)) {
+      ratingCounts = estimateRatingDistribution(productTotal || reviews.length, feed.product && feed.product.rating);
+    }
     var bars = [
       {label:'매우 만족', count:ratingCounts[0]},
       {label:'만족', count:ratingCounts[1]},
@@ -1147,6 +1356,15 @@
       ].join('');
     }).join('');
   }
+  function makeLalaPagination(){
+    var controls = nativeReviewPageControls();
+    if (!controls.length) return '';
+    return '<nav class="yd-lala-pagination" aria-label="리뷰 페이지 이동">' + controls.map(function(control){
+      var className = 'yd-lala-page-button' + (control.active ? ' is-current' : '') + (control.isNav ? ' is-nav' : '');
+      var aria = control.active ? ' aria-current="page"' : '';
+      return '<button type="button" class="'+className+'" data-native-page-signature="'+escapeHtml(control.signature)+'"'+aria+'>'+escapeHtml(control.label)+'</button>';
+    }).join('') + '</nav>';
+  }
   function makeReviewSystem(feed){
     var el = document.createElement('section');
     el.id = 'yd-review-inline-system';
@@ -1178,7 +1396,8 @@
       '<div class="yd-lala-toolbar"><button type="button" class="yd-lala-photo-toggle"><span class="yd-lala-photo-icon" aria-hidden="true"></span><span>포토&동영상</span></button><div class="yd-lala-sort"><button type="button" class="yd-lala-sort-button">최신순<span class="yd-lala-caret" aria-hidden="true"></span></button><span class="yd-lala-divider" aria-hidden="true"></span><button type="button" class="yd-lala-search">직접검색<span class="yd-lala-search-icon" aria-hidden="true"></span></button></div></div>',
       '<div class="yd-lala-filters">'+keywordHtml+'</div>',
       makeFeaturedReview(feed),
-      '<div class="yd-lala-list">'+makeLalaRows(feed)+'</div>'
+      '<div class="yd-lala-list">'+makeLalaRows(feed)+'</div>',
+      makeLalaPagination(feed)
     ].join('');
 
     Array.prototype.forEach.call(el.querySelectorAll('[data-filter-value]'), function(btn){
@@ -1188,6 +1407,12 @@
         Array.prototype.forEach.call(el.querySelectorAll('[data-filter-value]'), function(b){
           b.classList.toggle('is-active', b === btn);
         });
+      });
+    });
+    Array.prototype.forEach.call(el.querySelectorAll('.yd-lala-page-button'), function(btn){
+      btn.addEventListener('click', function(){
+        btn.disabled = true;
+        clickNativeReviewPageControl(btn.getAttribute('data-native-page-signature'));
       });
     });
     var writeButton = el.querySelector('.yd-lala-write');
@@ -1202,6 +1427,9 @@
       nativeReviewMode(),
       feed.product && feed.product.review_count,
       feed.product && feed.product.rating,
+      (feed.rating_distribution || []).join(','),
+      currentNativeReviewPage,
+      nativeReviewPageControls().map(function(control){ return control.signature; }).join('|'),
       (feed.reviews || []).map(function(r){
         return [r.text, r.date, r.masked_reviewer, r.rating, (r.images || []).length].join('|');
       }).join('||')
