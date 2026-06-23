@@ -1,7 +1,7 @@
 (function(){
   if (window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__) return;
   window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__ = true;
-  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v10';
+  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v11';
 
   var config = window.YD_DANBAEK_REVIEW_WIDGET_CONFIG || {};
   var feedUrl = config.feedUrl || 'https://2019yundiet-cloud.github.io/yundiet-review-widget-preview/feeds/danbaekbap-review-feed.json';
@@ -36,12 +36,12 @@
   }
   function injectPreflightStyle(){
     var style = document.getElementById('yd-lala-preflight-style');
-    if (style && style.getAttribute('data-yd-lala-preflight-version') === 'green-stable-v7') return;
+    if (style && style.getAttribute('data-yd-lala-preflight-version') === 'green-stable-v8') return;
     if (!style) {
       style = document.createElement('style');
       style.id = 'yd-lala-preflight-style';
     }
-    style.setAttribute('data-yd-lala-preflight-version', 'green-stable-v7');
+    style.setAttribute('data-yd-lala-preflight-version', 'green-stable-v8');
     style.textContent = [
       scopedSelectors('html[data-yd-lala-active-tab="detail"]', reviewPaneCssSelector+','+qnaPaneCssSelector)+'{display:none!important}',
       scopedSelectors('html[data-yd-lala-active-tab="review"]', detailPaneCssSelector+','+qnaPaneCssSelector)+'{display:none!important}',
@@ -407,6 +407,21 @@
     var selector = nativeTabPaneSelectors(kind);
     return selector ? Array.prototype.slice.call(document.querySelectorAll(selector)) : [];
   }
+  function preferredNativeTabPane(kind){
+    var panes = nativeTabPanes(kind);
+    if (!panes.length) return null;
+    var wantMobile = isMobileReviewViewport();
+    var matched = panes.filter(function(pane){
+      var label = String((pane.className || '') + ' ' + (pane.id || ''));
+      var isMobile = /mobile/i.test(label);
+      return wantMobile ? isMobile : !isMobile;
+    });
+    var visibleMatched = matched.filter(visible);
+    if (visibleMatched.length) return visibleMatched[0];
+    if (matched.length) return matched[0];
+    var visibleAny = panes.filter(visible);
+    return visibleAny[0] || panes[0] || null;
+  }
   var lastNativeReviewCountLabel = '';
   function rememberNativeReviewCount(value){
     var number = Number(String(value || '').replace(/,/g, '')) || 0;
@@ -453,8 +468,8 @@
     });
   }
   function nativeTabTarget(kind){
-    if (kind === 'review') return document.querySelector('#yd-review-inline-system') || nativeTabPanes('review')[0];
-    return nativeTabPanes(kind)[0] || document.querySelector('#yd-review-inline-system');
+    if (kind === 'review') return document.querySelector('#yd-review-inline-system') || preferredNativeTabPane('review');
+    return preferredNativeTabPane(kind) || document.querySelector('#yd-review-inline-system');
   }
   function scrollToNativeTab(kind){
     var target = nativeTabTarget(kind);
@@ -659,6 +674,8 @@
       '@media(max-width:760px){#yd-review-inline-system.yd-lalasweet-system .yd-lala-feature{grid-template-columns:1fr;gap:12px;padding:18px 0}#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-row{grid-template-columns:1fr;gap:10px}}',
       '.yd-native-review-source-hidden{display:none!important}',
       '.yd-tab-pane-hidden{display:none!important}',
+      'body[data-yd-lala-active-tab="review"] .detail_review_wrap > :not(#yd-review-inline-system),body[data-yd-lala-active-tab="review"] .detail_review_wrap_mobile > :not(#yd-review-inline-system),body[data-yd-lala-active-tab="review"] #first_review > :not(#yd-review-inline-system),body[data-yd-lala-active-tab="review"] ._detail_review_wrap > :not(#yd-review-inline-system),body[data-yd-lala-active-tab="review"] ._detail_review_wrap_mobile > :not(#yd-review-inline-system){display:none!important}',
+      'body[data-yd-lala-active-tab="review"] #yd-review-inline-system,html[data-yd-lala-active-tab="review"] #yd-review-inline-system{display:block!important}',
       scopedSelectors('body[data-yd-lala-active-tab="detail"]', reviewPaneCssSelector+','+qnaPaneCssSelector)+'{display:none!important}',
       scopedSelectors('body[data-yd-lala-active-tab="review"]', detailPaneCssSelector+','+qnaPaneCssSelector)+'{display:none!important}',
       scopedSelectors('body[data-yd-lala-active-tab="qna"]', detailPaneCssSelector+','+reviewPaneCssSelector)+'{display:none!important}',
@@ -992,7 +1009,7 @@
       seen[key] = true;
       return {
         topic: classifyReviewTopic(body),
-        source: '레갈로 자사몰 구매평',
+        source: '윤식단 자사몰 구매평',
         text: body,
         date: date,
         masked_reviewer: author,
@@ -1039,9 +1056,24 @@
     if (button) button.click();
   }
   function hideNativeReviewSources(){
+    var system = document.getElementById('yd-review-inline-system');
     nativeReviewWraps().forEach(function(wrap){
       wrap.classList.add('yd-native-review-source-hidden');
       wrap.setAttribute('aria-hidden', 'true');
+    });
+    nativeTabPanes('review').forEach(function(pane){
+      Array.prototype.forEach.call(pane.children || [], function(child){
+        if (child === system) return;
+        if (system && child.contains && child.contains(system)) return;
+        child.classList.add('yd-native-review-source-hidden');
+        child.setAttribute('aria-hidden', 'true');
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.review_summary_wrap,.review_summary_wrap_mobile,.prod_detail_review,.prod_detail_badge'), function(el){
+      if (system && (el === system || (el.contains && el.contains(system)))) return;
+      if (!el.closest('.detail_review_wrap,.detail_review_wrap_mobile,#first_review,._detail_review_wrap,._detail_review_wrap_mobile')) return;
+      el.classList.add('yd-native-review-source-hidden');
+      el.setAttribute('aria-hidden', 'true');
     });
   }
   function starText(rating){
@@ -1142,7 +1174,7 @@
     el.innerHTML = [
       '<h2 class="yd-lala-title">REVIEW</h2><div class="yd-lala-rule"></div>',
       '<div class="yd-lala-summary"><div class="yd-lala-score"><div class="yd-lala-score-main">'+scoreHtml+'</div><em><strong>'+count+'</strong>개 리뷰</em></div><div class="yd-lala-bars">'+makeLalaBars(feed)+'</div></div>',
-      '<h3 class="yd-lala-review-count">리뷰'+count+'</h3>',
+      '<h3 class="yd-lala-review-count">리뷰 '+count+'</h3>',
       '<div class="yd-lala-toolbar"><button type="button" class="yd-lala-photo-toggle"><span class="yd-lala-photo-icon" aria-hidden="true"></span><span>포토&동영상</span></button><div class="yd-lala-sort"><button type="button" class="yd-lala-sort-button">최신순<span class="yd-lala-caret" aria-hidden="true"></span></button><span class="yd-lala-divider" aria-hidden="true"></span><button type="button" class="yd-lala-search">직접검색<span class="yd-lala-search-icon" aria-hidden="true"></span></button></div></div>',
       '<div class="yd-lala-filters">'+keywordHtml+'</div>',
       makeFeaturedReview(feed),
@@ -1190,7 +1222,7 @@
     var mobileAnchor = mobileReviewSystemAnchor();
     if (mobileAnchor) return placeSystemAt(system, mobileAnchor.parent, mobileAnchor.before);
 
-    var reviewPane = nativeTabPanes('review')[0];
+    var reviewPane = preferredNativeTabPane('review');
     if (reviewPane) {
       return placeSystemAt(system, reviewPane, reviewPane.firstChild);
     }
