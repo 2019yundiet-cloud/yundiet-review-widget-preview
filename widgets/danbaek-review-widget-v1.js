@@ -39,7 +39,9 @@
       '._prod_detail_tab_fixed a._detail,._prod_detail_tab_fixed a._review,._prod_detail_tab_fixed a._qna,#fixed_tab a._detail,#fixed_tab a._review,#fixed_tab a._qna,#fixed_tab_mobile a._detail,#fixed_tab_mobile a._review,#fixed_tab_mobile a._qna{border:0!important;box-shadow:none!important;background:#fff!important;color:#191d24!important;font-weight:500!important;text-decoration:none!important}',
       'html[data-yd-lala-active-tab="detail"] ._prod_detail_tab_fixed a._detail,html[data-yd-lala-active-tab="detail"] #fixed_tab a._detail,html[data-yd-lala-active-tab="detail"] #fixed_tab_mobile a._detail,body[data-yd-lala-active-tab="detail"] ._prod_detail_tab_fixed a._detail,body[data-yd-lala-active-tab="detail"] #fixed_tab a._detail,body[data-yd-lala-active-tab="detail"] #fixed_tab_mobile a._detail{font-weight:800!important;color:#191d24!important}',
       'html[data-yd-lala-active-tab="review"] ._prod_detail_tab_fixed a._review,html[data-yd-lala-active-tab="review"] #fixed_tab a._review,html[data-yd-lala-active-tab="review"] #fixed_tab_mobile a._review,body[data-yd-lala-active-tab="review"] ._prod_detail_tab_fixed a._review,body[data-yd-lala-active-tab="review"] #fixed_tab a._review,body[data-yd-lala-active-tab="review"] #fixed_tab_mobile a._review{font-weight:800!important;color:#191d24!important}',
-      'html[data-yd-lala-active-tab="qna"] ._prod_detail_tab_fixed a._qna,html[data-yd-lala-active-tab="qna"] #fixed_tab a._qna,html[data-yd-lala-active-tab="qna"] #fixed_tab_mobile a._qna,body[data-yd-lala-active-tab="qna"] ._prod_detail_tab_fixed a._qna,body[data-yd-lala-active-tab="qna"] #fixed_tab a._qna,body[data-yd-lala-active-tab="qna"] #fixed_tab_mobile a._qna{font-weight:800!important;color:#191d24!important}'
+      'html[data-yd-lala-active-tab="qna"] ._prod_detail_tab_fixed a._qna,html[data-yd-lala-active-tab="qna"] #fixed_tab a._qna,html[data-yd-lala-active-tab="qna"] #fixed_tab_mobile a._qna,body[data-yd-lala-active-tab="qna"] ._prod_detail_tab_fixed a._qna,body[data-yd-lala-active-tab="qna"] #fixed_tab a._qna,body[data-yd-lala-active-tab="qna"] #fixed_tab_mobile a._qna{font-weight:800!important;color:#191d24!important}',
+      'html[data-yd-lala-active-tab="detail"] body li.prod_tab_3 a._review,html[data-yd-lala-active-tab="detail"] body li.prod_tab_3 a._qna,html[data-yd-lala-active-tab="review"] body li.prod_tab_3 a._detail,html[data-yd-lala-active-tab="review"] body li.prod_tab_3 a._qna,html[data-yd-lala-active-tab="qna"] body li.prod_tab_3 a._detail,html[data-yd-lala-active-tab="qna"] body li.prod_tab_3 a._review{font-weight:500!important;color:#191d24!important}',
+      'html[data-yd-lala-active-tab="detail"] body li.prod_tab_3 a._detail,html[data-yd-lala-active-tab="review"] body li.prod_tab_3 a._review,html[data-yd-lala-active-tab="qna"] body li.prod_tab_3 a._qna{font-weight:800!important;color:#191d24!important}'
     ].join('\n');
     (document.head || document.documentElement).appendChild(style);
   }
@@ -660,18 +662,28 @@
   function bindNativeReviewTabLinks(){
     if (nativeReviewTabBound) return;
     nativeReviewTabBound = true;
+    function reinforceNativeTabState(kind, shouldScroll){
+      applyNativeTabState(kind, shouldScroll);
+      setTimeout(function(){ applyNativeTabState(kind, false); }, 0);
+      if (window.requestAnimationFrame) {
+        requestAnimationFrame(function(){
+          applyNativeTabState(kind, false);
+          requestAnimationFrame(function(){ applyNativeTabState(kind, false); });
+        });
+      }
+    }
     function handleNativeTabClick(ev){
       var kind = nativeTabKindFromTrigger(ev.target);
       if (!kind) return;
       if (ev.cancelable) ev.preventDefault();
       ev.stopPropagation();
       if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
-      applyNativeTabState(kind, true);
-      [40, 160, 420, 900, 1500].forEach(function(delay){
+      reinforceNativeTabState(kind, true);
+      [20, 40, 80, 160, 420, 900, 1500].forEach(function(delay){
         setTimeout(function(){ applyNativeTabState(kind, false); }, delay);
       });
     }
-    ['pointerdown','touchstart','mousedown'].forEach(function(type){
+    ['pointerdown','touchstart','mousedown','pointerup','touchend','mouseup'].forEach(function(type){
       window.addEventListener(type, handleNativeTabClick, {capture:true, passive:false});
       document.addEventListener(type, handleNativeTabClick, {capture:true, passive:false});
     });
