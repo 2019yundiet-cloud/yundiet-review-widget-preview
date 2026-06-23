@@ -26,9 +26,13 @@
     if (document.body) document.body.setAttribute('data-yd-lala-active-tab', activeNativeTab);
   }
   function injectPreflightStyle(){
-    if (document.getElementById('yd-lala-preflight-style')) return;
-    var style = document.createElement('style');
-    style.id = 'yd-lala-preflight-style';
+    var style = document.getElementById('yd-lala-preflight-style');
+    if (style && style.getAttribute('data-yd-lala-preflight-version') === 'green-stable-v1') return;
+    if (!style) {
+      style = document.createElement('style');
+      style.id = 'yd-lala-preflight-style';
+    }
+    style.setAttribute('data-yd-lala-preflight-version', 'green-stable-v1');
     style.textContent = [
       'html[data-yd-lala-active-tab="detail"] .detail_review_wrap,html[data-yd-lala-active-tab="detail"] .detail_review_wrap_mobile,html[data-yd-lala-active-tab="detail"] .detail_qna_wrap,html[data-yd-lala-active-tab="detail"] .detail_qna_wrap_mobile{display:none!important}',
       'html[data-yd-lala-active-tab="review"] .detail_detail_wrap,html[data-yd-lala-active-tab="review"] .detail_detail_wrap_mobile,html[data-yd-lala-active-tab="review"] .detail_qna_wrap,html[data-yd-lala-active-tab="review"] .detail_qna_wrap_mobile{display:none!important}',
@@ -45,7 +49,7 @@
       '._prod_detail_tab_fixed li.prod_tab_3,#fixed_tab li.prod_tab_3,#fixed_tab_mobile li.prod_tab_3{min-width:33.333%!important;text-align:center!important}',
       '._prod_detail_tab_fixed a._detail,._prod_detail_tab_fixed a._review,._prod_detail_tab_fixed a._qna,#fixed_tab a._detail,#fixed_tab a._review,#fixed_tab a._qna,#fixed_tab_mobile a._detail,#fixed_tab_mobile a._review,#fixed_tab_mobile a._qna{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-width:66px!important;white-space:nowrap!important}'
     ].join('\n');
-    (document.head || document.documentElement).appendChild(style);
+    if (!style.parentNode) (document.head || document.documentElement).appendChild(style);
   }
   syncNativeTabAttribute(activeNativeTab);
   injectPreflightStyle();
