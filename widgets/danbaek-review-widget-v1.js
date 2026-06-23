@@ -1,7 +1,7 @@
 (function(){
   if (window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__) return;
   window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__ = true;
-  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v14';
+  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v15';
 
   var config = window.YD_DANBAEK_REVIEW_WIDGET_CONFIG || {};
   var feedUrl = config.feedUrl || 'https://2019yundiet-cloud.github.io/yundiet-review-widget-preview/feeds/danbaekbap-review-feed.json';
@@ -54,6 +54,8 @@
       scopedSelectors('body[data-yd-lala-active-tab="detail"]', reviewPaneCssSelector+','+qnaPaneCssSelector)+'{display:none!important}',
       scopedSelectors('body[data-yd-lala-active-tab="review"]', detailPaneCssSelector+','+qnaPaneCssSelector)+'{display:none!important}',
       scopedSelectors('body[data-yd-lala-active-tab="qna"]', detailPaneCssSelector+','+reviewPaneCssSelector)+'{display:none!important}',
+      'html[data-yd-lala-active-tab="review"] .detail_review_wrap > :not(#yd-review-inline-system),html[data-yd-lala-active-tab="review"] .detail_review_wrap_mobile > :not(#yd-review-inline-system),html[data-yd-lala-active-tab="review"] #first_review > :not(#yd-review-inline-system),html[data-yd-lala-active-tab="review"] ._detail_review_wrap > :not(#yd-review-inline-system),html[data-yd-lala-active-tab="review"] ._detail_review_wrap_mobile > :not(#yd-review-inline-system),body[data-yd-lala-active-tab="review"] .detail_review_wrap > :not(#yd-review-inline-system),body[data-yd-lala-active-tab="review"] .detail_review_wrap_mobile > :not(#yd-review-inline-system),body[data-yd-lala-active-tab="review"] #first_review > :not(#yd-review-inline-system),body[data-yd-lala-active-tab="review"] ._detail_review_wrap > :not(#yd-review-inline-system),body[data-yd-lala-active-tab="review"] ._detail_review_wrap_mobile > :not(#yd-review-inline-system){display:none!important}',
+      'html[data-yd-lala-active-tab="review"] #yd-review-inline-system,body[data-yd-lala-active-tab="review"] #yd-review-inline-system{display:block!important}',
       '._prod_detail_tab_fixed a._detail,._prod_detail_tab_fixed a._review,._prod_detail_tab_fixed a._qna,#fixed_tab a._detail,#fixed_tab a._review,#fixed_tab a._qna,#fixed_tab_mobile a._detail,#fixed_tab_mobile a._review,#fixed_tab_mobile a._qna{border:0!important;box-shadow:none!important;background:#fff!important;color:#191d24!important;font-weight:500!important;text-decoration:none!important;transition:none!important;animation:none!important}',
       'html[data-yd-lala-active-tab="detail"] ._prod_detail_tab_fixed a._detail,html[data-yd-lala-active-tab="detail"] #fixed_tab a._detail,html[data-yd-lala-active-tab="detail"] #fixed_tab_mobile a._detail,body[data-yd-lala-active-tab="detail"] ._prod_detail_tab_fixed a._detail,body[data-yd-lala-active-tab="detail"] #fixed_tab a._detail,body[data-yd-lala-active-tab="detail"] #fixed_tab_mobile a._detail{font-weight:800!important;color:#2c5d42!important}',
       'html[data-yd-lala-active-tab="review"] ._prod_detail_tab_fixed a._review,html[data-yd-lala-active-tab="review"] #fixed_tab a._review,html[data-yd-lala-active-tab="review"] #fixed_tab_mobile a._review,body[data-yd-lala-active-tab="review"] ._prod_detail_tab_fixed a._review,body[data-yd-lala-active-tab="review"] #fixed_tab a._review,body[data-yd-lala-active-tab="review"] #fixed_tab_mobile a._review{font-weight:800!important;color:#2c5d42!important}',
@@ -829,6 +831,8 @@
   var nativeTabLabelGuardBound = false;
   var nativeTabTransitionEpoch = 0;
   var nativeTabReinforceTimers = [];
+  var nativeTabPreviewKey = '';
+  var nativeTabPreviewAt = 0;
   function clearNativeTabReinforcements(){
     nativeTabReinforceTimers.forEach(function(timer){ clearTimeout(timer); });
     nativeTabReinforceTimers = [];
@@ -865,16 +869,21 @@
       nativeTabTransitionEpoch += 1;
       var epoch = nativeTabTransitionEpoch;
       applyNativeTabState(kind, shouldScroll);
-      scheduleNativeTabReinforcement(kind, 0, epoch);
-      if (window.requestAnimationFrame) {
-        var startedAt = Date.now();
-        var frameSync = function(){
-          if (epoch !== nativeTabTransitionEpoch) return;
-          applyNativeTabState(kind, false);
-          if (Date.now() - startedAt < 320) requestAnimationFrame(frameSync);
-        };
-        requestAnimationFrame(frameSync);
-      }
+      [80, 220, 520].forEach(function(delay){
+        scheduleNativeTabReinforcement(kind, delay, epoch);
+      });
+    }
+    function previewNativeTab(ev){
+      var kind = nativeTabKindFromTrigger(ev.target);
+      if (!kind) return;
+      var now = Date.now();
+      var key = kind+'|'+(ev.type || '');
+      if (key === nativeTabPreviewKey && now - nativeTabPreviewAt < 120) return;
+      nativeTabPreviewKey = key;
+      nativeTabPreviewAt = now;
+      window.__YD_LALA_USER_SELECTED_TAB__ = kind;
+      applyNativeTabState(kind, false);
+      if (kind === 'review') scheduleNativeReviewRender(180);
     }
     function handleNativeTabClick(ev){
       var kind = nativeTabKindFromTrigger(ev.target);
@@ -885,15 +894,10 @@
       window.__YD_LALA_USER_SELECTED_TAB__ = kind;
       reinforceNativeTabState(kind, true);
       if (kind === 'review') scheduleNativeReviewRender(220);
-      [8, 16, 24, 32, 48, 64, 80, 120, 160, 240, 420, 900, 1500].forEach(function(delay){
-        scheduleNativeTabReinforcement(kind, delay, nativeTabTransitionEpoch);
-      });
     }
-    ['pointerdown','touchstart','mousedown','pointerup','touchend','mouseup'].forEach(function(type){
-      window.addEventListener(type, handleNativeTabClick, {capture:true, passive:false});
-      document.addEventListener(type, handleNativeTabClick, {capture:true, passive:false});
+    ['pointerdown','touchstart','mousedown'].forEach(function(type){
+      document.addEventListener(type, previewNativeTab, {capture:true, passive:true});
     });
-    window.addEventListener('click', handleNativeTabClick, true);
     document.addEventListener('click', handleNativeTabClick, true);
   }
   function normalizeNativeTabLabels(feed){
