@@ -694,6 +694,18 @@
   }
   var nativeReviewTabBound = false;
   var nativeTabLabelGuardBound = false;
+  var nativeTabTransitionEpoch = 0;
+  var nativeTabReinforceTimers = [];
+  function clearNativeTabReinforcements(){
+    nativeTabReinforceTimers.forEach(function(timer){ clearTimeout(timer); });
+    nativeTabReinforceTimers = [];
+  }
+  function scheduleNativeTabReinforcement(kind, delay, epoch){
+    var timer = setTimeout(function(){
+      if (epoch === nativeTabTransitionEpoch) applyNativeTabState(kind, false);
+    }, delay);
+    nativeTabReinforceTimers.push(timer);
+  }
   function bindNativeTabLabelGuard(){
     if (nativeTabLabelGuardBound || !window.MutationObserver || !document.body) return;
     nativeTabLabelGuardBound = true;
@@ -712,11 +724,15 @@
     if (nativeReviewTabBound) return;
     nativeReviewTabBound = true;
     function reinforceNativeTabState(kind, shouldScroll){
+      clearNativeTabReinforcements();
+      nativeTabTransitionEpoch += 1;
+      var epoch = nativeTabTransitionEpoch;
       applyNativeTabState(kind, shouldScroll);
-      setTimeout(function(){ applyNativeTabState(kind, false); }, 0);
+      scheduleNativeTabReinforcement(kind, 0, epoch);
       if (window.requestAnimationFrame) {
         var startedAt = Date.now();
         var frameSync = function(){
+          if (epoch !== nativeTabTransitionEpoch) return;
           applyNativeTabState(kind, false);
           if (Date.now() - startedAt < 320) requestAnimationFrame(frameSync);
         };
@@ -731,7 +747,7 @@
       if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
       reinforceNativeTabState(kind, true);
       [8, 16, 24, 32, 48, 64, 80, 120, 160, 240, 420, 900, 1500].forEach(function(delay){
-        setTimeout(function(){ applyNativeTabState(kind, false); }, delay);
+        scheduleNativeTabReinforcement(kind, delay, nativeTabTransitionEpoch);
       });
     }
     ['pointerdown','touchstart','mousedown','pointerup','touchend','mouseup'].forEach(function(type){
