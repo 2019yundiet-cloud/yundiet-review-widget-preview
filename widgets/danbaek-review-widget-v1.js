@@ -1,7 +1,7 @@
 (function(){
   if (window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__) return;
   window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__ = true;
-  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v16';
+  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v17';
 
   var config = window.YD_DANBAEK_REVIEW_WIDGET_CONFIG || {};
   var feedUrl = config.feedUrl || 'https://2019yundiet-cloud.github.io/yundiet-review-widget-preview/feeds/danbaekbap-review-feed.json';
@@ -15,9 +15,25 @@
   }
   if (!isProductPage()) return;
 
+  function normalizeNativeTabKind(value){
+    var kind = String(value || '').toLowerCase();
+    return /^(detail|review|qna)$/.test(kind) ? kind : '';
+  }
+  function recentUserNativeTabKind(){
+    var selected = normalizeNativeTabKind(window.__YD_LALA_USER_SELECTED_TAB__);
+    var selectedAt = Number(window.__YD_LALA_USER_SELECTED_AT__ || 0);
+    if (selected && (!selectedAt || Date.now() - selectedAt < 30000)) return selected;
+    return '';
+  }
+  function rememberUserNativeTabKind(kind){
+    kind = normalizeNativeTabKind(kind);
+    if (!kind) return;
+    window.__YD_LALA_USER_SELECTED_TAB__ = kind;
+    window.__YD_LALA_USER_SELECTED_AT__ = Date.now();
+  }
   function initialNativeTabKind(){
-    var selected = String(window.__YD_LALA_USER_SELECTED_TAB__ || '').toLowerCase();
-    if (/^(detail|review|qna)$/.test(selected)) return selected;
+    var selected = recentUserNativeTabKind();
+    if (selected) return selected;
     var configured = String(config.initialTab || '').toLowerCase();
     if (/^(detail|review|qna)$/.test(configured)) return configured;
     return 'detail';
@@ -31,7 +47,7 @@
   var lastReviewUserScrollAt = 0;
   var reviewPageChangeInFlightUntil = 0;
   function syncNativeTabAttribute(kind){
-    activeNativeTab = kind || window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || 'detail';
+    activeNativeTab = normalizeNativeTabKind(kind) || recentUserNativeTabKind() || normalizeNativeTabKind(window.__YD_LALA_ACTIVE_TAB__) || normalizeNativeTabKind(activeNativeTab) || 'detail';
     window.__YD_LALA_ACTIVE_TAB__ = activeNativeTab;
     if (document.documentElement) document.documentElement.setAttribute('data-yd-lala-active-tab', activeNativeTab);
     if (document.body) document.body.setAttribute('data-yd-lala-active-tab', activeNativeTab);
@@ -455,6 +471,7 @@
     if (document.body) document.body.setAttribute('data-yd-lala-preboot-ready', '1');
   }
   function syncNativeTabActiveClasses(){
+    syncNativeTabAttribute();
     Array.prototype.forEach.call(document.querySelectorAll('a._detail, a._review, a._qna'), function(anchor){
       var tab = anchor.classList.contains('_review') ? 'review' : anchor.classList.contains('_qna') ? 'qna' : 'detail';
       var isActive = tab === activeNativeTab;
@@ -841,7 +858,7 @@
       ev.preventDefault();
       ev.stopPropagation();
     }
-    window.__YD_LALA_USER_SELECTED_TAB__ = 'review';
+    rememberUserNativeTabKind('review');
     applyNativeTabState('review', true);
   }
   function nativeTabKindFromTrigger(el){
@@ -908,7 +925,7 @@
       if (key === nativeTabPreviewKey && now - nativeTabPreviewAt < 120) return;
       nativeTabPreviewKey = key;
       nativeTabPreviewAt = now;
-      window.__YD_LALA_USER_SELECTED_TAB__ = kind;
+      rememberUserNativeTabKind(kind);
       applyNativeTabState(kind, false);
       if (kind === 'review') scheduleNativeReviewRender(180);
     }
@@ -918,7 +935,7 @@
       if (ev.cancelable) ev.preventDefault();
       ev.stopPropagation();
       if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
-      window.__YD_LALA_USER_SELECTED_TAB__ = kind;
+      rememberUserNativeTabKind(kind);
       reinforceNativeTabState(kind, true);
       if (kind === 'review') scheduleNativeReviewRender(220);
     }
