@@ -36,7 +36,10 @@
       'body[data-yd-lala-active-tab="detail"] .detail_review_wrap,body[data-yd-lala-active-tab="detail"] .detail_review_wrap_mobile,body[data-yd-lala-active-tab="detail"] .detail_qna_wrap,body[data-yd-lala-active-tab="detail"] .detail_qna_wrap_mobile{display:none!important}',
       'body[data-yd-lala-active-tab="review"] .detail_detail_wrap,body[data-yd-lala-active-tab="review"] .detail_detail_wrap_mobile,body[data-yd-lala-active-tab="review"] .detail_qna_wrap,body[data-yd-lala-active-tab="review"] .detail_qna_wrap_mobile{display:none!important}',
       'body[data-yd-lala-active-tab="qna"] .detail_detail_wrap,body[data-yd-lala-active-tab="qna"] .detail_detail_wrap_mobile,body[data-yd-lala-active-tab="qna"] .detail_review_wrap,body[data-yd-lala-active-tab="qna"] .detail_review_wrap_mobile{display:none!important}',
-      '._prod_detail_tab_fixed a._detail,._prod_detail_tab_fixed a._review,._prod_detail_tab_fixed a._qna,#fixed_tab a._detail,#fixed_tab a._review,#fixed_tab a._qna,#fixed_tab_mobile a._detail,#fixed_tab_mobile a._review,#fixed_tab_mobile a._qna{border:0!important;box-shadow:none!important;background:#fff!important;color:#191d24!important;font-weight:700!important;text-decoration:none!important}'
+      '._prod_detail_tab_fixed a._detail,._prod_detail_tab_fixed a._review,._prod_detail_tab_fixed a._qna,#fixed_tab a._detail,#fixed_tab a._review,#fixed_tab a._qna,#fixed_tab_mobile a._detail,#fixed_tab_mobile a._review,#fixed_tab_mobile a._qna{border:0!important;box-shadow:none!important;background:#fff!important;color:#191d24!important;font-weight:500!important;text-decoration:none!important}',
+      'html[data-yd-lala-active-tab="detail"] ._prod_detail_tab_fixed a._detail,html[data-yd-lala-active-tab="detail"] #fixed_tab a._detail,html[data-yd-lala-active-tab="detail"] #fixed_tab_mobile a._detail,body[data-yd-lala-active-tab="detail"] ._prod_detail_tab_fixed a._detail,body[data-yd-lala-active-tab="detail"] #fixed_tab a._detail,body[data-yd-lala-active-tab="detail"] #fixed_tab_mobile a._detail{font-weight:800!important;color:#191d24!important}',
+      'html[data-yd-lala-active-tab="review"] ._prod_detail_tab_fixed a._review,html[data-yd-lala-active-tab="review"] #fixed_tab a._review,html[data-yd-lala-active-tab="review"] #fixed_tab_mobile a._review,body[data-yd-lala-active-tab="review"] ._prod_detail_tab_fixed a._review,body[data-yd-lala-active-tab="review"] #fixed_tab a._review,body[data-yd-lala-active-tab="review"] #fixed_tab_mobile a._review{font-weight:800!important;color:#191d24!important}',
+      'html[data-yd-lala-active-tab="qna"] ._prod_detail_tab_fixed a._qna,html[data-yd-lala-active-tab="qna"] #fixed_tab a._qna,html[data-yd-lala-active-tab="qna"] #fixed_tab_mobile a._qna,body[data-yd-lala-active-tab="qna"] ._prod_detail_tab_fixed a._qna,body[data-yd-lala-active-tab="qna"] #fixed_tab a._qna,body[data-yd-lala-active-tab="qna"] #fixed_tab_mobile a._qna{font-weight:800!important;color:#191d24!important}'
     ].join('\n');
     (document.head || document.documentElement).appendChild(style);
   }
@@ -334,6 +337,24 @@
     var selector = nativeTabPaneSelectors(kind);
     return selector ? Array.prototype.slice.call(document.querySelectorAll(selector)) : [];
   }
+  function markNativeTabsReady(){
+    if (document.documentElement) document.documentElement.setAttribute('data-yd-lala-preboot-ready', '1');
+    if (document.body) document.body.setAttribute('data-yd-lala-preboot-ready', '1');
+  }
+  function syncNativeTabActiveClasses(){
+    Array.prototype.forEach.call(document.querySelectorAll('a._detail, a._review, a._qna'), function(anchor){
+      var tab = anchor.classList.contains('_review') ? 'review' : anchor.classList.contains('_qna') ? 'qna' : 'detail';
+      var isActive = tab === activeNativeTab;
+      anchor.classList.toggle('active', isActive);
+      anchor.classList.toggle('on', isActive);
+      anchor.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      var holder = anchor.closest && anchor.closest('li.prod_tab_3');
+      if (holder) {
+        holder.classList.toggle('active', isActive);
+        holder.classList.toggle('on', isActive);
+      }
+    });
+  }
   function nativeTabTarget(kind){
     if (kind === 'review') return document.querySelector('#yd-review-inline-system') || nativeTabPanes('review')[0];
     return nativeTabPanes(kind)[0] || document.querySelector('#yd-review-inline-system');
@@ -352,6 +373,7 @@
         pane.classList.toggle('yd-tab-pane-hidden', tab !== activeNativeTab);
       });
     });
+    syncNativeTabActiveClasses();
     if (shouldScroll) scrollToNativeTab(activeNativeTab);
   }
   function placeSystemAt(system, parent, before){
@@ -666,6 +688,8 @@
       var nav = anchor.closest('._prod_detail_tab_fixed') || anchor.closest('#fixed_tab') || anchor.closest('#fixed_tab_mobile') || anchor.parentElement;
       if (nav) nav.classList.add('yd-lala-tabs-normalized');
     });
+    markNativeTabsReady();
+    syncNativeTabActiveClasses();
   }
   function makePrimeReviewLink(feed){
     var concept = currentConcept();
