@@ -292,6 +292,38 @@
   function mobileReviewSystemAnchor(){
     return null;
   }
+  var activeNativeTab = 'detail';
+  function nativeTabPaneSelectors(kind){
+    return {
+      detail: '.detail_detail_wrap, .detail_detail_wrap_mobile',
+      review: '.detail_review_wrap, .detail_review_wrap_mobile',
+      qna: '.detail_qna_wrap, .detail_qna_wrap_mobile'
+    }[kind] || '';
+  }
+  function nativeTabPanes(kind){
+    var selector = nativeTabPaneSelectors(kind);
+    return selector ? Array.prototype.slice.call(document.querySelectorAll(selector)) : [];
+  }
+  function nativeTabTarget(kind){
+    if (kind === 'review') return document.querySelector('#yd-review-inline-system') || nativeTabPanes('review')[0];
+    return nativeTabPanes(kind)[0] || document.querySelector('#yd-review-inline-system');
+  }
+  function scrollToNativeTab(kind){
+    var target = nativeTabTarget(kind);
+    if (!target) return;
+    var offset = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 10 : 58;
+    var top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
+    window.scrollTo({top: top, behavior:'smooth'});
+  }
+  function applyNativeTabState(kind, shouldScroll){
+    activeNativeTab = kind || activeNativeTab || 'detail';
+    ['detail','review','qna'].forEach(function(tab){
+      nativeTabPanes(tab).forEach(function(pane){
+        pane.classList.toggle('yd-tab-pane-hidden', tab !== activeNativeTab);
+      });
+    });
+    if (shouldScroll) scrollToNativeTab(activeNativeTab);
+  }
   function placeSystemAt(system, parent, before){
     if (!system || !parent) return false;
     if (before === system) return true;
@@ -455,14 +487,19 @@
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-feature-text{margin:0;color:#222b38;font-size:15px;line-height:1.8;word-break:keep-all}',
       '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact{max-width:900px}',
       '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-rule{margin-bottom:24px}',
-      '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-summary{grid-template-columns:1fr;gap:18px;margin-bottom:22px}',
+      '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-summary{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:22px;padding:16px 0;border-top:1px solid var(--yd-lala-line);border-bottom:1px solid var(--yd-lala-line)}',
       '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-score{border-right:0;border-bottom:1px solid #d7dce5;min-height:80px;padding-bottom:16px;flex-direction:row;gap:12px}',
+      '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-score{border-bottom:0;min-height:0;padding-bottom:0}',
       '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-score-main{margin-bottom:0}',
+      '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-bars,#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-filters{display:none}',
+      '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-toolbar{padding-left:0;padding-right:0;background:#f8fafc}',
       '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-row{grid-template-columns:135px minmax(0,1fr);gap:24px;padding:20px 0}',
       '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-text{font-size:14px;line-height:1.65}',
+      '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-focus .yd-lala-feature{background:#f8fafc;border:1px solid #d8dee8;border-radius:4px;padding:22px}',
       '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-focus .yd-lala-list .yd-lala-row:first-child{display:none}',
       '@media(max-width:760px){#yd-review-inline-system.yd-lalasweet-system .yd-lala-feature{grid-template-columns:1fr;gap:12px;padding:18px 0}#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-row{grid-template-columns:1fr;gap:10px}}',
       '.yd-native-review-source-hidden{display:none!important}',
+      '.yd-tab-pane-hidden{display:none!important}',
       '#yd-review-inline-system.yd-lalasweet-system[data-filter="taste"] .yd-lala-row:not([data-topic="taste"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="delivery"] .yd-lala-row:not([data-topic="delivery"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="routine"] .yd-lala-row:not([data-topic="routine"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="satiety"] .yd-lala-row:not([data-topic="satiety"]){display:none}',
       '@media(max-width:760px){#yd-review-inline-system.yd-lalasweet-system{margin:42px auto 30px;padding:0 14px 30px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-title{font-size:24px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-rule{margin-bottom:26px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-summary{grid-template-columns:1fr;gap:20px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-score{border-right:0;border-bottom:1px solid #d7dce5;min-height:112px;padding-bottom:20px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-bar{grid-template-columns:74px minmax(0,1fr) 52px;gap:9px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-toolbar{align-items:flex-start;flex-direction:column;padding-left:0;padding-right:0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort{gap:12px;font-size:12px;flex-wrap:wrap}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters{overflow-x:auto;padding-bottom:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button{min-width:108px;height:40px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-row{grid-template-columns:1fr;gap:14px;padding:24px 0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-profile{grid-template-columns:34px minmax(0,1fr)}#yd-review-inline-system.yd-lalasweet-system .yd-lala-avatar{width:34px;height:34px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-date{margin-top:4px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-photos{grid-template-columns:repeat(2,minmax(0,1fr))}}'
     ].join('\n');
@@ -538,26 +575,27 @@
       ev.preventDefault();
       ev.stopPropagation();
     }
-    var target = document.querySelector('#yd-review-inline-system') || document.querySelector('#yd-review-top-proof') || document.querySelector('#first_review');
-    if (!target) return;
-    var offset = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 10 : 58;
-    var top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
-    window.scrollTo({top: top, behavior:'smooth'});
+    applyNativeTabState('review', true);
   }
-  function isNativeReviewTabTrigger(el){
+  function nativeTabKindFromTrigger(el){
     if (!el || !el.closest || el.closest('#yd-review-inline-system')) return false;
-    var trigger = el.closest('a._review, li.prod_tab_3, a[href="#prod_detail_review"], [onclick*="changeContentTab"], [onclick*="changeContentPCTab"]');
+    var trigger = el.closest('a._detail, a._review, a._qna, li.prod_tab_3, a[href="#prod_detail_detail"], a[href="#prod_detail_review"], a[href="#prod_detail_qna"], [onclick*="changeContentTab"], [onclick*="changeContentPCTab"]');
     if (!trigger || trigger.closest('#yd-review-inline-system')) return false;
-    return /구매평/.test(text(trigger));
+    var triggerText = text(trigger);
+    if (/구매평/.test(triggerText) || trigger.classList.contains('_review') || String(trigger.getAttribute('href') || '').indexOf('review') !== -1) return 'review';
+    if (/Q&A|문의/.test(triggerText) || trigger.classList.contains('_qna') || String(trigger.getAttribute('href') || '').indexOf('qna') !== -1) return 'qna';
+    if (/상세정보/.test(triggerText) || trigger.classList.contains('_detail') || String(trigger.getAttribute('href') || '').indexOf('detail') !== -1) return 'detail';
+    return '';
   }
   var nativeReviewTabBound = false;
   function bindNativeReviewTabLinks(){
     if (nativeReviewTabBound) return;
     nativeReviewTabBound = true;
     document.addEventListener('click', function(ev){
-      if (!isNativeReviewTabTrigger(ev.target)) return;
+      var kind = nativeTabKindFromTrigger(ev.target);
+      if (!kind) return;
       [80, 300, 800, 1400].forEach(function(delay){
-        setTimeout(scrollToReviewSystem, delay);
+        setTimeout(function(){ applyNativeTabState(kind, true); }, delay);
       });
     }, true);
   }
@@ -619,9 +657,22 @@
       return !wrap.closest('#yd-review-inline-system') && !wrap.closest('#yd-prime-review-link') && !wrap.closest('#yd-review-top-proof');
     });
   }
+  function nativeReviewSourceWraps(){
+    var wraps = nativeReviewWraps();
+    var preferred = wraps.filter(function(wrap){
+      var section = wrap.closest('.detail_review_wrap_mobile, .detail_review_wrap');
+      if (!section) return false;
+      var isMobileSection = /mobile/.test(section.className || '');
+      return isMobileReviewViewport() ? isMobileSection : !isMobileSection;
+    });
+    if (preferred.length) return preferred.slice(0, 1);
+    var visibleWraps = wraps.filter(visible);
+    if (visibleWraps.length) return visibleWraps.slice(0, 1);
+    return wraps.slice(0, 1);
+  }
   function nativeReviewItems(){
     var items = [];
-    nativeReviewWraps().forEach(function(wrap){
+    nativeReviewSourceWraps().forEach(function(wrap){
       Array.prototype.forEach.call(wrap.querySelectorAll('li.list_review_inner, li._show_more_review'), function(item){
         if (!item.closest('#yd-review-inline-system')) items.push(item);
       });
@@ -711,6 +762,8 @@
         images: images
       };
     }).filter(Boolean);
+    var listedCount = nativeCountFromPage();
+    if (listedCount > 0 && reviews.length > listedCount) reviews = reviews.slice(0, listedCount);
     var ratingTotal = 0;
     var ratingCount = 0;
     reviews.forEach(function(review){
@@ -729,7 +782,7 @@
       product: {
         title: nativeProductTitle(),
         rating: ratingCount ? (Math.round((ratingTotal / ratingCount) * 10) / 10).toFixed(1) : '',
-        review_count: Math.max(nativeCountFromPage(), reviews.length)
+        review_count: listedCount || reviews.length
       },
       keywords: defaultKeywords(),
       reviews: reviews,
@@ -865,6 +918,7 @@
   var currentReviewFingerprint = '';
   function reviewFingerprint(feed){
     return [
+      nativeReviewMode(),
       feed.product && feed.product.review_count,
       feed.product && feed.product.rating,
       (feed.reviews || []).map(function(r){
@@ -887,7 +941,7 @@
     var mobileAnchor = mobileReviewSystemAnchor();
     if (mobileAnchor) return placeSystemAt(system, mobileAnchor.parent, mobileAnchor.before);
 
-    var nativeWraps = nativeReviewWraps();
+    var nativeWraps = nativeReviewSourceWraps();
     var nativeWrap = nativeWraps.filter(visible)[0] || nativeWraps[0];
     if (nativeWrap && nativeWrap.parentNode) {
       return placeSystemAt(system, nativeWrap.parentNode, nativeWrap);
@@ -935,6 +989,7 @@
     }, function(){
       placeReviewSystem(feed);
       hideNativeReviewSources();
+      applyNativeTabState(activeNativeTab || 'detail', false);
     });
   }
   var nativeReviewObserverBound = false;
@@ -947,6 +1002,7 @@
         render(feed);
       } else {
         hideNativeReviewSources();
+        applyNativeTabState(activeNativeTab || 'detail', false);
       }
     }, 180);
   }
