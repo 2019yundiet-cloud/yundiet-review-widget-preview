@@ -20,7 +20,7 @@
   }
   var activeNativeTab = initialNativeTabKind();
   function syncNativeTabAttribute(kind){
-    activeNativeTab = kind || activeNativeTab || 'detail';
+    activeNativeTab = kind || window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || 'detail';
     window.__YD_LALA_ACTIVE_TAB__ = activeNativeTab;
     if (document.documentElement) document.documentElement.setAttribute('data-yd-lala-active-tab', activeNativeTab);
     if (document.body) document.body.setAttribute('data-yd-lala-active-tab', activeNativeTab);
@@ -346,7 +346,7 @@
     window.scrollTo({top: top, behavior:'smooth'});
   }
   function applyNativeTabState(kind, shouldScroll){
-    syncNativeTabAttribute(kind || activeNativeTab || 'detail');
+    syncNativeTabAttribute(kind || window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || 'detail');
     ['detail','review','qna'].forEach(function(tab){
       nativeTabPanes(tab).forEach(function(pane){
         pane.classList.toggle('yd-tab-pane-hidden', tab !== activeNativeTab);
@@ -1074,7 +1074,7 @@
       placeReviewSystem(feed);
       hideNativeReviewSources();
       normalizeNativeTabLabels(feed);
-      applyNativeTabState(activeNativeTab || 'detail', false);
+      applyNativeTabState(window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || 'detail', false);
     });
   }
   var nativeReviewObserverBound = false;
@@ -1088,7 +1088,7 @@
       } else {
         hideNativeReviewSources();
         normalizeNativeTabLabels(feed);
-        applyNativeTabState(activeNativeTab || 'detail', false);
+        applyNativeTabState(window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || 'detail', false);
       }
     }, 40);
   }
@@ -1106,12 +1106,12 @@
     observer.observe(document.body, {childList:true, subtree:true, characterData:true});
   }
   function startNativeReviewAdapter(){
-    syncNativeTabAttribute(activeNativeTab || initialNativeTabKind());
+    syncNativeTabAttribute(window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || initialNativeTabKind());
     injectPreflightStyle();
     injectStyle();
     bindNativeReviewTabLinks();
     normalizeNativeTabLabels({product:{review_count:nativeCountFromPage()}});
-    applyNativeTabState(activeNativeTab || 'detail', false);
+    applyNativeTabState(window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || 'detail', false);
     waitFor(function(){
       return nativeTabPanes('review')[0] || nativeReviewWraps().length || bestReviewTarget() || document.querySelector('.review-box');
     }, function(){
