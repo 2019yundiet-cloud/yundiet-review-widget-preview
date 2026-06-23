@@ -1,6 +1,7 @@
 (function(){
   if (window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__) return;
   window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__ = true;
+  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v4';
 
   var config = window.YD_DANBAEK_REVIEW_WIDGET_CONFIG || {};
   var feedUrl = config.feedUrl || 'https://2019yundiet-cloud.github.io/yundiet-review-widget-preview/feeds/danbaekbap-review-feed.json';
@@ -25,7 +26,7 @@
     if (document.documentElement) document.documentElement.setAttribute('data-yd-lala-active-tab', activeNativeTab);
     if (document.body) document.body.setAttribute('data-yd-lala-active-tab', activeNativeTab);
   }
-  var detailPaneCssSelector = '#first_detail,.detail_detail_wrap,.detail_detail_wrap_mobile';
+  var detailPaneCssSelector = '#first_detail,#prod_detail_body,.detail_detail_wrap,.detail_detail_wrap_mobile,._detail_detail_wrap:not(#fixed_tab),._detail_detail_wrap_mobile:not(#fixed_tab_mobile)';
   var reviewPaneCssSelector = '.detail_review_wrap,.detail_review_wrap_mobile,#first_review,._detail_review_wrap,._detail_review_wrap_mobile';
   var qnaPaneCssSelector = '.detail_qna_wrap,.detail_qna_wrap_mobile,#first_qna,._detail_qna_wrap,._detail_qna_wrap_mobile';
   function scopedSelectors(scope, selectors){
