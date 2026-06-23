@@ -714,7 +714,9 @@
     nativeTabReinforceTimers.push(timer);
   }
   function bindNativeTabLabelGuard(){
-    if (nativeTabLabelGuardBound || !window.MutationObserver || !document.body) return;
+    if (nativeTabLabelGuardBound || !window.MutationObserver) return;
+    var roots = Array.prototype.slice.call(document.querySelectorAll('#fixed_tab_mobile,#fixed_tab,._prod_detail_tab_fixed'));
+    if (!roots.length) return;
     nativeTabLabelGuardBound = true;
     var observer = new MutationObserver(function(mutations){
       var touchedNativeTab = mutations.some(function(mutation){
@@ -725,7 +727,9 @@
       syncNativeReviewTabLabel();
       syncNativeTabActiveClasses();
     });
-    observer.observe(document.body, {childList:true, subtree:true, characterData:true});
+    roots.forEach(function(root){
+      observer.observe(root, {childList:true, subtree:true, characterData:true});
+    });
   }
   function bindNativeReviewTabLinks(){
     if (nativeReviewTabBound) return;
@@ -753,6 +757,7 @@
       ev.stopPropagation();
       if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
       reinforceNativeTabState(kind, true);
+      if (kind === 'review') scheduleNativeReviewRender(220);
       [8, 16, 24, 32, 48, 64, 80, 120, 160, 240, 420, 900, 1500].forEach(function(delay){
         scheduleNativeTabReinforcement(kind, delay, nativeTabTransitionEpoch);
       });
@@ -1188,31 +1193,36 @@
   }
   var nativeReviewObserverBound = false;
   var nativeReviewRenderTimer = null;
-  function scheduleNativeReviewRender(){
+  function scheduleNativeReviewRender(delay){
     if (nativeReviewRenderTimer) clearTimeout(nativeReviewRenderTimer);
     nativeReviewRenderTimer = setTimeout(function(){
-      var feed = buildNativeReviewFeed();
-      if (reviewFingerprint(feed) !== currentReviewFingerprint || !document.getElementById('yd-review-inline-system')) {
-        render(feed);
-      } else {
-        hideNativeReviewSources();
-        normalizeNativeTabLabels(feed);
-        applyNativeTabState(window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || 'detail', false);
-      }
-    }, 40);
+      var run = function(){
+        var feed = buildNativeReviewFeed();
+        if (reviewFingerprint(feed) !== currentReviewFingerprint || !document.getElementById('yd-review-inline-system')) {
+          render(feed);
+        } else {
+          hideNativeReviewSources();
+          normalizeNativeTabLabels(feed);
+          applyNativeTabState(window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || 'detail', false);
+        }
+      };
+      if (window.requestIdleCallback) window.requestIdleCallback(run, {timeout: 900});
+      else run();
+    }, typeof delay === 'number' ? delay : 180);
   }
   function bindNativeReviewObserver(){
     if (nativeReviewObserverBound || !window.MutationObserver) return;
-    nativeReviewObserverBound = true;
-    var observer = new MutationObserver(function(mutations){
-      var shouldRender = mutations.some(function(mutation){
-        var target = mutation.target;
-        if (target && target.closest && target.closest('#yd-review-inline-system')) return false;
-        return true;
-      });
-      if (shouldRender) scheduleNativeReviewRender();
+    var roots = nativeReviewWraps().concat(nativeTabPanes('review')).filter(function(root){
+      return root && root.nodeType === 1 && !root.closest('#yd-review-inline-system');
     });
-    observer.observe(document.body, {childList:true, subtree:true, characterData:true});
+    if (!roots.length) return;
+    nativeReviewObserverBound = true;
+    var observer = new MutationObserver(function(){
+      if ((window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab) === 'review') scheduleNativeReviewRender(260);
+    });
+    roots.slice(0, 4).forEach(function(root){
+      observer.observe(root, {childList:true, subtree:true, characterData:true});
+    });
   }
   function startNativeReviewAdapter(){
     syncNativeTabAttribute(window.__YD_LALA_ACTIVE_TAB__ || activeNativeTab || initialNativeTabKind());
@@ -1228,6 +1238,7 @@
       var feed = buildNativeReviewFeed();
       render(feed);
       bindNativeReviewObserver();
+      scheduleNativeReviewRender(1800);
     });
   }
   ready(function(){
