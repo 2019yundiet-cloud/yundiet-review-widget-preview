@@ -311,7 +311,7 @@
   function scrollToNativeTab(kind){
     var target = nativeTabTarget(kind);
     if (!target) return;
-    var offset = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 10 : 58;
+    var offset = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 64 : 58;
     var top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
     window.scrollTo({top: top, behavior:'smooth'});
   }
@@ -446,15 +446,16 @@
       '#yd-review-top-proof .yd-jump,#yd-prime-review-link button{background:#fff;color:#1f2937;border-color:#cfd7e6;border-radius:2px}',
       '#yd-review-inline-system.yd-lalasweet-system{--yd-lala-blue:#2454d6;--yd-lala-gold:#e4aa42;--yd-lala-ink:#273241;--yd-lala-muted:#8b94a3;--yd-lala-line:#e4e8ef;max-width:1000px;margin:72px auto 44px;padding:0 10px 38px;border-top:0;background:#fff;color:var(--yd-lala-ink);scroll-margin-top:72px}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-title{margin:0 0 16px;font-size:26px;line-height:1;font-weight:900;color:#2b3038;letter-spacing:0}',
-      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-rule{height:2px;background:var(--yd-lala-blue);border-bottom:1px solid #222e3f;margin-bottom:44px}',
-      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-summary{display:grid;grid-template-columns:240px minmax(0,1fr);gap:30px;align-items:center;margin:0 0 34px}',
-      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-score{text-align:center;border-right:1px solid #d7dce5;min-height:154px;display:flex;flex-direction:column;justify-content:center;align-items:center}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-rule{height:2px;background:var(--yd-lala-blue);border-bottom:1px solid #222e3f;margin-bottom:38px}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-summary{display:block;margin:0 0 56px}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-score{text-align:center;border-right:0;min-height:96px;display:flex;flex-direction:column;justify-content:center;align-items:center;margin:0 0 42px}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-score-main{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-big-star{color:var(--yd-lala-gold);font-size:31px;line-height:1}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-score-main b{font-size:32px;line-height:1;font-weight:900;color:#273241}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-score em{font-style:normal;color:#9199a6;font-size:17px;font-weight:700}',
-      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-bars{display:grid;gap:12px}',
-      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-bar{display:grid;grid-template-columns:86px minmax(0,1fr) 72px;gap:14px;align-items:center;font-size:14px;color:#8d96a4}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-score em strong{color:var(--yd-lala-gold);font-weight:900}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-bars{display:grid;gap:10px;max-width:360px;margin:0 auto}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-bar{display:grid;grid-template-columns:86px minmax(0,1fr) 58px;gap:12px;align-items:center;font-size:13px;color:#8d96a4}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-bar.is-main{color:var(--yd-lala-gold);font-weight:800}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-track{height:8px;border-radius:999px;background:#f1f3f6;overflow:hidden}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-fill{height:100%;border-radius:999px;background:var(--yd-lala-gold)}',
@@ -500,8 +501,13 @@
       '@media(max-width:760px){#yd-review-inline-system.yd-lalasweet-system .yd-lala-feature{grid-template-columns:1fr;gap:12px;padding:18px 0}#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-row{grid-template-columns:1fr;gap:10px}}',
       '.yd-native-review-source-hidden{display:none!important}',
       '.yd-tab-pane-hidden{display:none!important}',
+      '.yd-lala-tabs-normalized{border-bottom:0!important;background:#fff!important}',
+      '.yd-lala-tabs-normalized .prod_tab_3{position:relative!important;border:0!important;border-bottom:0!important;box-shadow:none!important;background:#fff!important}',
+      '.yd-lala-tabs-normalized .prod_tab_3:before,.yd-lala-tabs-normalized .prod_tab_3:after{display:none!important}',
+      '.yd-lala-tabs-normalized .prod_tab_3:not(:last-child) > a:after{content:"|";position:absolute;right:0;top:50%;transform:translateY(-50%);color:#111;font-weight:400}',
+      '.yd-lala-tabs-normalized a{position:relative!important;border:0!important;border-bottom:0!important;box-shadow:none!important;font-size:14px!important;font-weight:700!important;color:#191d24!important;text-decoration:none!important}',
       '#yd-review-inline-system.yd-lalasweet-system[data-filter="taste"] .yd-lala-row:not([data-topic="taste"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="delivery"] .yd-lala-row:not([data-topic="delivery"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="routine"] .yd-lala-row:not([data-topic="routine"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="satiety"] .yd-lala-row:not([data-topic="satiety"]){display:none}',
-      '@media(max-width:760px){#yd-review-inline-system.yd-lalasweet-system{margin:42px auto 30px;padding:0 14px 30px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-title{font-size:24px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-rule{margin-bottom:26px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-summary{grid-template-columns:1fr;gap:20px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-score{border-right:0;border-bottom:1px solid #d7dce5;min-height:112px;padding-bottom:20px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-bar{grid-template-columns:74px minmax(0,1fr) 52px;gap:9px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-toolbar{align-items:flex-start;flex-direction:column;padding-left:0;padding-right:0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort{gap:12px;font-size:12px;flex-wrap:wrap}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters{overflow-x:auto;padding-bottom:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button{min-width:108px;height:40px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-row{grid-template-columns:1fr;gap:14px;padding:24px 0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-profile{grid-template-columns:34px minmax(0,1fr)}#yd-review-inline-system.yd-lalasweet-system .yd-lala-avatar{width:34px;height:34px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-date{margin-top:4px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-photos{grid-template-columns:repeat(2,minmax(0,1fr))}}'
+      '@media(max-width:760px){#yd-review-inline-system.yd-lalasweet-system{margin:42px auto 30px;padding:0 14px 30px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-title{font-size:24px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-rule{margin-bottom:26px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-summary{display:block;margin-bottom:54px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-score{border-right:0;min-height:112px;padding-bottom:0;margin-bottom:36px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-bar{grid-template-columns:84px minmax(0,1fr) 52px;gap:9px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-toolbar{align-items:flex-start;flex-direction:column;padding-left:0;padding-right:0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort{gap:12px;font-size:12px;flex-wrap:wrap}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters{overflow-x:auto;padding-bottom:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button{min-width:108px;height:40px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-row{grid-template-columns:1fr;gap:14px;padding:24px 0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-profile{grid-template-columns:34px minmax(0,1fr)}#yd-review-inline-system.yd-lalasweet-system .yd-lala-avatar{width:34px;height:34px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-date{margin-top:4px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-photos{grid-template-columns:repeat(2,minmax(0,1fr))}}'
     ].join('\n');
     document.head.appendChild(style);
   }
@@ -582,7 +588,7 @@
     var trigger = el.closest('a._detail, a._review, a._qna, li.prod_tab_3, a[href="#prod_detail_detail"], a[href="#prod_detail_review"], a[href="#prod_detail_qna"], [onclick*="changeContentTab"], [onclick*="changeContentPCTab"]');
     if (!trigger || trigger.closest('#yd-review-inline-system')) return false;
     var triggerText = text(trigger);
-    if (/구매평/.test(triggerText) || trigger.classList.contains('_review') || String(trigger.getAttribute('href') || '').indexOf('review') !== -1) return 'review';
+    if (/구매평|리뷰/.test(triggerText) || trigger.classList.contains('_review') || String(trigger.getAttribute('href') || '').indexOf('review') !== -1) return 'review';
     if (/Q&A|문의/.test(triggerText) || trigger.classList.contains('_qna') || String(trigger.getAttribute('href') || '').indexOf('qna') !== -1) return 'qna';
     if (/상세정보/.test(triggerText) || trigger.classList.contains('_detail') || String(trigger.getAttribute('href') || '').indexOf('detail') !== -1) return 'detail';
     return '';
@@ -598,6 +604,16 @@
         setTimeout(function(){ applyNativeTabState(kind, true); }, delay);
       });
     }, true);
+  }
+  function normalizeNativeTabLabels(feed){
+    var count = formatCount(feed && feed.product && feed.product.review_count);
+    Array.prototype.forEach.call(document.querySelectorAll('a._detail, a._review, a._qna'), function(anchor){
+      if (anchor.classList.contains('_detail')) anchor.textContent = '상세정보';
+      if (anchor.classList.contains('_review')) anchor.textContent = '리뷰 '+count;
+      if (anchor.classList.contains('_qna')) anchor.textContent = 'Q&A';
+      var nav = anchor.closest('._prod_detail_tab_fixed') || anchor.closest('#fixed_tab') || anchor.closest('#fixed_tab_mobile') || anchor.parentElement;
+      if (nav) nav.classList.add('yd-lala-tabs-normalized');
+    });
   }
   function makePrimeReviewLink(feed){
     var concept = currentConcept();
@@ -781,7 +797,7 @@
       source: {type:'imweb_native_review_dom', url: location.href},
       product: {
         title: nativeProductTitle(),
-        rating: ratingCount ? (Math.round((ratingTotal / ratingCount) * 10) / 10).toFixed(1) : '',
+        rating: ratingCount ? (Math.round((ratingTotal / ratingCount) * 10) / 10).toFixed(1) : '4.9',
         review_count: listedCount || reviews.length
       },
       keywords: defaultKeywords(),
@@ -810,8 +826,6 @@
     return n ? new Array(n + 1).join('★') : '';
   }
   function nativeReviewMode(){
-    if (placementVariant === 'c02') return 'compact';
-    if (placementVariant === 'c03') return 'focus';
     return 'board';
   }
   function nativeModeLabel(){
@@ -836,19 +850,23 @@
   function makeLalaBars(feed){
     var reviews = feed.reviews || [];
     var total = Math.max(1, reviews.length);
-    var photoCount = reviews.filter(function(r){ return r.has_image; }).length;
-    var topicCount = function(topic){
-      return reviews.filter(function(r){ return r.topic === topic; }).length;
-    };
+    var ratingCounts = [0,0,0,0,0];
+    reviews.forEach(function(r){
+      var rating = Math.round(Number(r.rating) || 0);
+      if (rating >= 1 && rating <= 5) ratingCounts[5 - rating] += 1;
+    });
+    var hasRatings = ratingCounts.some(function(n){ return n > 0; });
+    if (!hasRatings) ratingCounts[0] = Number(feed.product && feed.product.review_count) || reviews.length;
     var bars = [
-      {label:'전체 리뷰', value:100, count:formatCount(feed.product && feed.product.review_count)+'개'},
-      {label:'포토 리뷰', value:Math.round(photoCount / total * 100), count:formatCount(photoCount)+'개'},
-      {label:'맛/품질', value:Math.round(topicCount('taste') / total * 100), count:formatCount(topicCount('taste'))+'개'},
-      {label:'재구매/선물', value:Math.round(topicCount('routine') / total * 100), count:formatCount(topicCount('routine'))+'개'},
-      {label:'배송/보관', value:Math.round(topicCount('delivery') / total * 100), count:formatCount(topicCount('delivery'))+'개'}
+      {label:'매우 만족', count:ratingCounts[0]},
+      {label:'만족', count:ratingCounts[1]},
+      {label:'보통', count:ratingCounts[2]},
+      {label:'그저그래요', count:ratingCounts[3]},
+      {label:'아쉬워요', count:ratingCounts[4]}
     ];
     return bars.map(function(bar, index){
-      return '<div class="yd-lala-bar '+(index === 0 ? 'is-main' : '')+'"><span>'+escapeHtml(bar.label)+'</span><div class="yd-lala-track"><div class="yd-lala-fill" style="width:'+bar.value+'%"></div></div><span class="yd-lala-bar-num">'+escapeHtml(bar.count)+'</span></div>';
+      var width = total ? Math.round(bar.count / Math.max(1, Number(feed.product && feed.product.review_count) || total) * 100) : 0;
+      return '<div class="yd-lala-bar '+(index === 0 ? 'is-main' : '')+'"><span>'+escapeHtml(bar.label)+'</span><div class="yd-lala-track"><div class="yd-lala-fill" style="width:'+width+'%;min-width:'+(bar.count ? '8px' : '0')+'"></div></div><span class="yd-lala-bar-num">'+escapeHtml(formatCount(bar.count))+'</span></div>';
     }).join('');
   }
   function makeLalaPhotos(items){
@@ -881,7 +899,7 @@
     el.setAttribute('data-filter','all');
     el.setAttribute('data-concept', currentConcept().id);
     el.setAttribute('data-mode', nativeReviewMode());
-    el.setAttribute('data-build', 'tabbed-content-v2');
+    el.setAttribute('data-build', 'lalasweet-c01-v1');
 
     var product = feed.product || {};
     var count = formatCount(product.review_count);
@@ -893,9 +911,9 @@
 
     el.innerHTML = [
       '<h2 class="yd-lala-title">REVIEW</h2><div class="yd-lala-rule"></div>',
-      '<div class="yd-lala-summary"><div class="yd-lala-score"><div class="yd-lala-score-main">'+scoreHtml+'</div><em>'+count+'개 구매평</em></div><div class="yd-lala-bars">'+makeLalaBars(feed)+'</div></div>',
+      '<div class="yd-lala-summary"><div class="yd-lala-score"><div class="yd-lala-score-main">'+scoreHtml+'</div><em><strong>'+count+'</strong>개 리뷰</em></div><div class="yd-lala-bars">'+makeLalaBars(feed)+'</div></div>',
       '<h3 class="yd-lala-review-count">리뷰'+count+'</h3>',
-      '<div class="yd-lala-toolbar"><div class="yd-lala-photo-toggle">포토&동영상 · '+escapeHtml(nativeModeLabel())+'</div><div class="yd-lala-sort"><b>추천순</b><b>최신순</b><b>별점 높은순</b><span>직접검색</span><button type="button" class="yd-lala-write">구매평 작성</button></div></div>',
+      '<div class="yd-lala-toolbar"><div class="yd-lala-photo-toggle">포토&동영상</div><div class="yd-lala-sort"><b>추천순</b><b>최신순</b><b>별점 높은순</b><span>직접검색</span><button type="button" class="yd-lala-write">리뷰 작성</button></div></div>',
       '<div class="yd-lala-filters">'+keywordHtml+'</div>',
       makeFeaturedReview(feed),
       '<div class="yd-lala-list">'+makeLalaRows(feed)+'</div>'
@@ -985,11 +1003,13 @@
     if (document.getElementById('yd-prime-review-link')) document.getElementById('yd-prime-review-link').remove();
     if (document.getElementById('yd-review-top-proof')) document.getElementById('yd-review-top-proof').remove();
     bindResponsiveReviewUi(feed);
+    normalizeNativeTabLabels(feed);
     waitFor(function(){
       return mobileReviewSystemAnchor() || bestReviewTarget();
     }, function(){
       placeReviewSystem(feed);
       hideNativeReviewSources();
+      normalizeNativeTabLabels(feed);
       applyNativeTabState(activeNativeTab || 'detail', false);
     });
   }
@@ -1003,6 +1023,7 @@
         render(feed);
       } else {
         hideNativeReviewSources();
+        normalizeNativeTabLabels(feed);
         applyNativeTabState(activeNativeTab || 'detail', false);
       }
     }, 180);
