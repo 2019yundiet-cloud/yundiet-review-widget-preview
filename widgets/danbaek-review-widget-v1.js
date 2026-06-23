@@ -461,14 +461,22 @@
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-fill{height:100%;border-radius:999px;background:var(--yd-lala-gold)}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-bar-num{text-align:right;font-weight:700;color:#9ca4b0}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-review-count{margin:0;padding:18px 0 16px;border-top:1px solid var(--yd-lala-line);border-bottom:1px solid #cfd5df;font-size:20px;font-weight:900;color:#273241}',
-      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-toolbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 10px;border-bottom:1px solid var(--yd-lala-line)}',
-      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo-toggle{font-size:14px;font-weight:900;color:#273241}',
-      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort{display:flex;align-items:center;gap:18px;font-size:13px;font-weight:800;color:#273241;white-space:nowrap}',
-      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort span{color:#9aa2ae;font-weight:700}',
-      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-write{height:32px;border:1px solid #cfd5df;background:#fff;border-radius:2px;padding:0 12px;color:#273241;font-size:12px;font-weight:900;cursor:pointer}',
-      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters{display:flex;gap:6px;padding:12px 0 10px;border-bottom:1px solid var(--yd-lala-line)}',
-      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button{height:44px;min-width:130px;border:1px solid #cfd5df;background:#fff;border-radius:2px;padding:0 13px;text-align:left;color:#273241;font-size:13px;font-weight:700;cursor:pointer}',
-      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button.is-active{border-color:#9ba7ba;background:#f8fafc}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-toolbar{display:grid;grid-template-columns:minmax(130px,1fr) auto;align-items:center;gap:12px;min-height:52px;padding:0 0;border-bottom:1px solid var(--yd-lala-line)}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo-toggle{display:inline-flex;align-items:center;gap:6px;width:max-content;border:0;background:transparent;padding:0;color:#273241;font-size:14px;font-weight:900;line-height:1;cursor:pointer}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo-icon{position:relative;width:15px;height:15px;border:2px solid #273241;border-radius:4px;box-sizing:border-box;flex:0 0 auto}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo-icon:before{content:"";position:absolute;left:3px;top:4px;width:4px;height:4px;border:1.7px solid #273241;border-radius:50%;box-sizing:border-box}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo-icon:after{content:"";position:absolute;right:2px;top:2px;width:3px;height:3px;background:#273241;border-radius:50%}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-width:0;font-size:13px;font-weight:800;color:#273241;white-space:nowrap}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort-button,#yd-review-inline-system.yd-lalasweet-system .yd-lala-search{display:inline-flex;align-items:center;gap:7px;border:0;background:transparent;padding:0;color:inherit;font:inherit;line-height:1;cursor:pointer}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-search{color:#a3abb7;font-weight:700}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-divider{display:block;width:1px;height:16px;background:#e1e6ee}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-caret{display:block;width:7px;height:7px;border-right:2px solid #a6aeba;border-bottom:2px solid #a6aeba;transform:rotate(45deg);margin-top:-4px;box-sizing:border-box}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-search-icon{position:relative;display:block;width:17px;height:17px;flex:0 0 auto}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-search-icon:before{content:"";position:absolute;left:1px;top:1px;width:10px;height:10px;border:2px solid #c3cad4;border-radius:50%;box-sizing:border-box}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-search-icon:after{content:"";position:absolute;right:1px;bottom:1px;width:7px;height:2px;background:#c3cad4;transform:rotate(45deg);transform-origin:center;border-radius:2px}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters{display:flex;gap:8px;padding:12px 0 10px;border-bottom:1px solid var(--yd-lala-line);overflow-x:auto}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button{display:inline-flex;align-items:center;justify-content:space-between;gap:14px;height:44px;min-width:130px;border:1px solid #cfd5df;background:#fff;border-radius:2px;padding:0 18px;text-align:left;color:#273241;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}',
+      '#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button.is-active{border-color:#cfd5df;background:#fff}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-row{display:grid;grid-template-columns:185px minmax(0,1fr);gap:38px;border-bottom:1px solid var(--yd-lala-line);padding:30px 0}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-profile{display:grid;grid-template-columns:42px minmax(0,1fr);gap:12px;align-content:start;color:#667085;font-size:13px}',
       '#yd-review-inline-system.yd-lalasweet-system .yd-lala-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(#eef2f7,#dce3ed)}',
@@ -493,7 +501,7 @@
       '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-score{border-bottom:0;min-height:0;padding-bottom:0}',
       '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-score-main{margin-bottom:0}',
       '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-bars,#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-filters{display:none}',
-      '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-toolbar{padding-left:0;padding-right:0;background:#f8fafc}',
+      '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-toolbar{padding-left:0;padding-right:0;background:#fff}',
       '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-row{grid-template-columns:135px minmax(0,1fr);gap:24px;padding:20px 0}',
       '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-compact .yd-lala-text{font-size:14px;line-height:1.65}',
       '#yd-review-inline-system.yd-lalasweet-system.yd-lala-mode-focus .yd-lala-feature{background:#f8fafc;border:1px solid #d8dee8;border-radius:4px;padding:22px}',
@@ -507,7 +515,7 @@
       '.yd-lala-tabs-normalized .prod_tab_3:not(:last-child) > a:after{content:"|";position:absolute;right:0;top:50%;transform:translateY(-50%);color:#111;font-weight:400}',
       '.yd-lala-tabs-normalized a{position:relative!important;border:0!important;border-bottom:0!important;box-shadow:none!important;font-size:14px!important;font-weight:700!important;color:#191d24!important;text-decoration:none!important}',
       '#yd-review-inline-system.yd-lalasweet-system[data-filter="taste"] .yd-lala-row:not([data-topic="taste"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="delivery"] .yd-lala-row:not([data-topic="delivery"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="routine"] .yd-lala-row:not([data-topic="routine"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="satiety"] .yd-lala-row:not([data-topic="satiety"]){display:none}',
-      '@media(max-width:760px){#yd-review-inline-system.yd-lalasweet-system{margin:42px auto 30px;padding:0 14px 30px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-title{font-size:24px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-rule{margin-bottom:26px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-summary{display:block;margin-bottom:54px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-score{border-right:0;min-height:112px;padding-bottom:0;margin-bottom:36px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-bar{grid-template-columns:84px minmax(0,1fr) 52px;gap:9px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-toolbar{align-items:flex-start;flex-direction:column;padding-left:0;padding-right:0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort{gap:12px;font-size:12px;flex-wrap:wrap}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters{overflow-x:auto;padding-bottom:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button{min-width:108px;height:40px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-row{grid-template-columns:1fr;gap:14px;padding:24px 0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-profile{grid-template-columns:34px minmax(0,1fr)}#yd-review-inline-system.yd-lalasweet-system .yd-lala-avatar{width:34px;height:34px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-date{margin-top:4px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-photos{grid-template-columns:repeat(2,minmax(0,1fr))}}'
+      '@media(max-width:760px){#yd-review-inline-system.yd-lalasweet-system{margin:42px auto 30px;padding:0 14px 30px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-title{font-size:24px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-rule{margin-bottom:26px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-summary{display:block;margin-bottom:54px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-score{border-right:0;min-height:112px;padding-bottom:0;margin-bottom:36px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-bar{grid-template-columns:84px minmax(0,1fr) 52px;gap:9px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-toolbar{grid-template-columns:minmax(118px,1fr) auto;gap:8px;min-height:52px;padding-left:0;padding-right:0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo-toggle{font-size:13px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort{gap:11px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-search{gap:6px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters{padding-bottom:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button{min-width:128px;height:44px;font-size:12px;padding:0 18px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-row{grid-template-columns:1fr;gap:14px;padding:24px 0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-profile{grid-template-columns:34px minmax(0,1fr)}#yd-review-inline-system.yd-lalasweet-system .yd-lala-avatar{width:34px;height:34px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-date{margin-top:4px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-photos{grid-template-columns:repeat(2,minmax(0,1fr))}}'
     ].join('\n');
     document.head.appendChild(style);
   }
@@ -905,15 +913,22 @@
     var count = formatCount(product.review_count);
     var hasRating = !!product.rating;
     var scoreHtml = hasRating ? '<span class="yd-lala-big-star">★</span><b>'+escapeHtml(product.rating)+'</b>' : '<b>리뷰</b>';
-    var keywordHtml = (feed.keywords || []).map(function(k, i){
-      return '<button type="button" class="'+(i === 0 ? 'is-active' : '')+'" data-filter-value="'+escapeHtml(k.id)+'">'+escapeHtml(k.label)+'</button>';
-    }).join('');
+    var keywordList = feed.keywords || [];
+    var tasteKeyword = keywordList.filter(function(k){
+      return k && k.id === 'taste';
+    })[0] || keywordList.filter(function(k){
+      return k && k.id !== 'all';
+    })[0] || { id: 'taste', label: '가장 맛있...' };
+    var keywordHtml = [
+      '<button type="button" class="is-active" data-filter-value="all"><span>별점</span><span class="yd-lala-caret"></span></button>',
+      '<button type="button" data-filter-value="'+escapeHtml(tasteKeyword.id || 'taste')+'"><span>가장 맛있...</span><span class="yd-lala-caret"></span></button>'
+    ].join('');
 
     el.innerHTML = [
       '<h2 class="yd-lala-title">REVIEW</h2><div class="yd-lala-rule"></div>',
       '<div class="yd-lala-summary"><div class="yd-lala-score"><div class="yd-lala-score-main">'+scoreHtml+'</div><em><strong>'+count+'</strong>개 리뷰</em></div><div class="yd-lala-bars">'+makeLalaBars(feed)+'</div></div>',
       '<h3 class="yd-lala-review-count">리뷰'+count+'</h3>',
-      '<div class="yd-lala-toolbar"><div class="yd-lala-photo-toggle">포토&동영상</div><div class="yd-lala-sort"><b>추천순</b><b>최신순</b><b>별점 높은순</b><span>직접검색</span><button type="button" class="yd-lala-write">리뷰 작성</button></div></div>',
+      '<div class="yd-lala-toolbar"><button type="button" class="yd-lala-photo-toggle"><span class="yd-lala-photo-icon" aria-hidden="true"></span><span>포토&동영상</span></button><div class="yd-lala-sort"><button type="button" class="yd-lala-sort-button">최신순<span class="yd-lala-caret" aria-hidden="true"></span></button><span class="yd-lala-divider" aria-hidden="true"></span><button type="button" class="yd-lala-search">직접검색<span class="yd-lala-search-icon" aria-hidden="true"></span></button></div></div>',
       '<div class="yd-lala-filters">'+keywordHtml+'</div>',
       makeFeaturedReview(feed),
       '<div class="yd-lala-list">'+makeLalaRows(feed)+'</div>'
