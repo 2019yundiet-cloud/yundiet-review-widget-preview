@@ -1,11 +1,13 @@
 (function(){
   if (window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__) return;
   window.__YD_EXTERNAL_REVIEW_WIDGET_ACTIVE__ = true;
-  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v8';
+  window.__YD_REVIEW_WIDGET_VERSION__ = 'green-stable-v9';
 
   var config = window.YD_DANBAEK_REVIEW_WIDGET_CONFIG || {};
   var feedUrl = config.feedUrl || 'https://2019yundiet-cloud.github.io/yundiet-review-widget-preview/feeds/danbaekbap-review-feed.json';
   var placementVariant = normalizeVariant(config.variant || queryValue('yd_review_variant') || queryValue('review_variant') || 'a2d');
+  var brandColor = normalizeHexColor(config.brandColor) || detectBrandColor() || '#2a341e';
+  var brandRgbTriplet = hexToRgbTriplet(brandColor) || '42,52,30';
   if (location.href.indexOf('/admin') !== -1 || location.href.indexOf('/_/') !== -1) return;
 
   function isProductPage(){
@@ -34,12 +36,12 @@
   }
   function injectPreflightStyle(){
     var style = document.getElementById('yd-lala-preflight-style');
-    if (style && style.getAttribute('data-yd-lala-preflight-version') === 'green-stable-v5') return;
+    if (style && style.getAttribute('data-yd-lala-preflight-version') === 'green-stable-v6') return;
     if (!style) {
       style = document.createElement('style');
       style.id = 'yd-lala-preflight-style';
     }
-    style.setAttribute('data-yd-lala-preflight-version', 'green-stable-v5');
+    style.setAttribute('data-yd-lala-preflight-version', 'green-stable-v6');
     style.textContent = [
       scopedSelectors('html[data-yd-lala-active-tab="detail"]', reviewPaneCssSelector+','+qnaPaneCssSelector)+'{display:none!important}',
       scopedSelectors('html[data-yd-lala-active-tab="review"]', detailPaneCssSelector+','+qnaPaneCssSelector)+'{display:none!important}',
@@ -59,7 +61,7 @@
       '._prod_detail_tab_fixed .site_prod_nav:before,#fixed_tab .site_prod_nav:before,#fixed_tab_mobile .site_prod_nav:before{content:"|"!important;display:block!important;position:absolute!important;left:33.333%!important;top:50%!important;color:#191d24!important;font-size:14px!important;line-height:1!important;font-weight:400!important;transform:translate(-50%,-50%)!important;opacity:1!important;z-index:5!important;pointer-events:none!important}',
       '._prod_detail_tab_fixed .site_prod_nav:after,#fixed_tab .site_prod_nav:after,#fixed_tab_mobile .site_prod_nav:after{content:"|"!important;display:block!important;position:absolute!important;left:66.666%!important;top:50%!important;color:#191d24!important;font-size:14px!important;line-height:1!important;font-weight:400!important;transform:translate(-50%,-50%)!important;opacity:1!important;z-index:5!important;pointer-events:none!important}',
       '._prod_detail_tab_fixed a._detail,._prod_detail_tab_fixed a._review,._prod_detail_tab_fixed a._qna,#fixed_tab a._detail,#fixed_tab a._review,#fixed_tab a._qna,#fixed_tab_mobile a._detail,#fixed_tab_mobile a._review,#fixed_tab_mobile a._qna{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-width:66px!important;white-space:nowrap!important;transition:none!important;animation:none!important}'
-    ].join('\n');
+    ].join('\n').replace(/#2c5d42/g, brandColor).replace(/44,93,66/g, brandRgbTriplet);
     if (!style.parentNode) (document.head || document.documentElement).appendChild(style);
   }
   syncNativeTabAttribute(activeNativeTab);
@@ -72,6 +74,44 @@
   function queryValue(key){
     var match = new RegExp('[?&]'+key+'=([^&]*)').exec(location.search);
     return match ? decodeURIComponent(match[1].replace(/\+/g, ' ')) : '';
+  }
+  function normalizeHexColor(value){
+    var color = String(value || '').trim();
+    if (/^#[0-9a-fA-F]{6}$/.test(color)) return color.toLowerCase();
+    if (/^#[0-9a-fA-F]{3}$/.test(color)) {
+      return '#'+color.charAt(1)+color.charAt(1)+color.charAt(2)+color.charAt(2)+color.charAt(3)+color.charAt(3);
+    }
+    return '';
+  }
+  function hexToRgbTriplet(hex){
+    hex = normalizeHexColor(hex);
+    if (!hex) return '';
+    return [
+      parseInt(hex.slice(1, 3), 16),
+      parseInt(hex.slice(3, 5), 16),
+      parseInt(hex.slice(5, 7), 16)
+    ].join(',');
+  }
+  function rgbToHex(value){
+    var match = String(value || '').match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+    if (!match) return '';
+    return '#'+[match[1], match[2], match[3]].map(function(part){
+      var hex = Math.max(0, Math.min(255, Number(part) || 0)).toString(16);
+      return hex.length === 1 ? '0'+hex : hex;
+    }).join('');
+  }
+  function detectBrandColor(){
+    var html = (document.documentElement && document.documentElement.innerHTML) || '';
+    var index = html.indexOf('brand_color');
+    if (index !== -1) {
+      var nearby = html.slice(index, index + 160);
+      var match = nearby.match(/#[0-9a-fA-F]{6}/);
+      if (match) return normalizeHexColor(match[0]);
+    }
+    if (window.getComputedStyle && document.body) {
+      return normalizeHexColor(rgbToHex(getComputedStyle(document.body).color));
+    }
+    return '';
   }
   function normalizeVariant(value){
     value = String(value || '').toLowerCase();
@@ -385,7 +425,7 @@
       anchor.classList.toggle('active', isActive);
       anchor.classList.toggle('on', isActive);
       anchor.setAttribute('aria-selected', isActive ? 'true' : 'false');
-      anchor.style.setProperty('color', isActive ? '#2c5d42' : '#191d24', 'important');
+      anchor.style.setProperty('color', isActive ? brandColor : '#191d24', 'important');
       anchor.style.setProperty('font-weight', isActive ? '800' : '500', 'important');
       anchor.style.setProperty('transition', 'none', 'important');
       anchor.style.setProperty('animation', 'none', 'important');
@@ -620,7 +660,7 @@
       '.yd-lala-tabs-normalized a{position:relative!important;border:0!important;border-bottom:0!important;box-shadow:none!important;font-size:14px!important;font-weight:700!important;color:#191d24!important;text-decoration:none!important}',
       '#yd-review-inline-system.yd-lalasweet-system[data-filter="taste"] .yd-lala-row:not([data-topic="taste"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="delivery"] .yd-lala-row:not([data-topic="delivery"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="routine"] .yd-lala-row:not([data-topic="routine"]),#yd-review-inline-system.yd-lalasweet-system[data-filter="satiety"] .yd-lala-row:not([data-topic="satiety"]){display:none}',
       '@media(max-width:760px){#yd-review-inline-system.yd-lalasweet-system{margin:42px auto 30px;padding:0 14px 30px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-title{font-size:24px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-rule{margin-bottom:26px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-summary{display:block;margin-bottom:54px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-score{border-right:0;min-height:112px;padding-bottom:0;margin-bottom:36px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-bar{grid-template-columns:84px minmax(0,1fr) 52px;gap:9px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-toolbar{grid-template-columns:minmax(118px,1fr) auto;gap:8px;min-height:52px;padding-left:0;padding-right:0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-photo-toggle{font-size:13px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-sort{gap:11px;font-size:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-search{gap:6px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters{padding-bottom:12px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-filters button{min-width:128px;height:44px;font-size:12px;padding:0 18px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-row{grid-template-columns:1fr;gap:14px;padding:24px 0}#yd-review-inline-system.yd-lalasweet-system .yd-lala-profile{grid-template-columns:34px minmax(0,1fr)}#yd-review-inline-system.yd-lalasweet-system .yd-lala-avatar{width:34px;height:34px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-date{margin-top:4px}#yd-review-inline-system.yd-lalasweet-system .yd-lala-photos{grid-template-columns:repeat(2,minmax(0,1fr))}}'
-    ].join('\n');
+    ].join('\n').replace(/#2c5d42/g, brandColor).replace(/44,93,66/g, brandRgbTriplet);
     document.head.appendChild(style);
   }
   function imgCard(item, idx){
