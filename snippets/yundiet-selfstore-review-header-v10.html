@@ -6,11 +6,11 @@
   if (location.pathname.indexOf('/shop_view') === -1 && location.search.indexOf('idx=') === -1) return;
 
   var BRAND = '#2a341e';
-  var WIDGET_URL = 'https://cdn.jsdelivr.net/gh/2019yundiet-cloud/yundiet-review-widget-preview@bbade6e/widgets/danbaek-review-widget-v1.js';
+  var WIDGET_URL = 'https://cdn.jsdelivr.net/gh/2019yundiet-cloud/yundiet-review-widget-preview@64e848d/widgets/danbaek-review-widget-v1.js';
   var detailSel = '#first_detail,#prod_detail_body,.detail_detail_wrap,.detail_detail_wrap_mobile,._detail_detail_wrap:not(#fixed_tab),._detail_detail_wrap_mobile:not(#fixed_tab_mobile)';
   var reviewSel = '.detail_review_wrap,.detail_review_wrap_mobile,#first_review,._detail_review_wrap,._detail_review_wrap_mobile';
   var qnaSel = '.detail_qna_wrap,.detail_qna_wrap_mobile,#first_qna,._detail_qna_wrap,._detail_qna_wrap_mobile';
-  var activeTab = /review/i.test(location.hash) ? 'review' : /qna/i.test(location.hash) ? 'qna' : 'detail';
+  var activeTab = 'detail';
 
   function scoped(scope, selectors){
     return selectors.split(',').map(function(selector){ return scope + ' ' + selector; }).join(',');
@@ -73,7 +73,9 @@
     if (!anchor || !anchor.closest('ul.site_prod_nav')) return;
     event.preventDefault();
     event.stopImmediatePropagation();
-    setTab(anchor.classList.contains('_review') ? 'review' : anchor.classList.contains('_qna') ? 'qna' : 'detail');
+    var nextTab = anchor.classList.contains('_review') ? 'review' : anchor.classList.contains('_qna') ? 'qna' : 'detail';
+    window.__YD_LALA_USER_SELECTED_TAB__ = nextTab;
+    setTab(nextTab);
     syncTabs();
   }, true);
   function loadWidget(){
@@ -92,11 +94,12 @@
 
   setTab(activeTab);
   injectPrebootStyle();
+  if (document.body) loadWidget();
   ready(function(){
     syncTabs();
+    loadWidget();
+    setTimeout(syncTabs, 60);
     setTimeout(syncTabs, 300);
-    if ('requestIdleCallback' in window) requestIdleCallback(loadWidget, {timeout: 1200});
-    else setTimeout(loadWidget, 600);
   });
 })();
 </script>
